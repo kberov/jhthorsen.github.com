@@ -118,6 +118,22 @@ dd {
     clear: both;
 }
 
+/*
+ * Blog list
+ */
+
+ul.blog li:hover {
+    background: #aaa;
+}
+
+ul.blog span.date {
+    float: right;
+}
+
+ul.blog span.arrow {
+    display: none;
+}
+
 #menu {
     background: #900;
     margin: 0 auto;
