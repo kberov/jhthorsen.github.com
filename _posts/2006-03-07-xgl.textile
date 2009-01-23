@@ -1,0 +1,14 @@
+---
+layout: post
+title: Xgl
+---
+
+<a class="box" href="http://home.flodhest.net/gallery/screenshot/xgl-1.png?embed=true"><img src="http://home.flodhest.net/gallery/screenshot/.thumb/xgl-1.png" alt="my xgl desktop"></a> I've managed to get <a href="http://en.opensuse.org/Xgl">Xgl</a> to work! (Special thanks to <a href="http://www.ritter.demon.co.uk">[David]K-64</a> for A: telling me about Xgl B: helping me get through the basic <a href="http://gentoo-wiki.com/HOWTO_XGL">install-steps</a>) It's really amazing, you just got to <a href="http://www.freedesktop.org/~davidr/xgl-demo1.xvid.avi" title="Xgl movie ~ 50MB">see</a> for yourself to get the real impression. The <a href="http://en.opensuse.org/Compiz">compiz</a> manager features Wobbling windows, transparancy, a new "switcher" and a whole lot more. I'm truly speachless. This is the best eye-candy I've ever experienced. Even though I'm no fan of windows, It will be interresting to see how <a href="http://www.microsoft.com/windowsvista/default.aspx">Vista</a>'s 3D effects will be, compared to Xgl+compiz... The basic install-steps are really quite basic - at least in ubuntu with nvidia: 
+ 
+     1. Install Xgl and compiz* packages
+     2. Start <a href="http://home.flodhest.net/linux/xgl/Xgl_start.txt?embed=true">Xgl</a> and <acronym title="Or whatever X-based terminal you like">xterm</acronym>
+     3. su - &#60;username>
+     4. Start <a href="http://home.flodhest.net/linux/xgl/compiz_gnome.txt?embed=true">compiz + gnome</a>
+     5. Run gconf-editor and configure the <a href="http://home.flodhest.net/linux/xgl/gconf.png?embed=true">plugins</a>
+ 
+
