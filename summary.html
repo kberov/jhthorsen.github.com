@@ -1,0 +1,35 @@
+---
+layout: default
+title: jhthorsen's summary
+---
+
+<h1 id="information">Information</h1>
+<ul>
+    <li><a href="http://flodhest.net">Homepage</a></li>
+    <li><a href="http://flodhest.net/contact">git-at-flodhest.net</a></li>
+    <li><a href="http://www.linkedin.com/in/jhthorsen">Linkedin profile</a></li>
+    <li><a href="http://jhthorsen.github.com/cv.html">Curriculum vitae</a></li>
+</ul>
+
+<h1 id="projects">Projects</h1>
+<h2><a href="http://github.com/jhthorsen">Github</a></h2>
+<ul>
+    <li><a href="http://jhthorsen.github.com/quelea">Quelea</a></li>
+</ul>
+
+<h2><a href="http://search.cpan.org/~eidolon/">CPAN</a></h2>
+<ul>
+    <li><a href="http://search.cpan.org/dist/DOCSIS-ConfigFile/">DOCSIS::ConfigFile</a></li>
+    <li><a href="http://search.cpan.org/dist/Net-DHCP-Info/">Net::DHCP::Info</a></li>
+    <li><a href="http://search.cpan.org/dist/POE-Component-TFTPd/">POE::Component::TFTPd</a></li>
+    <li><a href="http://search.cpan.org/dist/SNMP-Effective/">SNMP::Effective</a></li>
+    <li><a href="http://search.cpan.org/dist/Var-State/">Var::State</a></li>
+    <li><a href="http://search.cpan.org/dist/YAML-Object/">YAML::Object</a></li>
+</ul>
+
+<h1 id="blog">Blog</h1>
+<ul>
+    {% for post in site.posts %}
+    <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ post.url }}">{{ post.title }}</a></li>
+    {% endfor %}
+</ul>
