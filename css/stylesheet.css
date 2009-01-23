@@ -63,7 +63,6 @@ h2 {
     margin: 1em 0 0.5em 0;
     padding: 0.2em 0;
     clear: left;
-    border-bottom: 1px solid #600;
 }
 
 h3 {
@@ -122,8 +121,14 @@ dd {
  * Blog list
  */
 
+ul.blog {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
 ul.blog li:hover {
-    background: #aaa;
+    background: #eee;
 }
 
 ul.blog span.date {
