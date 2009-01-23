@@ -17,16 +17,16 @@ body {
 }
 
 a {
-    color: #467;
+    color: #500;
     text-decoration: underline;
 }
 
 a:hover {
-    text-decoration: none;
+    color: #d00;
 }
 
 acronym {
-    border-bottom: 1px dotted #467;
+    border-bottom: 1px dotted #700;
     cursor: help;
 }
 
@@ -53,7 +53,7 @@ h1 {
     margin: 1em 0;
     padding: 0;
     clear: left;
-    border-bottom: 2px solid #467;
+    border-bottom: 2px solid #600;
 }
 
 h2 {
@@ -62,7 +62,7 @@ h2 {
     margin: 1em 0 0.5em 0;
     padding: 0.2em 0;
     clear: left;
-    border-bottom: 1px solid #467;
+    border-bottom: 1px solid #600;
 }
 
 h3 {
@@ -116,7 +116,7 @@ dd {
 }
 
 #menu {
-    background: #467;
+    background: #900;
     margin: 0 auto;
     width: 40em;
     height: 1.8em;
@@ -155,11 +155,38 @@ dd {
     left: 50%;
 }
 
-#welcome img {
+#welcome .me-image {
+    color: #555;
+    text-decoration: none;
+    border: 3px solid #000;
+    height: 300px;
+    width: 200px;
+    overflow: visible;
     position: absolute;
-    top: -300px;
     left: 0;
-    border: 1px solid #000;
+    top: -300px;
+}
+
+#welcome .me-image:hover {
+    color: #900;
+    border-color: #900;
+}
+
+#welcome .me-image img {
+    vertical-align: bottom;
+}
+
+#welcome .me-image span {
+    font-size: 120px;
+    line-height: 120px;
+    font-weight: bold;
+    text-decoration: none;
+    position: absolute;
+    top: 170px;
+    left: 150px;
+}
+
+#welcome .me-arrow:hover {
 }
 
 #content {
