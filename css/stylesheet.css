@@ -175,8 +175,16 @@ ul.blog span.arrow {
 
 #content {
     margin: 2em auto;
-    padding-bottom: 2em;
-    border-bottom: 1px solid #aaa;
+}
+
+#footer {
+    border-top: 1px solid #aaa;
+    text-align: right;
+}
+
+#footer,
+#footer a {
+    color: #aaa;
 }
 
 /*
@@ -192,6 +200,10 @@ ul.blog span.arrow {
     position: absolute;
     top: 60%;
     left: 50%;
+}
+
+#welcome p {
+    font-style: italic;
 }
 
 #welcome .me-link {
