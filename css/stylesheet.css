@@ -119,24 +119,25 @@ dd {
  * Blog list
  */
 
-#blog ul {
+ul.blog {
     padding: 0;
     margin: 0;
     list-style: none;
 }
 
-#blog ul li:hover {
+ul.blog li:hover {
     background: #eee;
 }
 
-#blog ul span.date {
+ul.blog span.date {
     display: block;
     font-size: 0.9em;
     line-height: 0.8em;
     margin-top: 0.8em;
+    float: right;
 }
 
-#blog ul span.arrow {
+ul.blog span.arrow {
     display: none;
 }
 
