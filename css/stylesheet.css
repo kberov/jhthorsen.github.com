@@ -8,8 +8,6 @@ html, body, textarea, input, select {
 html, body {
     padding: 0;
     margin: 0;
-    height: 100%;
-    width: 100%;
 }
 
 body {
@@ -17,22 +15,32 @@ body {
 }
 
 a {
-    color: #500;
+    color: #468;
     text-decoration: underline;
     outline: none;
 }
 
 a:hover {
-    color: #d00;
+    color: #222;
 }
 
 acronym {
-    border-bottom: 1px dotted #700;
+    border-bottom: 1px dotted #468;
     cursor: help;
 }
 
-p, ul, ol {
+p, ol {
     margin: 1em 0;
+}
+
+ul {
+    margin: 0.5em 0;
+    padding: 0 1em;
+}
+
+code {
+    background: #eee;
+    font-size: 0.9em;
 }
 
 legend {
@@ -46,23 +54,20 @@ img {
 
 th {
     text-align: left;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid #999;
 }
 
 h1 {
     font-size: 1.4em;
     margin: 1em 0;
     padding: 0;
-    clear: left;
-    border-bottom: 2px solid #600;
 }
 
 h2 {
-    color: #333;
+    color: #222;
     font-size: 1.1em;
-    margin: 1em 0 0.5em 0;
+    margin: 0.5em 0;
     padding: 0.2em 0;
-    clear: left;
 }
 
 h3 {
@@ -70,17 +75,10 @@ h3 {
     font-weight: normal;
 }
 
-h1 a,
-h1 a:hover,
-h2 a,
-h2 a:hover {
+h1 a, h1 a:hover,
+h2 a, h2 a:hover,
+h3 a, h3 a:hover {
     text-decoration: none;
-}
-
-h2 a,
-h2 a:hover,
-h3 a,
-h3 a:hover {
     color: inherit;
 }
 
@@ -109,11 +107,11 @@ dd {
     line-height: 1.2em;
 }
 
-.nodisplay {
+.no-display {
     display: none;
 }
 
-.clear_both {
+.clear-both {
     clear: both;
 }
 
@@ -121,52 +119,68 @@ dd {
  * Blog list
  */
 
-ul.blog {
+#blog ul {
     padding: 0;
     margin: 0;
     list-style: none;
 }
 
-ul.blog li:hover {
+#blog ul li:hover {
     background: #eee;
 }
 
-ul.blog span.date {
-    float: right;
+#blog ul span.date {
+    display: block;
+    font-size: 0.9em;
+    line-height: 0.8em;
+    margin-top: 0.8em;
 }
 
-ul.blog span.arrow {
+#blog ul span.arrow {
     display: none;
 }
 
-#menu {
-    background: #900;
-    margin: 0 auto;
+/*
+ * Main blocks
+ */
+
+#wrapper {
+    line-height: 1.6em;
     width: 40em;
-    height: 1.8em;
+    margin: 0 auto;
+    padding-bottom: 1em;
+}
+
+#menu {
+    margin: 0 auto;
+    height: 1.2em;
+    border-bottom: 1px solid #aaa;
 }
 
 #menu a {
-    color: #eee;
+    color: #aaa;
+    font-size: 0.9em;
     font-weight: bold;
     text-decoration: none;
     display: block;
     margin: 0 0.6em;
     padding: 0em 0.2em;
-    line-height: 1.8em;
     float: left;
 }
 
 #menu a:hover {
-    background: #fff;
     color: #000;
 }
 
-#wrapper {
-    line-height: 1.6em;
-    height: 100%;
-    width: 100%;
+#content {
+    margin: 2em auto;
+    padding-bottom: 2em;
+    border-bottom: 1px solid #aaa;
 }
+
+/*
+ * Welcome screen
+ */
 
 #welcome {
     margin-left: -20em;
@@ -179,8 +193,7 @@ ul.blog span.arrow {
     left: 50%;
 }
 
-#welcome .me-image {
-    color: #555;
+#welcome .me-link {
     text-decoration: none;
     border: 3px solid #000;
     height: 300px;
@@ -191,16 +204,23 @@ ul.blog span.arrow {
     top: -300px;
 }
 
-#welcome .me-image:hover {
-    color: #900;
-    border-color: #900;
-}
-
-#welcome .me-image img {
+#welcome .me-link img {
     vertical-align: bottom;
 }
 
-#welcome .me-image span {
+#welcome .me-link span.me-text {
+    font-weight: bold;
+    font-size: 1.3em;
+    line-height: 1.5em;
+    width: 6em;
+    display: none;
+    position: absolute;
+    left: 30px;
+    top: 170px;
+}
+
+#welcome .me-link span.me-arrow {
+    color: #555;
     font-size: 120px;
     line-height: 120px;
     font-weight: bold;
@@ -210,11 +230,8 @@ ul.blog span.arrow {
     left: 150px;
 }
 
-#welcome .me-arrow:hover {
+#welcome .me-link:hover span.me-text {
+    display: block;
 }
 
-#content {
-    width: 40em;
-    padding: 2em 0;
-    margin: 0 auto;
-}
+
