@@ -4,14 +4,14 @@ layout: nil
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
  
- <title>Jhthorsen.github.com</title>
+ <title>jhthorsen.github.com</title>
  <link href="http://jhthorsen.github.com/atom.xml" rel="self"/>
  <link href="http://jhthorsen.github.com/"/>
  <updated>{{ site.time | date_to_xmlschema }}</updated>
  <id>http://jhthorsen.github.com/</id>
  <author>
    <name>Jan Henning Thorsen</name>
-   <email>git@flodhest.net</email>
+   <email>github@flodhest.net</email>
  </author>
 
  {% for post in site.posts %}

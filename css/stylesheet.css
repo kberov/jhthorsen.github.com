@@ -1,250 +1,98 @@
 
-html, body, textarea, input, select {
-    font-family: sans-serif;
+body, div, input, textarea, td {
     font-size: 11pt;
+    font-weight: normal;
+    font-family: sans-serif, arial;
     color: #000;
-}
-
-html, body {
-    padding: 0;
-    margin: 0;
 }
 
 body {
-    background: #fefefe;
+    background: #fefefe url(../images/light-texture.jpg);
+    margin: 2em 4em;
+    padding: 0;
+    line-height: 1.6em;
 }
 
 a {
-    color: #468;
-    text-decoration: underline;
-    outline: none;
+    color: #9d4710;
+    text-decoration: none;
+    font-weight: bold;
 }
 
 a:hover {
-    color: #222;
+    text-decoration: underline;
 }
-
-acronym {
-    border-bottom: 1px dotted #468;
-    cursor: help;
-}
-
-p, ol {
-    margin: 1em 0;
-}
-
-ul {
-    margin: 0.5em 0;
-    padding: 0 1em;
-}
-
-code {
-    background: #eee;
-    font-size: 0.9em;
-}
-
-legend {
-    font-weight: bold;
-    padding: 0.2em;
-}
-
-img {
-    border: 0;
-}
-
-th {
-    text-align: left;
-    border-bottom: 1px solid #999;
-}
-
-h1 {
-    font-size: 1.4em;
-    margin: 1em 0;
-    padding: 0;
-}
-
-h2 {
-    color: #222;
-    font-size: 1.1em;
-    margin: 0.5em 0;
-    padding: 0.2em 0;
-}
-
-h3 {
-    font-size: 1.2em;
-    font-weight: normal;
-}
-
-h1 a, h1 a:hover,
-h2 a, h2 a:hover,
-h3 a, h3 a:hover {
-    text-decoration: none;
-    color: inherit;
-}
-
-dl, dd, dt {
-    margin: 0;
-    padding: 0;
-}
-
-dd {
-    margin-left: 1.5em;
-}
-
-.faq dt {
-    font-size: 1.1em;
-    font-weight: bold;
-    margin-top: 0.8em;
-}
-
-.faq dd {
-    margin-left: 1.8em;
-}
-
-.pre {
-    font-family: monospace;
-    font-size: 0.9em;
-    line-height: 1.2em;
-}
-
-.no-display {
-    display: none;
-}
-
-.clear-both {
-    clear: both;
-}
-
-/*
- * Blog list
- */
-
-ul.blog {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-}
-
-ul.blog li:hover {
-    background: #eee;
-}
-
-ul.blog span.date {
-    display: block;
-    font-size: 0.9em;
-    line-height: 0.8em;
-    margin-top: 0.8em;
-    float: right;
-}
-
-ul.blog span.arrow {
-    display: none;
-}
-
-/*
- * Main blocks
- */
 
 #wrapper {
-    line-height: 1.6em;
-    width: 40em;
+    background: url(../images/coffee-texture.jpg);
+    width: 58em;
     margin: 0 auto;
-    padding-bottom: 1em;
+}
+
+#header {
+    background: url(../images/coffee-cup.jpg) no-repeat 0 0;
+    height: 210px;
+}
+
+#header h1 {
+    font-weight: bold;
+    font-size: 2.2em;
+    letter-spacing: -1px;
+    color: #fff;
+    padding: 40px 0 0 1.4em;
+    margin: 0;
+    height: 40px;
+    border-left: 0.2em solid #fff;
+}
+
+#header p {
+    height: 70px;
+    padding: 30px 3em;
+    margin: 0;
+    border-left: 0.4em solid #fff;
+}
+
+#header h1,
+#header p,
+#menu {
+    margin-left: 213px;
+}
+
+#menu a,
+#header a,
+#header p {
+    color: #fff;
 }
 
 #menu {
-    margin: 0 auto;
-    height: 1.2em;
-    border-bottom: 1px solid #aaa;
+    font-size: 1.2em;
+    margin-top: -2.8em;
+    padding-left: 2.8em;
+    height: 2.8em;
 }
 
 #menu a {
-    color: #aaa;
-    font-size: 0.9em;
-    font-weight: bold;
-    text-decoration: none;
+    margin-right: 1em;
+    padding-top: 0.2em;
     display: block;
-    margin: 0 0.6em;
-    padding: 0em 0.2em;
     float: left;
+    text-decoration: underline;
+    height: 2.6em;
 }
 
 #menu a:hover {
-    color: #000;
+    background: #fff;
+    color: #444;
 }
 
 #content {
-    margin: 2em auto;
+    background: #fff;
+    padding: 2em 20px;
+    border-bottom: 0.4em solid #444;
 }
 
 #footer {
-    border-top: 1px solid #aaa;
-    text-align: right;
+    background: #fefefe url(../images/light-texture.jpg);
+    padding: 0.2em 20px;
+    font-size: 0.9em;
 }
-
-#footer,
-#footer a {
-    color: #aaa;
-}
-
-/*
- * Welcome screen
- */
-
-#welcome {
-    margin-left: -20em;
-    margin-top: -1em;
-    height: 2em;
-    overflow: visible;
-    width: 40em;
-    position: absolute;
-    top: 60%;
-    left: 50%;
-}
-
-#welcome p {
-    font-style: italic;
-}
-
-#welcome .me-link {
-    text-decoration: none;
-    border: 3px solid #000;
-    height: 300px;
-    width: 200px;
-    overflow: visible;
-    position: absolute;
-    left: 0;
-    top: -300px;
-}
-
-#welcome .me-link img {
-    vertical-align: bottom;
-}
-
-#welcome .me-link span.me-text {
-    font-weight: bold;
-    font-size: 1.3em;
-    line-height: 1.5em;
-    width: 6em;
-    display: none;
-    position: absolute;
-    left: 30px;
-    top: 170px;
-}
-
-#welcome .me-link span.me-arrow {
-    color: #555;
-    font-size: 120px;
-    line-height: 120px;
-    font-weight: bold;
-    text-decoration: none;
-    position: absolute;
-    top: 170px;
-    left: 150px;
-}
-
-#welcome .me-link:hover span.me-text {
-    display: block;
-}
-
-

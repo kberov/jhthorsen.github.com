@@ -1,17 +1,7 @@
 ---
 layout: default
-title: information about jhthorsen
+title: jhthorsen's projects
 ---
-
-<h1 id="information">Information</h1>
-<p>
-    You can find information about me from
-    my <a href="http://flodhest.net">personal homepage</a>,
-    <a href="http://www.linkedin.com/in/jhthorsen">Linkedin profile</a>,
-    or read my <a href="http://jhthorsen.github.com/cv.html">curriculum vitae</a>.
-    For interactive contact, send me an <a href="http://flodhest.net/contact">message</a>.
-</p>
-
 <h1 id="projects">Projects</h1>
 
 <h2><a href="http://jhthorsen.github.com/quelea">Quelea</a></h2>
@@ -28,10 +18,3 @@ title: information about jhthorsen
     <a href="http://github.com/jhthorsen/var-state/">Var::State</a> is an experimental module to implement "<a href="http://search.cpan.org/~rgarcia/perl-5.10.0/pod/perlsub.pod">persistent private variables</a>" in perl 5.8.
     <a href="http://github.com/jhthorsen/yaml-object/">YAML::Object</a> enables you to do <code>$cfg-&gt;foo-&gt;bar</code> instead of <code>$cfg-&gt;{foo}{bar}</code>.
 </p>
-
-<h1 id="blog">Blog</h1>
-<ul class="blog">
-    {% for post in site.posts %}
-    <li><span class="date">{{ post.date | date_to_string }}</span> <span class="arrow">&raquo;</span> <a href="{{ post.url }}">{{ post.title }}</a></li>
-    {% endfor %}
-</ul>
