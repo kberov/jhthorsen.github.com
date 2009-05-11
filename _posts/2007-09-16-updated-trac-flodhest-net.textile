@@ -1,9 +1,0 @@
----
-layout: post
-title: Updated trac.flodhest.net
----
-
-I've been working on my "Trac":http://trac.flodhest.net this weekend. I had some issues with "eAdmin":http://trac.flodhest.net/eAdmin, but I've somehow managed to rebuild it, from "Flodhest::PerlModules":http://web.archive.org/]'s cache. In addition I've created [http://trac.flodhest.net/pm and "snippets":http://trac.flodhest.net/snippets. Flodhest::PerlModules is a collection of pm's I've initiated, while snippets is a collection of handy (and must have) scripts, programs and config-files.
-
-Enjoy!
-
