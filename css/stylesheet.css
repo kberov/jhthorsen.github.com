@@ -120,6 +120,7 @@ p {
 #content {
     background: #fff;
     padding: 2em 20px;
+    border: 1px solid #bbb;
     border-bottom: 0.4em solid #444;
 }
 
