@@ -3,5 +3,5 @@ layout: post
 title: SNMP::Effective
 ---
 
-I'm done writing the code for SNMP::Effective now. It has show to be quite promising after some<a href="http://home.flodhest.net/perl/SNMP_Effective.txt?embed=true">tests</a>: 4000 hosts in 50 seconds is quite better than what I had with a <acronym title="1.8 hosts pr second">previous module</acronym>. I'm hoping to release SNMP::Effective on <a href="http://cpan.org">CPAN</a>, later this year. But first I need to complete <a href="http://eidolon.flodhest.net/eAdmin">eAdmin 2.0</a>. In the meanwhile, you could try <a href="http://search.cpan.org/~tpg/SNMP-Multi/">SNMP::Multi</a>, which gave me the idea to write my own.
+I'm done writing the code for SNMP::Effective now. It has show to be quite promising after some tests: 4000 hosts in 50 seconds is quite better than what I had with a <acronym title="1.8 hosts pr second">previous module</acronym>. I'm hoping to release SNMP::Effective on <a href="http://cpan.org">CPAN</a>, later this year. But first I need to complete <a href="http://www.google.com/search?q=eadmin%20eidolon%20as">eAdmin 2.0</a>. In the meanwhile, you could try <a href="http://search.cpan.org/~tpg/SNMP-Multi/">SNMP::Multi</a>, which gave me the idea to write my own.
 

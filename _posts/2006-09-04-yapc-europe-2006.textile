@@ -1,8 +1,8 @@
 ---
 layout: post
-title: YAPC::Europe::2006
+title: YAPC::Europe::2006 Birmingham
 ---
 
 Hello peeps. It's been a while now, but I finally got some spare time to communicate with the world again...
- I've been to the <a href="http://birmingham2006.com">YAPC::Europe</a> this week, and I must say it was quite fun -- or at least the time I actually spent in Birmingham. <a href="http://home.flodhest.net/perl/birmingham2006/diary.inc">Click here</a> to read my diary.
+ I've been to the <a href="http://birmingham2006.com">YAPC::Europe</a> this week, and I must say it was quite fun -- or at least the time I actually spent in Birmingham. <a href="http://home.flodhest.net/files/perl/yapc::2006/diary">Click here</a> to read my diary.
 
