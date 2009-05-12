@@ -109,12 +109,16 @@ p {
     display: block;
     float: left;
     text-decoration: underline;
-    height: 2.6em;
+    height: 1.8em;
 }
 
+#heading h1 a:hover,
 #menu a:hover {
-    background: #fff;
-    color: #444;
+    color: #ecb;
+}
+
+#heading h1 a:hover {
+    text-decoration: none;
 }
 
 #content {
