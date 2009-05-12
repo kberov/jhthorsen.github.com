@@ -8,7 +8,7 @@ body, div, input, textarea, td {
 
 body {
     background: #fefefe url(../images/light-texture.jpg);
-    margin: 2em 4em;
+    margin: 0em 4em 3em 4em;
     padding: 0;
     line-height: 1.6em;
 }
