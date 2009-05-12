@@ -112,12 +112,12 @@ p {
     height: 1.8em;
 }
 
-#heading h1 a:hover,
+#header h1 a:hover,
 #menu a:hover {
     color: #ecb;
 }
 
-#heading h1 a:hover {
+#header h1 a:hover {
     text-decoration: none;
 }
 
