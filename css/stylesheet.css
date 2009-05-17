@@ -14,9 +14,8 @@ body {
 }
 
 a {
-    color: #9d4710;
+    color: #8d3700;
     text-decoration: none;
-    font-weight: bold;
 }
 
 a:hover {
@@ -88,6 +87,7 @@ p {
 #header p,
 #menu {
     margin-left: 213px;
+    font-weight: bold;
 }
 
 #menu a,
@@ -114,7 +114,7 @@ p {
 
 #header h1 a:hover,
 #menu a:hover {
-    color: #ecb;
+    color: #dD8750;
 }
 
 #header h1 a:hover {
