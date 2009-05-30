@@ -17,5 +17,5 @@ I try to look at Roles like something like this:
  do MyOtherFile.pm;
  1;
 
-But of course there's a lot more "sugar":http://search.cpan.org/dist/Moose/lib/Moose/Manual/Unsweetened.pod to it in "Mooseland":-)
+But of course there's a lot more "sugar":http://search.cpan.org/dist/Moose/lib/Moose/Manual/Unsweetened.pod to it in "Mooseland" :-)
 
