@@ -43,6 +43,10 @@ h3 {
     font-size: 1.3em;
 }
 
+pre {
+    font-size: 10pt;
+}
+
 blockquote {
     font-style: italic;
     margin: 0.5em 1em;
