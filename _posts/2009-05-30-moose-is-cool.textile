@@ -13,7 +13,7 @@ Roles to build classes, ey? Yes, instead of putting functionality in different p
 
 I try to look at Roles like something like this:
 
- package Foo;
+pre.  package Foo;
  do MyOtherFile.pm;
  1;
 
