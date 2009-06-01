@@ -147,5 +147,7 @@ p {
 
 #disqus_thread #dsq-post-add-iframe {
     overflow: hidden;
+    overflow-y: hidden;
+    overflow-x: hidden;
 }
 
