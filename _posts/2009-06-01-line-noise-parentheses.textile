@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Line noise 1: parentheses
+title: 'Line noise: parentheses'
 ---
 
 I've been discussing how bad perl code looks and I'm a bit surprised: I consider () more noisy than $, %, @ and friends, while the people I discuss this with, really likes parentheses. Consider this:
