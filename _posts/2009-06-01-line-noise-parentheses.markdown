@@ -13,7 +13,7 @@ Versus:
 
     push @text, sprintf 'I got %i foos', int shift @{ $obj->get_foo };
 
-I don't understand how the first one is less noise than the second (!).
+I don't understand how the first one is less noisy than the second (!).
 I also don't understand how you can maintain or read the first one.
 
 Disclaimer: Yes, I know the example code doesn't make any sense.
