@@ -1,0 +1,14 @@
+---
+layout: post
+title: YAPC::Europe::2006 Birmingham
+tag: perl
+category: Programming
+---
+
+Hello peeps. It's been a while now, but I finally got some spare time to
+communicate with the world again...
+
+I've been to the [YAPC::Europe](http://birmingham2006.com) this week,
+and I must say it was quite fun -- or at least the time I actually spent
+in Birmingham. [Read more](http://home.flodhest.net/files/perl/yapc::2006/diary)
+in my diary.
