@@ -64,6 +64,14 @@ p {
     padding: 0;
 }
 
+dl.blog dt {
+    float: left;
+}
+
+dl.blog dd {
+    padding-left: 14em;
+}
+
 #wrapper {
     background: url(../images/coffee-texture.jpg);
     width: 58em;
