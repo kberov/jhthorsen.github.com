@@ -45,8 +45,14 @@ h3 {
 
 pre, code {
     font-size: 10pt;
+    line-height: 1.3em;
     background: #fafafa;
     border: 1px solid #eee;
+}
+
+pre code {
+    background: transparent;
+    border: 0;
 }
 
 pre {
@@ -69,7 +75,7 @@ dl.blog dt {
 }
 
 dl.blog dd {
-    padding-left: 14em;
+    padding-left: 8em;
 }
 
 #wrapper {
