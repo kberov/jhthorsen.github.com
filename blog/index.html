@@ -1,15 +1,69 @@
----
-layout: default
-title: jhthorsen's blog
----
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+
+<head>
+<title>jhthorsen's blog</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" type="text/css" href="/css/stylesheet.css" charset="utf-8">
+<link rel="alternate" type="application/atom+xml" href="http://jhthorsen.github.com/atom.xml">
+<link rel="alternate" type="application/atom+xml" href="http://jhthorsen.github.com/ironman.xml">
+</head>
+
+<body><div id="wrapper">
+
+<div id="header">
+    <h1><a href="http://jhthorsen.github.com">jhthorsen</a></h1>
+    <p> 
+        My toolbox is filled with <a href="http://perl.com">Perl</a>,
+        <a href="http://en.wikipedia.org/wiki/JavaScript">javascript</a> / <a href="http://jquery.com">jQuery</a>,
+        <a href="http://www.w3.org/TR/REC-html40/">HTML</a> and
+        <a href="http://www.w3.org/TR/CSS/">CSS</a>.
+    </p>
+</div>
+
+<div id="menu">
+    <a href="http://jhthorsen.github.com/">Home</a>
+    <a href="http://jhthorsen.github.com/blog">Blog</a>
+    <a href="http://jhthorsen.github.com/projects">Projects</a>
+    <a href="http://flodhest.net/files">Files</a>
+    <a href="http://flodhest.net/gallery">Gallery</a>
+    <a href="http://flodhest.net/contact">Contact</a>
+    <a href="http://flodhest.net/private">Login</a>
+</div>
+
+<div id="content">
 
 <h1 id="blog">Blog listing</h1>
 <h2>Perl</h2>
 <dl class="blog">
-{% for post in site.categories.perl %}
-    <dt>{{ post.date | date_to_string }}</dt>
-    <dd><a href="{{ post.url }}">{{ post.title }}</a></dd>
-{% endfor %}
+
+    <dt>10 Sep 2009</dt>
+    <dd><a href="/perl/2009/09/10/catalyst-controller-sugar.html">CatalystX::Controller::Sugar</a></dd>
+
+    <dt>09 Sep 2009</dt>
+    <dd><a href="/perl/2009/09/09/rt-tickets.html">rt.cpan.org - great fun!</a></dd>
+
+    <dt>01 Jun 2009</dt>
+    <dd><a href="/perl/2009/06/01/line-noise-parentheses.html">Line noise: parentheses</a></dd>
+
+    <dt>30 May 2009</dt>
+    <dd><a href="/perl/2009/05/30/moose-is-cool.html">Wow, Moose is cool!</a></dd>
+
+    <dt>12 May 2009</dt>
+    <dd><a href="/perl/2009/05/12/dhcpd-module-name.html">Which name to pick?</a></dd>
+
+    <dt>06 May 2008</dt>
+    <dd><a href="/perl/2008/05/06/more-perl-modules.html">More perl modules</a></dd>
+
+    <dt>30 Aug 2007</dt>
+    <dd><a href="/perl/2007/08/30/yapc-europe-2007-vienna.html">YAPC::Europe::2007 Vienna</a></dd>
+
+    <dt>04 Sep 2006</dt>
+    <dd><a href="/perl/2006/09/04/yapc-europe-2006.html">YAPC::Europe::2006 Birmingham</a></dd>
+
+    <dt>19 Feb 2006</dt>
+    <dd><a href="/perl/2006/02/19/snmp-effective.html">SNMP::Effective</a></dd>
+
 </dl>
 <p>
     From <a href="http://www.enlightenedperl.org/ironman.html">http://www.enlightenedperl.org/ironman.html</a>:
@@ -23,16 +77,90 @@ title: jhthorsen's blog
 
 <h2>Tech</h2>
 <dl class="blog">
-{% for post in site.categories.tech %}
-    <dt>{{ post.date | date_to_string }}</dt>
-    <dd><a href="{{ post.url }}">{{ post.title }}</a></dd>
-{% endfor %}
+
+    <dt>18 Sep 2009</dt>
+    <dd><a href="/tech/2009/09/18/docsis-config-file-generator.html">Online DOCSIS config file editor</a></dd>
+
+    <dt>25 May 2008</dt>
+    <dd><a href="/tech/2008/05/25/Multimedia_updates__partially_old_news_.html">Multimedia updates (partially old news)</a></dd>
+
+    <dt>07 Mar 2006</dt>
+    <dd><a href="/tech/2006/03/07/Xgl.html">Xgl</a></dd>
+
 </dl>
 
 <h2>Misc</h2>
 <dl class="blog">
-{% for post in site.categories.blog %}
-    <dt>{{ post.date | date_to_string }}</dt>
-    <dd><a href="{{ post.url }}">{{ post.title }}</a></dd>
-{% endfor %}
+
+    <dt>09 Sep 2007</dt>
+    <dd><a href="/blog/2007/09/09/Site_working___for_now.html">Site working...for now</a></dd>
+
+    <dt>18 Aug 2007</dt>
+    <dd><a href="/blog/2007/08/18/Moving_to_Oslo.html">Moving to Oslo</a></dd>
+
+    <dt>08 Aug 2007</dt>
+    <dd><a href="/blog/2007/08/08/Resume_of_the_last_six_months.html">Resume of the last six months</a></dd>
+
+    <dt>08 Apr 2007</dt>
+    <dd><a href="/blog/2007/04/08/Football__Soccer_.html">Football (Soccer)</a></dd>
+
+    <dt>26 Dec 2006</dt>
+    <dd><a href="/blog/2006/12/26/Christmas___24th__25th_and_today.html">Christmas - 24th, 25th and today</a></dd>
+
+    <dt>23 Dec 2006</dt>
+    <dd><a href="/blog/2006/12/23/How_to_secretly_buy_jewlery_to_your_girlfriend.html">How to secretly buy jewlery to your girlfriend</a></dd>
+
+    <dt>17 Dec 2006</dt>
+    <dd><a href="/blog/2006/12/17/New_apartment.html">New apartment</a></dd>
+
+    <dt>11 Jun 2006</dt>
+    <dd><a href="/blog/2006/06/11/The_sun_is_shining.html">The sun is shining</a></dd>
+
+    <dt>03 May 2006</dt>
+    <dd><a href="/blog/2006/05/03/A_little_note_about_my_psyche.html">A little note about my psyche</a></dd>
+
+    <dt>04 Apr 2006</dt>
+    <dd><a href="/blog/2006/04/04/Dumb_people_online__Update_.html">Dumb people online (Update)</a></dd>
+
+    <dt>03 Apr 2006</dt>
+    <dd><a href="/blog/2006/04/03/Dumb_people_online.html">Dumb people online</a></dd>
+
+    <dt>21 Mar 2006</dt>
+    <dd><a href="/blog/2006/03/21/My_leg___.html">My leg...</a></dd>
+
+    <dt>03 Mar 2006</dt>
+    <dd><a href="/blog/2006/03/03/Pan_Fish.html">Pan Fish</a></dd>
+
+    <dt>25 Feb 2006</dt>
+    <dd><a href="/blog/2006/02/25/The_day_after___.html">The day after...</a></dd>
+
+    <dt>15 Feb 2006</dt>
+    <dd><a href="/blog/2006/02/15/1000_visitors.html">1000 visitors</a></dd>
+
+    <dt>11 Feb 2006</dt>
+    <dd><a href="/blog/2006/02/11/Broken_leg.html">Broken leg</a></dd>
+
+    <dt>08 Feb 2006</dt>
+    <dd><a href="/blog/2006/02/08/New_design.html">New design</a></dd>
+
 </dl>
+
+</div>
+<div id="footer">
+    <a href="http://github.com/jhthorsen">My github</a>
+    |
+    This <a href="http://github.com/jhthorsen/jhthorsen.github.com/">website</a>
+    is generated by <a href="http://github.com/mojombo/jekyll">jekyll</a>
+    and <a href="http://drnic.github.com/jekyll_generator">jekyll generator</a>
+</div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+try { var pageTracker = _gat._getTracker("UA-7149078-1"); pageTracker._trackPageview(); } catch(err) {};
+</script>
+
+</div></body>
+
+</html>
+
