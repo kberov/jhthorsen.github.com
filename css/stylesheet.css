@@ -78,6 +78,13 @@ dl.blog dd {
     padding-left: 8em;
 }
 
+.blog-date {
+    font-size: 0.9em;
+    color: #555;
+    margin: -1em 0 1.5em 0;
+    padding: 0;
+}
+
 #wrapper {
     background: url(../images/coffee-texture.jpg);
     width: 58em;
