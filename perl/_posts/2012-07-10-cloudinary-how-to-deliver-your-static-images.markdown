@@ -77,4 +77,9 @@ allow you to take advantage of all the cool
 which Cloudinary provides -- and if not: Create an issue or send me a pull request
 on [github](https://github.com/jhthorsen/cloudinary).
 
+More information can be found on metacpan:
+
+* [Cloudinary](https://metacpan.org/module/Cloudinary)
+* [Mojolicious::Plugin::Cloudinary](https://metacpan.org/module/Mojolicious::Plugin::Cloudinary)
+
 Enjoy :)
