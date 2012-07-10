@@ -1,0 +1,77 @@
+---
+layout: post
+title: Xperia X10 mini
+---
+
+So I've been using my [X10 mini](http://www.sonyericsson.com/cws/corporate/products/phoneportfolio/specification/xperiax10mini)
+for ten days now, and it has been quite a bumpy ride:
+
+Last weekend I had to charge it about every six/eight hour. I have to admit that I
+did use it a lot in the beginning, but i was still shocked to see how bad the battery
+was: I mean a mobile phone which requires a cord isn't really mobile :S
+
+After I got back from my weekend I decided to change back to my [Nokia 5800](http://en.wikipedia.org/wiki/Nokia_5800_XpressMusic),
+just to have a phone I could use over night without charging it. At the same time I
+also sent an email to [CDON](http://cdon.com) telling them that I wanted to return the
+phone. (yeah, I know it's a bit strange to bue a phone from cdon...) CDON was really
+nice and explained to me (without question) how I could return the phone. Even though
+I had given up on the battery, I really thought the phone was excellent, so the next
+day I decided to start reading [reviews and blogs](http://www.google.com/search?q=x10+mini+battery+life)
+to figure out if there where anything I could do to extend the battery life. I also
+asked a co-worker who gave me some information I found hard to believe....
+
+Even so, after a day of reading and charging the phone, I figured out that it wasn't
+all that crappy as expected and I've now managed to get the lifespan from eight hours
+to more than two days! So this is what I did:
+
+* Co-worker + blogs stated that the battery actually gets better over time! I have no
+  idea what kind of crazy chemical reaction is involved, but it must be true: Swapping
+  software just can't make such an improvement by it self (?)
+* "Supercharged it". Meaning I charged it to full and then simply kept on charging it.
+  I pulled to cord out a couple of times, but plugged it in again when I saw that the
+  battery indicator dropped instantly.
+* Replaced whatever SE got pre-installed with "[helix](http://helixproject.ruqqq.sg/download.php?id=19)"
+  launcher.
+* Installed "Advanced task killer" and killed a lot of SE background processes I didn't
+  need anyway. ATK also periodically kills background processes which is just idling.
+* Installed "BatteryTime". Doesn't do much for the battery time, but simply more
+  detailed information about how much battery/time is left to use for various tasks.
+* I got bluetooth, GPS and wireless turned off most of the time. I know this kind of
+  sucks, but since I hardly ever use bluetooth, nor wireless anyway it's not so bad.
+  I will try to use GPS more, just to see how it impacts the battery, but for now I
+  got it turned off and use AGPS instead.
+
+The crappy thing about the bullets above is that I did it all at once, so I cannot
+really tell which one worked, but at least doing them all works for me and I'm now
+quite happy with the phone! Of course having a smart phone, battery lasting for
+days, big screen, small form factor.... It's just not possible these days for me to
+achieve the ultimate phone, so I need to settle for something.
+
+## Other useful/cool applications
+
+* [Bump](http://bu.mp/) - Share data (pictures, apps, contacts++) by bumping two phones
+  with "bump" installed
+* [ConnectBot](http://code.google.com/p/connectbot) - SSH client. Pretty useless on x10,
+  since of the screen size, but still a nice SSH client.
+* [Goggles](http://www.google.com/mobile/goggles) - "Use pictures to search the web"
+* [Google Sky Map](http://www.google.com/sky/skymap/ ) - Move your phone around to see
+  how the universe looks from your perspective.
+* [GPS status](http://www.google.com/search?q=gps+status+android) - Digital compass and
+  speedometer.
+* [Opera mini 5 beta](http://www.opera.com/mobile/) - I would like to replace the
+  "internal browser" with Opera, but I still don't know how. (TODO)
+* [Startup manager](http://www.google.com/search?q=startup+manager+android) - Make sure
+  not too many useless processes start when the phone boots.
+* [SyncMyPix](http://www.google.com/search?q=syncmypix+android) - Sync between facebook
+  and address book.
+
+## Todo
+
+Root the phone. Replace the rest of the crap with Android 2.x.
+
+## Sources
+
+* [Unleash Battery Power in Xperia X10-Enhance & Improve Battery Life » Gadgets | Technology Simplified](http://gadgets.apnafundaz.com/2010/06/unleash-battery-power-in-xperia-x10-enhance-improve-battery-life-tips-tricks/)
+* [Phonebook by Voxmobili on Android, ADC2 Winner-Review and Giveaway! » Gadgets | Technology Simplified](http://gadgets.apnafundaz.com/2010/02/phonebook-by-voxmobili-on-android-review-and-giveaway/)
+* [Phonebook 2.0 &#8211; Voxmobili.com](http://www.voxmobili.com/products/phonebook20/index.html)
+* [Reviews and blogs](http://www.google.com/search?q=x10+mini+battery+life)

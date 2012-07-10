@@ -1,0 +1,86 @@
+---
+layout: post
+title: Fixed overscan
+---
+
+I've been googling for quite som time now, and finally I found settings
+that works for my 720p DFP. 
+
+I don't think the specs are important, but I'll list them anyway:
+
+* Ubuntu 7.10
+* xserver-xorg 7.2
+* nvidia-glx 1.0.9639
+* Plasma TV 720p / 1080i
+
+## xorg.conf ##
+
+    Section "Monitor"
+        Identifier  "Generic Monitor"
+        ModeLine    "720p"          74.5   1216 1272 1400 1664  684  685  688  746 -hsync +vsync
+       #ModeLine    "overscan"      61.8   1280 1390 1430 1648  720  725  730  750 +hsynv +vsync
+       #ModeLine    "1152x672"      74.25  1152 1326 1366 1650  672  701  706  750 +hsync +vsync
+       #ModeLine    "720p"          73.825 1280 1320 1368 1640  720  722  724  751 +hsync +vsync
+       #Modeline    "1208x679"      74.25  1208 1353 1393 1650  679  707  712  750 +hsync +vsync
+       #Modeline    "1840x1016"    148.5   1840 1966 2004 2206 1016 1052 1057 1125 +hsync +vsync
+       #ModeLine    "1840x1016@60" 148.5   1840 1966 2004 2206 1016 1052 1057 1125 +hsync +vsync
+       #ModeLine    "1280x720@60"   74.5   1280 1336 1472 1664  720  721  724  746 -hsync +vsync
+       #ModeLine    "800x600@60"    40.0    800  840  968 1056  600  601  605  628 +hsync +vsync
+       #DisplaySize 320 180
+    EndSection
+    
+    Section "Screen"
+        Identifier  "Default Screen"
+        Device      "NVIDIA"
+        Monitor     "Generic Monitor"
+        Option      "NoLogo"                "true"
+        Option      "BackingStore"          "true"
+        Option      "RenderAccel"           "true"
+        Option      "RandRRotation"         "true"
+        Option      "AllowDDCCI"            "true"
+        Option      "HWCursor"              "true"
+        Option      "NoBandWidthTest"       "true"
+        Option      "NoPowerConnectorTest"  "true"
+        Option      "AllowGLXWithComposite" "true"
+        Option      "AddARGBGLXVisuals"     "true"
+        Option      "ExactModeTimeingsDVI"  "true"
+       #Option      "DPI"                   "100x100"
+        Option      "ModeValidation"        "AllowNon60HzDFPModes, NoMaxPClkCheck,
+                                             AllowInterlacedModes, NoMaxSizeCheck,
+                                             NoVirtualSizeCheck,   NoVesaModes,
+                                             NoDFPNativeResolutionCheck"
+        Option      "FlatPanelProperties"   "Scaling = centered, Dithering = enabled"
+        Defaultdepth 24
+        SubSection "Display"
+            Depth 24
+            Modes "720p"
+        EndSubSection
+    EndSection
+
+## Comments ##
+
+ModeLine "720p"
+: This is the modeline that works for me. I've commented out the other
+  modelines that not work.
+
+Option ModeValidation
+: Not quite sure if all of these params are nescessarly, but I guess the
+  most important param is "NoDFPNativeResolutionCheck". 
+
+Option FlatPanelProperties
+: "Scaling = centered" makes the resolution from the modeline centered,
+  instead of stretched. This is really important, since it will not help
+  no matter which resolution you use, if it gets stretched. 
+
+Modes 720p
+: Here I force xorg to use the modeline I defined earlier, instead of
+  using nvidia's auto-detected resolutions. 
+
+Option DPI
+: I've commented this one out, but you might need to set it manually if
+  xorg does some strange calculations. DisplaySize might also help you out. 
+
+## References ##
+
+* [ubuntuforums.org - "Xorg + KDE + NVIDIA + Sony SXRD XBR1 TV"](http://ubuntuforums.org/archive/index.php/t-164474.html)
+* [Nvidia.com - README.txt](http://download.nvidia.com/XFree86/Linux-x86/1.0-9639/README/README.txt)
