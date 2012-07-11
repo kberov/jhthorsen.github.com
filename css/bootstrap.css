@@ -23,6 +23,8 @@
     padding: 3px 0 8px 0;
 }
 
+.blog-date { font-size: 0.9em; margin-top: -1em; margin-bottom: 2em }
+
 .clearfix {
   *zoom: 1;
 }
@@ -205,24 +207,6 @@ a:hover {
 }
 .span1 {
   width: 60px;
-}
-.offset12 {
-  margin-left: 980px;
-}
-.offset11 {
-  margin-left: 900px;
-}
-.offset10 {
-  margin-left: 820px;
-}
-.offset9 {
-  margin-left: 740px;
-}
-.offset8 {
-  margin-left: 660px;
-}
-.offset7 {
-  margin-left: 580px;
 }
 .offset6 {
   margin-left: 500px;
@@ -707,71 +691,6 @@ table .span10 {
 table .span11 {
   float: none;
   width: 844px;
-  margin-left: 0;
-}
-table .span12 {
-  float: none;
-  width: 924px;
-  margin-left: 0;
-}
-table .span13 {
-  float: none;
-  width: 1004px;
-  margin-left: 0;
-}
-table .span14 {
-  float: none;
-  width: 1084px;
-  margin-left: 0;
-}
-table .span15 {
-  float: none;
-  width: 1164px;
-  margin-left: 0;
-}
-table .span16 {
-  float: none;
-  width: 1244px;
-  margin-left: 0;
-}
-table .span17 {
-  float: none;
-  width: 1324px;
-  margin-left: 0;
-}
-table .span18 {
-  float: none;
-  width: 1404px;
-  margin-left: 0;
-}
-table .span19 {
-  float: none;
-  width: 1484px;
-  margin-left: 0;
-}
-table .span20 {
-  float: none;
-  width: 1564px;
-  margin-left: 0;
-}
-table .span21 {
-  float: none;
-  width: 1644px;
-  margin-left: 0;
-}
-table .span22 {
-  float: none;
-  width: 1724px;
-  margin-left: 0;
-}
-table .span23 {
-  float: none;
-  width: 1804px;
-  margin-left: 0;
-}
-table .span24 {
-  float: none;
-  width: 1884px;
   margin-left: 0;
 }
 form {
@@ -3047,7 +2966,8 @@ input[type="submit"].btn.btn-mini {
   display: block;
   padding: 4px;
   line-height: 1;
-  border: 1px solid #ddd;
+  background: #fff;
+  border: 1px solid #ccc;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
@@ -3287,7 +3207,7 @@ a.thumbnail:hover {
   }
 }
 @media (min-width: 768px) {
-  .row { width: 660px }
+  .row { width: 680px }
 }
 @media (min-width: 768px) and (max-width: 979px) {
   .visible-tablet {
