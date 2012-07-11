@@ -5,8 +5,8 @@ tag: perl
 category: Programming
 ---
 
-[Cloudinary](http://cloudinary.com) is a CDN which specialize in delivering images.
-From [their about page](http://cloudinary.com/about):
+[Cloudinary](http://cloudinary.com) is a cloud-based service for image
+management & manipulation. From [their about page](http://cloudinary.com/about):
 
 Use Cloudinary to:
 * Manage all your assets and web resources in the cloud.
