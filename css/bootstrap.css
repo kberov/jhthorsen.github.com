@@ -30,7 +30,7 @@
 #navbar ul { margin: 0 }
 #header h1 a, #header h1 a:hover { text-decoration: none }
 #footer { padding: 3em 0; font-size: 12px }
-#footer .span2 { margin: 0; width: 33.33%; text-align: center; border-top: 2px #444 solid; padding-top: 3px }
+#footer .span2 { margin: 0; width: 25%; text-align: center; border-top: 2px #444 solid; padding-top: 3px }
 #footer i { float: left; display: block; margin-top: 2px }
 #footer a, #footer a:hover {
     text-decoration: none;
