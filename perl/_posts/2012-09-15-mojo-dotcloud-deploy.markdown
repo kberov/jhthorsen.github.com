@@ -11,8 +11,15 @@ with dotcloud I've figured out how to deploy [Mojolicious](http://mojolicio.us) 
 
 The way I previously deployed was using the standard
 [perl](http://docs.dotcloud.com/0.4/services/perl/) service, with a uWSGI
-frontend. This is quite easy, but it does not enable me to use the internal
-Mojo::IOLoop, which I really like.
+frontend. The really cool thing about a perl-worker is that the mojo
+web application is running persistently allowing it to:
+
+* Handle more requests in parallel
+* Use WebSockets
+* Allow the mojo app to do other tasks periodically
+
+NOTE: The above is only available if you do async programming. (yes, you can
+do both sync/async in mojolicious)
 
 DISCLAIMER: When reading this howto, you should already know the basics about
 Mojolicious and dotcloud.
