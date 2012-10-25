@@ -13,3 +13,74 @@ title: Quelea
   <li><a hreF="https://metacpan.org/release/Mojo-SNMP">Mojo::SNMP Perl module</a></li>
   <li><a hreF="https://metacpan.org/release/Net-ISC-DHCPd">Net::ISC::DHCPd Perl module</a></li>
 </ul>
+
+<h2>Project description</h2>
+<p>
+  The idea was a system which could monitor and provision a variety of network equipment.
+  The primary target was cable modems and CMTS, but to do that the project had to contain
+  more functionality
+</p>
+
+<h3>A DHCP server</h3>
+<p>
+  The cable modem and customer computer equipment need IP addresses. I decided to use
+  <a href="http://www.isc.org/software/dhcp">ISC DHCPd</a> for this purpose, because
+  it can dynamically serve config files based on MAC address (option 82).
+  In addition, it's a very stable and capable DHCP server for all other equipment,
+  beside cable modems.
+</p>
+
+<h3>A TFTP server</h3>
+<p>
+  After a cable modem has received a response from the DHCP server, it will try to
+  download a config file from a TFTP server. I decided to write this TFTP server in
+  pure perl, because I could then build the config files dynamically from profiles
+  stored in a backend. The profiles would be split into different segments, which
+  mostly should default to a "most common" profile and then the bandwidth profile
+  would be applied on top of that.
+</p>
+<p>
+  I started out with <a href="https://metacpan.org/module/Net::TFTPd">Net::TFTPd</a>
+  but realized that it was not easy to hook into and it wasn't all that effective.
+  I then decided to write my own implementation called <a href="https://metacpan.org/module/POE::Component::TFTPd">POE::Component::TFTPd</a>,
+  which I was quite pleased with. Even so it tried to make it even faster, which
+  resulted in <a href="https://metacpan.org/module/AnyEvent::TFTPd">AnyEvent::TFTPd</a>,
+  but the module was shut down by the project owner of AnyEvent. If I was continuing
+  the development, I would probably write a Mojo::IOLoop based version instead, since
+  Mojolicious is a fantastic framework.
+</p>
+
+<h3>A collector daemon</h3>
+<p>
+  I wanted the system to be plug and play, so the collector daemon would start out
+  by probing the computers in the same network, checking if they could respond
+  on SNMP requests. If they could they would automatically be added to the Quelea
+  frontend, where the credentials (if any) would have to be added before the
+  collector again started getting information from the various equipment. The
+  collector would in the first place be "limited" to only supporting SNMP.
+</p>
+<p>
+  The most important data (imo) to collect would be:
+</p>
+<ul>
+  <li>
+    CMTS
+    <ul>
+      <li>Tx on downstream</li>
+      <li>SNR on upstream</li>
+      <li>Maybe cable modem signals.</li>
+    </ul>
+  </li>
+  <li>
+    Cable modem
+    <ul>
+      <li>Tx on upstream</li>
+      <li>SNR on downstream</li>
+      <li>Rx on downstream</li>
+      <li>Micro reflections on downstream</li>
+    </ul>
+  </li>
+</ul>
+</p>
+
+<p>TODO...</p>
