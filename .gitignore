@@ -1,0 +1,10 @@
+/META.yml
+/MYMETA.*
+/blib/
+/inc/
+/pm_to_blib
+/Makefile
+/Makefile.old
+*.old
+*.swp
+~$
