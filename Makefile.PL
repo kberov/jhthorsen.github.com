@@ -8,6 +8,7 @@ WriteMakefile(
   AUTHOR => 'Jan Henning Thorsen <jhthorsen@cpan.org>',
   EXE_FILES => ['script/batware'],
   PREREQ_PM => {
+    'File::MimeInfo::Magic' => '0.16',
     'Mojolicious' => '3.91',
     'Mojolicious::Plugin::Mail' => '0.94',
   },

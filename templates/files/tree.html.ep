@@ -1,0 +1,24 @@
+% layout 'default';
+% title "ls " .param('url_path');
+<h1>ls /<%= param('url_path') %></h1>
+% if(stash 'show_upload') {
+<form method="post" enctype="multipart/form-data">
+  <div class="file-wrapper">
+    <input type="file" name="file" multiple="multiple">
+    <button class="btn">Choose file</button>
+  </div>
+  <button class="btn" type="submit">Upload</button>
+</form>
+% }
+% if($parent_path) {
+<div id="navbar">
+  <ul class="nav nav-tabs">
+    <li><%= link_to 'Back', $parent_path %>
+  </ul>
+</div>
+% }
+<ul>
+  % for my $f (@$files) {
+  <li><%= link_to $f->{'basename'}, $f->{'url'} %></li>
+  % }
+</ul>

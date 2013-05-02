@@ -1,0 +1,7 @@
+% layout 'default';
+% title $basename;
+<h1><%= $basename %></h1>
+%= include 'files/navbar';
+<div>
+%== $file->slurp;
+</div>

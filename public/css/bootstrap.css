@@ -3214,18 +3214,17 @@ a.thumbnail:hover {
 
 /* prettify */
 @media screen{
-  .pln{color:#fff}
-  .str{color:#f8f}
-  .kwd{color:#ff8}
-  .com{color:#8ff}
-  .typ{color:#6f6}
-  .lit{color:#f66}
-  .pun,.opn,.clo{color:#660}
-  .tag{color:#ff8}
-  .atn{color:#6f6}
-  .atv{color:#f8f}
-  .dec,.var{color:#6f6}
-  .fun{color:red}
+  .str{color:#9daa7e}
+  .kwd{color:#d5b57c}
+  .com{color:#726d73}
+  .typ{color:#dd7e5e}
+  .lit{color:#fcf0a4}
+  .pun,.opn,.clo{color:#a78353}
+  .pln{color:#889dbc}
+  .tag{color:#d5b57c}
+  .atn{color:#dd7e5e}
+  .atv{color:#9daa7e}
+  .dec{color:#dd7e5e}
 }
 @media print,projection{
   .pln{color:#000}

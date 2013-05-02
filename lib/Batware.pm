@@ -44,6 +44,12 @@ sub startup {
   $r->get('/about/cv')->to(template => 'curriculum_vitae');
   $r->get('/contact')->to(template => 'contact', report => '')->name('contact');
   $r->post('/contact')->to(cb => \&_post_contat_form);
+
+  $r->get('/files')->to('files#tree', url_path => '');
+  $r->get('/files/tree/(*url_path)')->to('files#tree', url_path => '')->name('files_tree');
+  $r->get('/files/show/*url_path')->to('files#show')->name('files_show');
+  $r->get('/files/raw/*url_path')->to('files#raw')->name('files_raw');
+  $r->get('/files/*url_path')->to('files#redirect');
 }
 
 sub _post_contat_form {

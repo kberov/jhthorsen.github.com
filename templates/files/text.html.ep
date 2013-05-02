@@ -1,0 +1,10 @@
+% layout 'default';
+% title $basename;
+<h1><%= $basename %></h1>
+%= include 'files/navbar';
+<div>
+% my $text = $file->slurp;
+  <pre class="<%= length $text < 10000 ? 'prettyprint' : '' %>">
+%= $text;
+  </pre>
+</div>
