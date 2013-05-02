@@ -41,6 +41,7 @@ sub startup {
   $self->plugin(Mail => $config->{Mail});
 
   $r->get('/')->to(template => 'index');
+  $r->get('/about/cv')->to(template => 'curriculum_vitae');
   $r->get('/contact')->to(template => 'contact', report => '')->name('contact');
   $r->post('/contact')->to(cb => \&_post_contat_form);
 }
