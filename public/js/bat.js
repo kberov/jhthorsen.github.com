@@ -1,9 +1,23 @@
 (function($) {
   $(document).ready(function() {
+    $('form input[type="file"]').fileWrapper();
     $('#navbar').fixedNavbar();
     prettyPrint();
   });
 })(jQuery);
+
+jQuery.fn.fileWrapper = function() {
+  this.each(function() {
+    var $input = $(this);
+    var $btn = $('<button class="btn"></button').text($input.attr('title'));
+    $input.wrap('<div class="file-wrapper">').after($btn).change(function() {
+      var files = this.files ? $.map(this.files, function(e) { return e.name; }) : [this.value];
+      var text = files.length > 1 ? files.length + ' files selected.' : files[0];
+      $btn.text(text).addClass('active');
+      $input.attr('title', files.join(', '));
+    });
+  });
+};
 
 jQuery.fn.fixedNavbar = function() {
   this.each(function() {

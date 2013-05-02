@@ -1,0 +1,74 @@
+% layout 'default';
+% title 'DOCSIS editor';
+<h1>Online DOCSIS config file editor</h1>
+
+% if($report) {
+<p class="alert alert-info"><%= $report %></p>
+% }
+% if(my $id = param('id') || stash('id')) {
+% my $url = url_for('docsis_load', id => $id)->to_abs;
+<p>
+  Save <a href="<%= $url %>"><%= $url %></a>
+  to your bookmarks if you want to re-edit this file later on.
+</p>
+% }
+
+%= form_for 'docsis', method => 'post', begin
+  <label for="name">Config file name</label>
+  %= hidden_field 'id', param('id') || 0;
+  %= text_field 'filename', id => 'filename', class => 'input-block-level'
+  <label for="shared_secret">Shared secret</label>
+  %= text_field 'shared_secret', id => 'shared_secret', class => 'input-block-level'
+  <label class="control-label" for="config">Config text</label>
+  %= text_area 'config', id => 'config', class => 'input-block-level', rows => 10
+  <button class="btn" name="action" value="save">Save</button>
+  <button class="btn" name="action" value="download">Download</button>
+% end
+
+<h2>Upload binary config file</h1>
+%= form_for 'docsis', method => 'post', class => 'form-inline', enctype => 'multipart/form-data', begin
+  %= file_field 'file', title => 'Choose file'
+  <button class="btn" name="action" value="download">Upload</button>
+% end
+<p>
+  NOTE: The uploaded file will only be shown in the editor above. It will NOT
+  get stored in backend database. Click "Save" afterwards for that.
+</p>
+
+<h2>Load example config file</h1>
+<p>
+  %= link_to "example config", docsis_load => { id => 'example' }
+</p>
+
+<h2>Help</h2>
+<p>
+  You can generate <a href="http://en.wikipedia.com/wiki/DOCSIS">DOCSIS</a>
+  config files by entering config in
+  %= link_to 'Config::General', 'http://metacpan.org/module/Config::General';
+  (Apache config) format into the "Config text" area. The config file can
+  be downloaded in binary format and/or saved to thorsen's database.
+</p>
+<p>
+  Have a look at <%= link_to 'Syminfo', '/docsis-editor/syminfo' %> table for full
+  list of possible config params or <%= link_to 'Contact', 'contact' %> me if you
+  have any questions and I will try to help you.
+</p>
+<p>
+  Config information is not saved on my server before you click the
+  <button class="btn">Save</button> button and fill out the following form.
+  This means that you can generate restricted config files, without sharing any
+  information, simply by pasting config into the "Config text" area, followed
+  by clicking on the <button class="btn">Download</button> button.
+</p>
+
+<h2>Disclaimer</h2>
+<ul>
+  <li>There is no guarantee that the saved files will be saved forever.</li>
+  <li>There is no guarantee for uptime for this services.</li>
+</ul>
+
+<h2>Resources</h2>
+<ul>
+  <li><%= link_to 'DOCSIS::ConfigFile', 'https://metacpan.org/module/DOCSIS::ConfigFile' %></li>
+  <li><%= link_to 'This service', 'https://github.com/jhthorsen/jhthorsen.github.com/tree/batware/lib/Batware/Docsis.pm' %></li>
+</ul>

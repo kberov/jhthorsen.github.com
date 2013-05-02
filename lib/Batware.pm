@@ -22,8 +22,47 @@ This is the codebare for L<http://thorsen.pm>.
 =cut
 
 use Mojo::Base 'Mojolicious';
+use Mojo::Redis;
 
 our $VERSION = '0.01';
+
+=head1 HELPERS
+
+=head2 eval_code
+
+  $code_return_value = $c->eval_code(CODE);
+
+Used to eval a code ref and set "report" in status on error.
+
+=cut
+
+sub eval_code {
+  my($c, $cb) = @_;
+  my $res;
+
+  eval {
+    $res = $c->$cb;
+    1;
+  } or do {
+    my $e = $@;
+    $c->app->log->error($e);
+    $e =~ s/ at \S+.*//s;
+    $c->stash(report => $e || 'Could not send message!');
+  };
+
+  $res;
+}
+
+=head2 redis
+
+Returns an instance of L<Mojo::Redis>.
+
+=cut
+
+sub redis {
+  my $c = shift;
+  $c->stash->{redis} ||= do { Mojo::Redis->new($c->app->config->{Redis}) };
+}
 
 =head1 METHODS
 
@@ -39,6 +78,8 @@ sub startup {
   my $r = $self->routes;
 
   $self->plugin(Mail => $config->{Mail});
+  $self->helper(eval_code => \&eval_code);
+  $self->helper(redis => \&redis);
 
   $r->get('/')->to(template => 'index');
   $r->get('/about/cv')->to(template => 'curriculum_vitae');
@@ -57,12 +98,19 @@ sub startup {
   $r->get('/private/show/*url_path')->to('private#show')->name('private_show');
   $r->get('/private/raw/*url_path')->to('private#raw')->name('private_raw');
   $r->get('/private/*url_path')->to('private#tree');
+
+  $r->get('/service/docsis')->to(cb => sub { $_[0]->redirect_to('docsis_editor') });
+  $r->get('/services/docsis')->to(cb => sub { $_[0]->redirect_to('docsis_editor') });
+  $r->get('/docsis-editor')->to(template => 'docsis/edit', report => '')->name('docsis');
+  $r->get('/docsis-editor/syminfo')->to(template => 'docsis/syminfo')->name('docsis_syminfo');
+  $r->post('/docsis-editor')->to('docsis#edit');
+  $r->get('/docsis-editor/:id')->to('docsis#load')->name('docsis_load');
 }
 
 sub _post_contat_form {
   my $c = shift;
 
-  eval {
+  $c->eval_code(sub {
     $c->param('message') or die 'No message?';
     $c->mail(
       to => $c->app->config->{Mail}{receiver},
@@ -72,12 +120,7 @@ sub _post_contat_form {
       format => 'mail',
     );
     $c->stash(report => 'Message was sent!');
-  } or do {
-    my $e = $@;
-    $c->app->log->error($e);
-    $e =~ s/ at \S+.*//s;
-    $c->stash(report => $e || 'Could not send message!');
-  };
+  });
 }
 
 =head1 AUTHOR
