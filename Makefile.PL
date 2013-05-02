@@ -9,6 +9,7 @@ WriteMakefile(
   EXE_FILES => ['script/batware'],
   PREREQ_PM => {
     'Mojolicious' => '3.91',
+    'Mojolicious::Plugin::Mail' => '0.94',
   },
   test => {
     TESTS => 't/*.t',

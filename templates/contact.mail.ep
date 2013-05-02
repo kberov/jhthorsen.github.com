@@ -1,0 +1,4 @@
+Sender name: <%= param 'name' %>
+Sender email: <%= param 'email' %>
+---
+%= param 'message'
