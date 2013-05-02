@@ -52,6 +52,11 @@ sub startup {
   $r->get('/files/show/*url_path')->to('files#show')->name('files_show');
   $r->get('/files/raw/*url_path')->to('files#raw')->name('files_raw');
   $r->get('/files/*url_path')->to('files#redirect');
+
+  $r->get('/private/tree/*url_path')->to('private#tree')->name('private_tree');
+  $r->get('/private/show/*url_path')->to('private#show')->name('private_show');
+  $r->get('/private/raw/*url_path')->to('private#raw')->name('private_raw');
+  $r->get('/private/*url_path')->to('private#tree');
 }
 
 sub _post_contat_form {

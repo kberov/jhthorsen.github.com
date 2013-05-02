@@ -36,12 +36,8 @@ sub tree {
     url_path => $self->_tree_path($url_path),
   );
 
-  opendir my $DH, $disk_path or return $self->render_not_found;
-
-  for my $file (sort readdir $DH) {
-    next if $file =~ /^\./;
-    next unless -r "$disk_path/$file";
-    my($ext, $type) = $self->_extract_extension_and_filetype($disk_path, $file);
+  $self->_loop_files($disk_path, sub {
+    my($file, $ext, $type) = @_;
     push @files, {
       basename => $file,
       shortname => 15 <= length $file ? substr($file, 0, 12) .'...' : $file,
@@ -51,7 +47,7 @@ sub tree {
            : $type eq 'text/html' ? $self->_raw_path($url_path, $file)
            :                        $self->_show_path($url_path, $file),
     };
-  }
+  });
 }
 
 =head2 show
@@ -117,7 +113,6 @@ sub redirect {
 }
 
 sub _root_path { join '/', shift->app->config->{Files}{public_path}, grep { length } @_ }
-
 sub _raw_path { shift; join '/', '/files/raw', grep { length } @_ }
 sub _show_path { shift; join '/', '/files/show', grep { length } @_ }
 sub _tree_path { shift; join '/', '/files/tree', grep { length } @_ }
@@ -140,6 +135,18 @@ sub _extract_extension_and_filetype {
   $type = 'text/plain' if $type =~ /^application/ and -f $path;
 
   return($ext, $type || 'unknown');
+}
+
+sub _loop_files {
+  my($self, $disk_path, $cb) = @_;
+
+  opendir my $DH, $disk_path or return $self->render_not_found;
+
+  for my $file (sort readdir $DH) {
+    next if $file =~ /^\./;
+    next if !-r "$disk_path/$file";
+    $cb->($file, $self->_extract_extension_and_filetype($disk_path, $file));
+  }
 }
 
 sub _url_path {
