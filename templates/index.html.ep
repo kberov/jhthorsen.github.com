@@ -1,0 +1,50 @@
+% layout 'default';
+% title 'About me';
+<h1>About me</h1>
+<div class="thumbnail span2 pull-right">
+  %= image '/image/335002_10151283069355581_126397468_o.jpg', alt => 'Image of me'
+</div>
+<p>
+  I like to <a href="http://github.com/jhthorsen">program</a>.
+  In <a href="http://metacpan.org/author/JHTHORSEN">perl</a>
+  All the time. Except when I watch tv, <a href="http://telenor.com">work</a>,
+  listen to <a href="http://spotify.com">music</a>, watch the birds in the park,
+  <a href="http://connect.garmin.com/activity/114397353">jog</a>,
+  <a href="http://en.wikipedia.org/wiki/Empathy_(software)">chat</a>,
+  read <a href="http://facebook.com">facebook updates</a>, read books or sleep.
+</p>
+<p>
+  You can find more information about me from my
+  <a href="http://www.linkedin.com/in/jhthorsen">linkedin profile</a>
+  or my <a href="/about/cv">curriculum vitae</a>.
+  Want to know more? Ask <a href="http://google.com/search?q=%22jan%20henning%20thorsen%22">google</a>.
+</p>
+<p>
+  In the future I hope to: Become a better blogger. Like a blogger who actually
+  <a href="http://jhthorsen.github.com/blog/">blog</a>. Once every now and then.
+  Read up on what's happening in the world. Have time to do nothing.
+</p>
+<p>
+  Want to get in touch? Send me an <a href="mailto:jhthorsen@cpan.org">email</a>
+  or choose another option from my <a href="/contact">contact info</a>.
+</p>
+
+<h2 id="projects">Projects</h2>
+<p>
+  Complete list of projects can be found at
+  <a href="http://github.com/jhthorsen">github</a> or
+  <a href="http://metacpan.org/author/JHTHORSEN">cpan</a>.
+</p>
+
+<ul>
+  <li><a href="https://www.getbetsy.com">Betsy - A friendly betting app</a></li>
+  <!-- li><a href="http://www.oppstarter.no">Oppstarter - Norwegian croudsouring project</a></li -->
+  <li><a href="http://jhthorsen.github.com/snippets/">snippets - a bundle of scripts</a></li>
+  <li><a href="http://jhthorsen.github.com/snippets/garmin-auto-import/">garmin-auto-import - import Garmin data in gnome</a></li>
+  <li><a href="http://jhthorsen.github.com/snippets/sibs">sibs - simple incremental backup script</a></li>
+  <li><a href="https://github.com/jhthorsen/moosex-barewords">MooseX::Barewords - Does not require $self to access attributes in perl</a></li>
+  <li><a href="https://metacpan.org/module/App::Mypp">App::Mypp - Maintain Your Perl Project</a></li>
+  <li><a href="https://metacpan.org/module/Applify">Applify - Write perl applications with little overhead</a></li>
+  <li><a href="https://metacpan.org/module/Cloudinary">Cloudinary - Talk with cloudinary.com from perl</a></li>
+  <li><a href="https://metacpan.org/module/W3C::Validator::Server">W3C::Validator::Server - Run validator.w3.org locally</a></li>
+</ul>
