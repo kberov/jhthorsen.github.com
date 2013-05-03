@@ -99,8 +99,8 @@ sub startup {
   $r->get('/private/raw/*url_path')->to('private#raw')->name('private_raw');
   $r->get('/private/*url_path')->to('private#tree');
 
-  $r->get('/service/docsis')->to(cb => sub { $_[0]->redirect_to('docsis_editor') });
-  $r->get('/services/docsis')->to(cb => sub { $_[0]->redirect_to('docsis_editor') });
+  $r->get('/service/docsis')->to(cb => sub { $_[0]->redirect_to('docsis') });
+  $r->get('/services/docsis')->to(cb => sub { $_[0]->redirect_to('docsis') });
   $r->get('/docsis-editor')->to(template => 'docsis/edit', report => '')->name('docsis');
   $r->get('/docsis-editor/syminfo')->to(template => 'docsis/syminfo')->name('docsis_syminfo');
   $r->post('/docsis-editor')->to('docsis#edit');
