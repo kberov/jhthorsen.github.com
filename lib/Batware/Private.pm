@@ -20,14 +20,9 @@ sub tree {
   my $self = shift;
   my $url_path = $self->_url_path;
   my $disk_path = $self->_root_path($url_path);
-  my @files;
 
-  $self->stash(
-    files => \@files,
-    url_path => $self->_tree_path($url_path),
-    parent_path => '',
-    show_upload => -e "$disk_path/.upload",
-  );
+  return $self->render_not_found unless length $url_path > 12;
+  return $self->render_not_found unless -d $disk_path;
 
   if($self->req->method eq 'POST') {
     my @files = $self->req->upload('file');
@@ -35,20 +30,7 @@ sub tree {
     $_->move_to("$disk_path/" .$_->filename) for grep { $_->filename } @files;
   }
 
-  length $url_path > 10 or return $self->render_not_found;
-
-  $self->_loop_files($disk_path, sub {
-    my($file, $ext, $type) = @_;
-    push @files, {
-      basename => $file,
-      shortname => 15 <= length $file ? substr($file, 0, 12) .'...' : $file,
-      ext => $ext,
-      type => $type,
-      url => $type eq 'text/html' ? $self->_raw_path($url_path, $file)
-           :                        $self->_show_path($url_path, $file),
-    };
-  });
-
+  $self->SUPER::tree;
   $self->render(template => 'files/tree');
 }
 
