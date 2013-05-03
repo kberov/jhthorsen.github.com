@@ -1,0 +1,10 @@
+% layout 'default';
+% title 'Not found';
+<h1>Not found</h1>
+<p>
+  I couldn't find the resource you requested. Are you shure you spelled it the
+  right way?
+</p>
+<pre>
+%= join '-', $self->req->url->to_abs =~ /(.)/g
+</pre>

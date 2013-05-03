@@ -44,6 +44,8 @@ sub startup {
   $r->get('/about/cv')->to(template => 'curriculum_vitae');
   $r->get('/contact')->to(template => 'contact', report => '')->name('contact');
   $r->post('/contact')->to(cb => \&_post_contat_form);
+  $r->get('/404')->to(template => 'not_found.production');
+  $r->get('/500')->to(template => 'exception.production');
 
   $r->get('/files')->to('files#tree', url_path => '');
   $r->get('/files/tree/(*url_path)')->to('files#tree', url_path => '')->name('files_tree');
