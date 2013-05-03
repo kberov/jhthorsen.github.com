@@ -1,0 +1,7 @@
+% layout 'default';
+% title 'Travel map';
+<h1 class="page-header">Trips</h1>
+<div style="margin: 0 auto;" id="tamap_init">
+    <img src="http://www.tripadvisor.com/CommunityMapImage?id=4A24EA4154526325B67AB1899CD1F43F&type=GUID&size=LARGE" id="tamap_img">
+</div>
+<script src="http://www.tripadvisor.com/MemberTravelMap?a=EMBED&mode=js&id=g4A24EA4154526325B67AB1899CD1F43F&want=map"></script>
