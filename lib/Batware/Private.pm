@@ -39,7 +39,6 @@ sub tree {
 
   $self->_loop_files($disk_path, sub {
     my($file, $ext, $type) = @_;
-    next if $type eq 'directory';
     push @files, {
       basename => $file,
       shortname => 15 <= length $file ? substr($file, 0, 12) .'...' : $file,
