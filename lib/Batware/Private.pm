@@ -31,7 +31,10 @@ sub tree {
   }
 
   $self->SUPER::tree;
-  $self->render(template => 'files/tree');
+  $self->render(
+    template => 'files/tree',
+    show_upload => -e "$disk_path/.upload",
+  );
 }
 
 sub _root_path { join '/', shift->app->config->{Files}{private_path}, grep { length } @_ }
