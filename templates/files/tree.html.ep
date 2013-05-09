@@ -15,6 +15,9 @@
 </div>
 % }
 <ul>
+  % unless(@$files) {
+  <li>Empty directory.</li>
+  % }
   % for my $f (@$files) {
   <li><%= link_to $f->{'basename'}, $f->{'url'} %></li>
   % }
