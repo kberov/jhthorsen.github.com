@@ -15,13 +15,16 @@ jQuery.fn.fileWrapper = function() {
       var text = files.length > 1 ? files.length + ' files selected.' : files[0];
       $btn.text(text).addClass('active');
       $input.attr('title', files.join(', '));
-    });
+    }).hover(
+      function() { $btn.addClass('active'); },
+      function() { $btn.removeClass('active'); }
+    );
   });
 };
 
 jQuery.fn.fixedNavbar = function() {
   this.each(function() {
-    var $fixed = this;
+    var $fixed = $(this);
     var $parent_element = $fixed.parent();
     var $clone = $('<div>&nbsp;</div>');
     var o_top = $fixed.offset().top;
