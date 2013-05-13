@@ -132,8 +132,6 @@ sub _extract_extension_and_filetype {
         : $ext =~ /html$/ ? 'text/html'
         : mimetype $path;
 
-  $type = 'text/plain' if $type =~ /^application/ and -f $path;
-
   return($ext, $type || 'unknown');
 }
 
