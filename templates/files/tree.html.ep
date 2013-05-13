@@ -19,6 +19,6 @@
   <li>Empty directory.</li>
   % }
   % for my $f (@$files) {
-  <li><%= link_to $f->{'basename'}, $f->{'url'} %></li>
+  <li><%= link_to $f->{basename}, $f->{url} %></li>
   % }
 </ul>

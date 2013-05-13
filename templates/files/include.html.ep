@@ -3,5 +3,5 @@
 <h1><%= $basename %></h1>
 %= include 'files/navbar';
 <div>
-%== $file->slurp;
+%== Mojo::Util::decode('UTF-8', $file->slurp)
 </div>

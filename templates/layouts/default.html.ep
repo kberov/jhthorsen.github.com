@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>thorsen.pm - <%= title %></title>
+  <meta charset="utf-8">
   %= stylesheet '/css/bootstrap.css'
   %= javascript '/js/jquery.js'
   %= javascript '/js/bat.js'

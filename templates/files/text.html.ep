@@ -3,8 +3,8 @@
 <h1><%= $basename %></h1>
 %= include 'files/navbar';
 <div>
-% my $text = $file->slurp;
+% my $text = Mojo::Util::decode('UTF-8', $file->slurp);
   <pre class="<%= length $text < 10000 ? 'prettyprint' : '' %>">
-%= $text;
+%= $text
   </pre>
 </div>

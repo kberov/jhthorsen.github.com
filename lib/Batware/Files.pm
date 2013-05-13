@@ -39,7 +39,7 @@ sub tree {
   $self->_loop_files($disk_path, sub {
     my($file, $ext, $type) = @_;
     push @files, {
-      basename => $file,
+      basename => Mojo::Util::decode('UTF-8', $file),
       shortname => 15 <= length $file ? substr($file, 0, 12) .'...' : $file,
       ext => $ext,
       type => $type,
