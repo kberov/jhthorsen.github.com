@@ -18,16 +18,22 @@ sub index {
   my $self = shift;
 
   $self->stash(
+    tracking => undef,
     items => [
         { tags => join(', ', qw/ work important /), start => time - 7200, stop => time - 6000 },
         { tags => join(', ', qw/ other /), start => time - 17200, stop => time - 15001 },
         { tags => join(', ', qw/ fun /), start => time - 27200, stop => time - 25020 },
     ],
-    tracking => {
-      tags => [qw/ work important /],
-      start => 1368534739,
-    },
   );
+
+  if($self->param('tags')) {
+    $self->stash(
+      tracking => {
+        tags => [qw/ work important /],
+        start => 1368534739,
+      },
+    );
+  }
 }
 
 =head1 AUTHOR
