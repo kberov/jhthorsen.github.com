@@ -106,6 +106,9 @@ sub startup {
   $r->get('/docsis-editor/syminfo')->to(template => 'docsis/syminfo')->name('docsis_syminfo');
   $r->post('/docsis-editor')->to('docsis#edit');
   $r->get('/docsis-editor/:id')->to('docsis#load')->name('docsis_load');
+
+  $r->get('/tt')->to(cb => sub { shift->redirect_to('time_tracker') });
+  $r->get('/time-tracker')->to('tracker#index')->name('time_tracker');
 }
 
 sub _post_contact_form {
