@@ -14,11 +14,16 @@
   </ul>
 </div>
 % }
-<ul>
+<ul class="files">
   % unless(@$files) {
   <li>Empty directory.</li>
   % }
   % for my $f (@$files) {
-  <li><%= link_to $f->{basename}, $f->{url} %></li>
+  <li>
+    %= link_to $f->{basename}, $f->{url}
+    % if($f->{size} > 1e6) {
+    <small><%= sprintf '%.01f', $f->{size} / 1e6 %>MB</small>
+    % }
+  </li>
   % }
 </ul>

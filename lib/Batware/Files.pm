@@ -41,6 +41,7 @@ sub tree {
     push @files, {
       basename => Mojo::Util::decode('UTF-8', $file),
       shortname => 15 <= length $file ? substr($file, 0, 12) .'...' : $file,
+      size => -s "$disk_path/$file",
       ext => $ext,
       type => $type,
       url => $type eq 'directory' ? $self->_tree_path($url_path, $file)

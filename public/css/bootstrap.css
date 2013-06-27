@@ -3348,14 +3348,17 @@ li.L1,li.L3,li.L5,li.L7,li.L9{background:#eee}
   line-height: 13pt;
   height: 14em;
 }
-
+.files small {
+  color: #aaa;
+  font-size: 0.9em;
+  float: right;
+}
 .file-wrapper {
   position: relative;
   float: left;
   width: 200px;
   overflow: hidden;
 }
-
 .file-wrapper input {
   position: absolute;
   left: 0;
@@ -3366,7 +3369,6 @@ li.L1,li.L3,li.L5,li.L7,li.L9{background:#eee}
   filter: alpha(opacity: 0);
   opacity: 0;
 }
-
 .file-wrapper .btn {
   width: 190px;
   height: 28px;
