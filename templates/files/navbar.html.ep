@@ -2,5 +2,6 @@
   <ul class="nav nav-tabs">
     <li><%= link_to 'Back', $dir_path %>
     <li><%= link_to 'Raw format', $raw_path %>
+    <li><%= link_to 'Download', "$raw_path?download=1" %>
   </ul>
 </div>

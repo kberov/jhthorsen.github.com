@@ -73,6 +73,7 @@ sub show {
   return $self->render(template => 'files/include') if $type eq 'include';
   return $self->render(template => 'files/text')    if $type =~ m!^text/!;
   return $self->render(template => 'files/image')   if $type =~ m!^image/!;
+  return $self->render(template => 'files/video')   if $type =~ m!^video/!;
   return $self->raw;
 }
 
@@ -91,6 +92,7 @@ sub raw {
   $type =~ m!/! or return $self->render_data('Unknown file format', format => 'txt');
   $static->serve($self, $url_path) or return $self->render_data('Unable to serve file', format => 'txt');
   $self->res->headers->content_type($type);
+  $self->res->headers->content_disposition(qq(attachment; filename="@{[basename $url_path ]}")) if $self->param('download');
   $self->rendered;
 }
 

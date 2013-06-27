@@ -1,0 +1,12 @@
+% layout 'default';
+% title $basename;
+<h1><%= $basename %></h1>
+%= include 'files/navbar';
+<div class="single-thumbnail thumbnail span8">
+  <video controls="controls" preload="none">
+    <source src="<%= $raw_path %>">
+  </video>
+  <div class="caption">
+    <h5><%= $basename %></h5>
+  </div>
+</div>
