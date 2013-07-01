@@ -90,8 +90,8 @@ sub raw {
   my $static = Mojolicious::Static->new(paths => [$self->_root_path]);
   my($ext, $type) = $self->_extract_extension_and_filetype($static->paths->[0], $url_path);
 
-  $type =~ m!/! or return $self->render_data('Unknown file format', format => 'txt');
-  $static->serve($self, $url_path) or return $self->render_data('Unable to serve file', format => 'txt');
+  $type =~ m!/! or return $self->render(text => 'Unknown file format', format => 'txt');
+  $static->serve($self, $url_path) or return $self->render(text => 'Unable to serve file', format => 'txt');
   $self->res->headers->content_type($type);
   $self->res->headers->content_disposition(qq(attachment; filename="@{[basename $url_path ]}")) if $self->param('download');
   $self->rendered;

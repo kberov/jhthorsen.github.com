@@ -33,7 +33,7 @@ sub _download {
   my $binary = $self->_compile_binary or return;
 
   $self->res->headers->content_disposition(sprintf 'attachment; filename=%s', $filename);
-  $self->render_data($binary, format => 'binary');
+  $self->render(data => $binary, format => 'binary');
 }
 
 sub _save {
@@ -92,7 +92,7 @@ sub load {
   if($id eq 'example') {
     $self->$render(
       { filename => 'example.bin' },
-      $self->render_partial('docsis/example', format => 'txt'),
+      $self->render(partial => 1, template => 'docsis/example', format => 'txt'),
     );
   }
   else {
