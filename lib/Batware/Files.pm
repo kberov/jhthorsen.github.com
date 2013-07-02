@@ -6,10 +6,12 @@ Batware::Files - Browse files
 
 =cut
 
+use feature 'switch';
 use Mojo::Base 'Mojolicious::Controller';
 use Mojo::Asset::File;
 use File::Basename;
 use File::MimeInfo::Magic;
+use Image::EXIF;
 use Image::Imlib2;
 use Mojolicious::Static;
 use constant IMAGES_PR_PAGE => 60;
@@ -130,13 +132,56 @@ Will serve a file in raw format.
 sub raw {
   my $self = shift;
   my $url_path = $self->_url_path;
-  my $static = Mojolicious::Static->new(paths => [$self->_root_path]);
-  my($ext, $type) = $self->_extract_extension_and_filetype($static->paths->[0], $url_path);
+  my($ext, $type) = $self->_extract_extension_and_filetype($self->_root_path, $url_path);
 
-  $type =~ m!/! or return $self->render(text => 'Unknown file format', format => 'txt');
-  $static->serve($self, $url_path) or return $self->render(text => 'Unable to serve file', format => 'txt');
   $self->res->headers->content_type($type);
   $self->res->headers->content_disposition(qq(attachment; filename="@{[basename $url_path ]}")) if $self->param('download');
+
+  if($type !~ m!/!) {
+    $self->render(text => 'Unknown file format', format => 'txt');
+  }
+  if($type =~ m!^image! and not $self->param('download')) {
+    $self->_raw_image(join '/', $self->_root_path, $url_path);
+  }
+  else {
+    my $static = Mojolicious::Static->new(paths => [$self->_root_path]);
+    $static->serve($self, $url_path) or return $self->render(text => 'Unable to serve file', format => 'txt');
+    $self->rendered;
+  }
+}
+
+sub _raw_image {
+  my($self, $path) = @_;
+  my $url_path = $self->_url_path;
+  my $exif = Image::EXIF->new($path);
+  my $orientation = $exif->get_image_info->{'Image Orientation'} || '';
+  my $static;
+
+  given($orientation) {
+    when(/^.*left.*bottom/i)  { $orientation = 3 }
+    when(/^.*bottem.*right/i) { $orientation = 2 }
+    when(/^.*right.*top/i)    { $orientation = 1 }
+    default                   { $orientation = 0 }
+  }
+
+  if($orientation) {
+    eval {
+      my $path = $self->app->config->{Files}{thumb_path};
+      my $md5 = Mojo::Util::md5_sum($url_path);
+      unless(-e "$path/$md5") {
+        my $t = Image::Imlib2->load(join '/', $self->_root_path, $url_path);
+        $t->image_orientate($orientation);
+        $t->save("$path/$md5");
+      }
+      $static = Mojolicious::Static->new(paths => [$path]);
+      $url_path = $md5;
+    } or do {
+      $self->app->log->error("image_orientate: $@");
+    };
+  }
+
+  $static ||= Mojolicious::Static->new(paths => [$self->_root_path]);
+  $static->serve($self, $url_path) or return $self->render(text => 'Unable to serve file', format => 'txt');
   $self->rendered;
 }
 
@@ -150,7 +195,7 @@ sub thumb {
   my $self = shift;
   my $static = Mojolicious::Static->new(paths => [$self->app->config->{Files}{thumb_path}]);
   my $url_path = $self->_url_path;
-  my $md5 = Mojo::Util::md5_sum($url_path) .'.jpg';
+  my $md5 = Mojo::Util::md5_sum($url_path) .'_100.jpg';
   my $thumb = join '/', $static->paths->[0], $md5;
 
   unless(-e $thumb) {
