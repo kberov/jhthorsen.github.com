@@ -195,14 +195,14 @@ sub thumb {
   my $self = shift;
   my $static = Mojolicious::Static->new(paths => [$self->app->config->{Files}{thumb_path}]);
   my $url_path = $self->_url_path;
-  my $md5 = Mojo::Util::md5_sum($url_path) .'_100.jpg';
+  my $md5 = Mojo::Util::md5_sum($url_path) .'_120.jpg';
   my $thumb = join '/', $static->paths->[0], $md5;
 
   unless(-e $thumb) {
     eval {
       my $t = Image::Imlib2->load(join '/', $self->_root_path, $url_path);
       $t->image_set_format('jpeg');
-      $t->create_scaled_image(100, 100)->save($thumb);
+      $t->create_scaled_image(120, 120)->save($thumb);
       $t;
     } or do {
       # TODO: Should probably render default image
