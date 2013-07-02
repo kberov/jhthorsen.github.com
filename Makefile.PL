@@ -11,6 +11,7 @@ WriteMakefile(
     'Config::General' => '2.51',
     'DOCSIS::ConfigFile' => '0.63',
     'File::MimeInfo::Magic' => '0.16',
+    'Image::Imlib2' => 2.03, # apt-get install libimage-imlib2-perl
     'Mojolicious' => '3.91',
     'Mojolicious::Plugin::Mail' => '0.94',
   },

@@ -1,0 +1,22 @@
+% layout 'default';
+% title $name;
+<h1><%= $name %></h1>
+% if($parent_path) {
+<div id="navbar">
+  <ul class="nav nav-tabs">
+    <li><%= link_to 'Back', $parent_path %>
+  </ul>
+</div>
+% }
+<ul class="gallery">
+  % unless(@$files) {
+  <li>No images.</li>
+  % }
+  % for my $f (@$files) {
+  <li>
+    %= link_to $f->{url}, begin
+      %= image $f->{src}, alt => $f->{basename}, title => $f->{basename}
+    % end
+  </li>
+  % }
+</ul>

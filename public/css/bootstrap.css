@@ -3374,3 +3374,12 @@ li.L1,li.L3,li.L5,li.L7,li.L9{background:#eee}
   height: 28px;
   overflow: hidden;
 }
+.gallery {
+  list-style: none;
+}
+.gallery li {
+  float: left;
+  height: 100px;
+  width: 100px;
+  padding: 2px;
+}

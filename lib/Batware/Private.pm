@@ -41,6 +41,7 @@ sub _root_path { join '/', shift->app->config->{Files}{private_path}, grep { len
 sub _raw_path { shift; join '/', '/private/raw', grep { length } @_ }
 sub _show_path { shift; join '/', '/private/show', grep { length } @_ }
 sub _tree_path { shift; join '/', '/private/tree', grep { length } @_ }
+sub _thumb_path { shift; join '/', '/private/thumb', grep { length } @_ }
 
 =head1 AUTHOR
 

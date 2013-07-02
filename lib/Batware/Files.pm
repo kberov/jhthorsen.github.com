@@ -10,7 +10,9 @@ use Mojo::Base 'Mojolicious::Controller';
 use Mojo::Asset::File;
 use File::Basename;
 use File::MimeInfo::Magic;
+use Image::Imlib2;
 use Mojolicious::Static;
+use constant IMAGES_PR_PAGE => 60;
 
 =head1 METHODS
 
@@ -49,6 +51,47 @@ sub tree {
            :                        $self->_show_path($url_path, $file),
     };
   });
+}
+
+=head2 gallery
+
+Render a gallery instead of plain file list.
+
+=cut
+
+sub gallery {
+  my $self = shift;
+  my $offset = $self->param('offset') || 0;
+  my $url_path = $self->_url_path;
+  my $disk_path = $self->_root_path($url_path);
+  my $parent_path = '';
+  my $n = 0;
+  my @files;
+
+  $parent_path = $self->_tree_path(dirname $url_path) if $url_path;
+  $parent_path =~ s!\.$!!;
+
+  $self->stash(
+    files => \@files,
+    name => basename($url_path),
+    parent_path => $parent_path,
+    url_path => $self->_tree_path($url_path),
+  );
+
+  $self->_loop_files($disk_path, sub {
+    my($file, $ext, $type) = @_;
+    return 1 unless $type =~ m!^image/!;
+    return 1 if $n++ < $offset;
+    push @files, {
+      basename => Mojo::Util::decode('UTF-8', $file),
+      size => -s "$disk_path/$file",
+      src => $self->_thumb_path($url_path, $file),
+      url => $type eq 'directory' ? $self->_tree_path($url_path, $file) : $self->_show_path($url_path, $file),
+    };
+    return @files < IMAGES_PR_PAGE;
+  });
+
+  $self->render(template => 'files/gallery');
 }
 
 =head2 show
@@ -97,6 +140,36 @@ sub raw {
   $self->rendered;
 }
 
+=head2 thumb
+
+Returns a thumb of a image file.
+
+=cut
+
+sub thumb {
+  my $self = shift;
+  my $static = Mojolicious::Static->new(paths => [$self->app->config->{Files}{thumb_path}]);
+  my $url_path = $self->_url_path;
+  my $md5 = Mojo::Util::md5_sum($url_path) .'.jpg';
+  my $thumb = join '/', $static->paths->[0], $md5;
+
+  unless(-e $thumb) {
+    eval {
+      my $t = Image::Imlib2->load(join '/', $self->_root_path, $url_path);
+      $t->image_set_format('jpeg');
+      $t->create_scaled_image(100, 100)->save($thumb);
+      $t;
+    } or do {
+      # TODO: Should probably render default image
+      $self->render_exception($@);
+    };
+  }
+
+  $static->serve($self, $md5) or return $self->render(text => 'Unable to serve file', format => 'txt');
+  $self->res->headers->content_type('image/jpeg');
+  $self->rendered;
+}
+
 =head2 redirect
 
 Used to be backward compat with older urls.
@@ -119,6 +192,7 @@ sub _root_path { join '/', shift->app->config->{Files}{public_path}, grep { leng
 sub _raw_path { shift; join '/', '/files/raw', grep { length } @_ }
 sub _show_path { shift; join '/', '/files/show', grep { length } @_ }
 sub _tree_path { shift; join '/', '/files/tree', grep { length } @_ }
+sub _thumb_path { shift; join '/', '/files/thumb', grep { length } @_ }
 
 sub _extract_extension_and_filetype {
   my $self = shift,
@@ -146,7 +220,7 @@ sub _loop_files {
   for my $file (sort readdir $DH) {
     next if $file =~ /^\./;
     next if !-r "$disk_path/$file";
-    $cb->($file, $self->_extract_extension_and_filetype($disk_path, $file));
+    last unless $cb->($file, $self->_extract_extension_and_filetype($disk_path, $file));
   }
 }
 

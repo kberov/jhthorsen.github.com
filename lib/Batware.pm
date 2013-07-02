@@ -95,9 +95,11 @@ sub startup {
   $r->get('/files/raw/*url_path')->to('files#raw')->name('files_raw');
   $r->get('/files/*url_path')->to('files#redirect');
 
+  $r->get('/private/gallery/(*url_path)')->to('private#gallery', url_path => '')->name('files_tree');
   $r->any('/private/tree/*url_path')->to('private#tree')->name('private_tree');
   $r->get('/private/show/*url_path')->to('private#show')->name('private_show');
   $r->get('/private/raw/*url_path')->to('private#raw')->name('private_raw');
+  $r->get('/private/thumb/*url_path')->to('private#thumb')->name('files_raw');
   $r->any('/private/*url_path')->to('private#tree');
 
   $r->get('/service/docsis')->to(cb => sub { $_[0]->redirect_to('docsis') });
