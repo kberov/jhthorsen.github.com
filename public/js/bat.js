@@ -16,7 +16,7 @@
       $('#navbar').find('.raw, .download').hide();
       $gallery.find('li').removeClass('not-active');
       current_id = '';
-      document.title = $('h1').text();
+      document.title = $('#content h1').text();
     };
     var loadImages = function(event) {
       var trigger = $win.scrollTop() + $win.height() + 100;
