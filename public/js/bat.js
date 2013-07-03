@@ -33,13 +33,21 @@
       if($images.length === 0) $win.unbind('scroll', loadImages).unbind('resize', loadImages);
     };
     var nextImage = function() {
-      var $next = $big.next().length ? $big.next() : $gallery.children('li:first');
-      location.href = location.href.replace(/#\w+/, '#' + $next.attr('id'));
+      var id = $big.next().length ? $big.next().attr('id') : $gallery.children('li:first').attr('id');
+      try {
+        history.replaceState({}, id, location.href.replace(/#\w+/, '#' + id));
+      } catch(e) {
+        location.href = location.href.replace(/#\w+/, '#' + id);
+      };
     };
     var prevImage = function() {
       var $prev = $('#' + current_id).prev();
-      var $prev = $prev.length ? $prev : $gallery.children('li:last');
-      location.href = location.href.replace(/#\w+/, '#' + $prev.attr('id'));
+      var id = $prev.length ? $prev.attr('id') : $gallery.children('li:last').attr('id');
+      try {
+        history.replaceState({}, id, location.href.replace(/#\w+/, '#' + id));
+      } catch(e) {
+        location.href = location.href.replace(/#\w+/, '#' + id);
+      };
     };
     var showImage = function() {
       var $li = $(this).parent();
