@@ -37,9 +37,7 @@
       location.href = location.href.replace(/#\w+/, '#' + $next.attr('id'));
     };
     var prevImage = function() {
-      var $prev = $('#' + current_id).prev();
-      var $prev = $prev.length ? $prev : $gallery.children('li:last');
-      location.href = location.href.replace(/#\w+/, '#' + $prev.attr('id'));
+      history.go(-1);
     };
     var showImage = function() {
       var $li = $(this).parent();
