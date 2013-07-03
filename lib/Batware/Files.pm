@@ -153,7 +153,7 @@ sub _raw_image {
 
   given($orientation) {
     when(/^.*left.*bottom/i)  { $orientation = 3 }
-    when(/^.*bottem.*right/i) { $orientation = 2 }
+    when(/^.*bottom.*right/i) { $orientation = 2 }
     when(/^.*right.*top/i)    { $orientation = 1 }
     default                   { $orientation = 0 }
   }
