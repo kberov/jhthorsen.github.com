@@ -242,6 +242,10 @@ sub _extract_extension_and_filetype {
   my $path = join '/', @_;
   my($ext, $type);
 
+  if(my $link = readlink $path) {
+    $path = $link;
+  }
+
   return('', 'directory') if -d $path;
 
   $ext = lc(($path =~ m!\.(\w+)$!)[0] || '');
@@ -263,7 +267,7 @@ sub _loop_files {
   for my $file (sort readdir $DH) {
     next if $file =~ /^\./;
     next if !-r "$disk_path/$file";
-    last unless $cb->($file, $self->_extract_extension_and_filetype($disk_path, $file));
+    $cb->($file, $self->_extract_extension_and_filetype($disk_path, $file));
   }
 }
 
