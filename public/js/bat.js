@@ -6,6 +6,7 @@
     var $big;
     var previous_trigger = 0;
     var current_id = '';
+    var preloaded = {};
 
     var checkLocation = function() {
       var location_id = location.href.match(/#(\w+)/) || ['', ''];
@@ -53,12 +54,15 @@
       var $li = $(this).parent();
       var src = $li.find('img').attr('src').replace(/\/thumb\//, '/raw/');
       var min_height = 20;
+
+      current_id = $li.attr('id');
+      document.title = $li.find('img').attr('title');
+
       if($big) {
         min_height = $big.height();
         $big.remove();
       }
-      $gallery.children('li').addClass('not-active');
-      $li.removeClass('not-active');
+
       $big = $('<li class="big"><img src="' + src + '"><span>Loading...</span></li>');
       $big.find('img').on('load', function() {
         $win.scrollTop($big.offset().top - 50);
@@ -66,12 +70,20 @@
         $big.css('min-height', '10px');
         $('#navbar').find('.raw, .download').show();
       });
-      $big.find('img').click(nextImage);
+
       $('body').css('min-height', $('body').height());
-      $big.css('min-height', min_height);
-      $li.after($big);
-      current_id = $li.attr('id');
-      document.title = $li.find('img').attr('title');
+      $big.css('min-height', min_height).find('img').click(nextImage);
+      $gallery.children('li').addClass('not-active');
+      $li.removeClass('not-active').after($big);
+
+      // preload
+      if($big.next().length) {
+        src = $big.next().find('img').attr('src').replace(/\/thumb\//, '/raw/');
+        if(!preloaded[src]) {
+          preloaded[src] = new Image();
+          preloaded[src].src = src;
+        }
+      }
     };
 
     $gallery.find('a').click(showImage).each(function() {
