@@ -14,7 +14,6 @@ use File::MimeInfo::Magic;
 use Image::EXIF;
 use Image::Imlib2;
 use Mojolicious::Static;
-use constant IMAGES_PR_PAGE => 60;
 
 =head1 METHODS
 
@@ -28,10 +27,9 @@ sub tree {
   my $self = shift;
   my $url_path = $self->_url_path;
   my $disk_path = $self->_root_path($url_path);
-  my $parent_path = '';
-  my @files;
+  my($parent_path, @files);
 
-  $parent_path = $self->_tree_path(dirname $url_path) if $url_path;
+  $parent_path = $url_path ? $self->_tree_path(dirname $url_path) : '';
   $parent_path =~ s!\.$!!;
 
   $self->stash(
@@ -63,34 +61,29 @@ Render a gallery instead of plain file list.
 
 sub gallery {
   my $self = shift;
-  my $offset = $self->param('offset') || 0;
   my $url_path = $self->_url_path;
-  my $disk_path = $self->_root_path($url_path);
-  my $parent_path = '';
-  my $n = 0;
-  my @files;
+  my($disk_path, $parent_path, @files);
 
-  $parent_path = $self->_tree_path(dirname $url_path) if $url_path;
+  $disk_path = $self->_root_path($url_path);
+  $parent_path = $url_path ? $self->_gallery_path(dirname $url_path) : '';
   $parent_path =~ s!\.$!!;
 
   $self->stash(
     files => \@files,
     name => basename($url_path),
     parent_path => $parent_path,
-    url_path => $self->_tree_path($url_path),
+    url_path => $self->_gallery_path($url_path),
   );
 
   $self->_loop_files($disk_path, sub {
     my($file, $ext, $type) = @_;
-    return 1 unless $type =~ m!^image/!;
-    return 1 if $n++ < $offset;
-    push @files, {
+    $type =~ m!^image/! and push @files, {
       basename => Mojo::Util::decode('UTF-8', $file),
+      id => $file =~ s/\W/_/gr, # / st2 hack
       size => -s "$disk_path/$file",
       src => $self->_thumb_path($url_path, $file),
       url => $type eq 'directory' ? $self->_tree_path($url_path, $file) : $self->_show_path($url_path, $file),
     };
-    return @files < IMAGES_PR_PAGE;
   });
 
   $self->render(template => 'files/gallery');
@@ -153,6 +146,7 @@ sub raw {
 sub _raw_image {
   my($self, $path) = @_;
   my $url_path = $self->_url_path;
+  my $inline = $self->param('inline') ? 1024 : '';
   my $exif = Image::EXIF->new($path);
   my $orientation = $exif->get_image_info->{'Image Orientation'} || '';
   my $static;
@@ -164,19 +158,22 @@ sub _raw_image {
     default                   { $orientation = 0 }
   }
 
-  if($orientation) {
+  if($orientation or $inline) {
     eval {
       my $path = $self->app->config->{Files}{thumb_path};
       my $md5 = Mojo::Util::md5_sum($url_path);
+      $md5 .= "_$inline" if $inline;
       unless(-e "$path/$md5") {
         my $t = Image::Imlib2->load(join '/', $self->_root_path, $url_path);
         $t->image_orientate($orientation);
+        $t = $t->create_scaled_image($inline, 0) if $inline;
+        $t->image_set_format('jpeg');
         $t->save("$path/$md5");
       }
       $static = Mojolicious::Static->new(paths => [$path]);
       $url_path = $md5;
     } or do {
-      $self->app->log->error("image_orientate: $@");
+      $self->app->log->error("[Imlib2] $@");
     };
   }
 
@@ -234,6 +231,7 @@ sub redirect {
 }
 
 sub _root_path { join '/', shift->app->config->{Files}{public_path}, grep { length } @_ }
+sub _gallery_path { shift; join '/', '/private/gallery', grep { length } @_ }
 sub _raw_path { shift; join '/', '/files/raw', grep { length } @_ }
 sub _show_path { shift; join '/', '/files/show', grep { length } @_ }
 sub _tree_path { shift; join '/', '/files/tree', grep { length } @_ }

@@ -10,7 +10,7 @@
 % if($parent_path) {
 <div id="navbar">
   <ul class="nav nav-tabs">
-    <li><%= link_to 'Back', $parent_path %>
+    <li><%= link_to 'Back', $parent_path %></li>
   </ul>
 </div>
 % }

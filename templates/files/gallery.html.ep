@@ -4,7 +4,9 @@
 % if($parent_path) {
 <div id="navbar">
   <ul class="nav nav-tabs">
-    <li><%= link_to 'Back', $parent_path %>
+    <li class="back"><%= link_to 'Back', $parent_path %></li>
+    <li class="raw image-link"><%= link_to 'Raw format', '/raw' %></li>
+    <li class="download image-link"><%= link_to 'Download', "/download" %></li>
   </ul>
 </div>
 % }
@@ -13,9 +15,9 @@
   <li>No images.</li>
   % }
   % for my $f (@$files) {
-  <li>
+  <li id="<%= $f->{id} %>">
     %= link_to $f->{url}, begin
-      %= image $f->{src}, alt => $f->{basename}, title => $f->{basename}
+      %= image '/image/not-loaded.png', 'data-src' => $f->{src}, alt => $f->{basename}, title => $f->{basename}
     % end
   </li>
   % }

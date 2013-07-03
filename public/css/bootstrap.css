@@ -3376,6 +3376,7 @@ li.L1,li.L3,li.L5,li.L7,li.L9{background:#eee}
 }
 .gallery {
   list-style: none;
+  margin: 0;
 }
 .gallery li {
   float: left;
@@ -3383,3 +3384,15 @@ li.L1,li.L3,li.L5,li.L7,li.L9{background:#eee}
   width: 100px;
   padding: 2px;
 }
+.gallery li.not-active {
+  opacity: 0.2;
+}
+.gallery li.big {
+  float: none;
+  clear: left;
+  height: auto;
+  width: 100%;
+  padding: 0;
+}
+.gallery li.big img { cursor: pointer; }
+#navbar .image-link { display: none; }

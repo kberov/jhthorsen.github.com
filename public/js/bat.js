@@ -1,5 +1,98 @@
 (function($) {
+  var setupGallery = function() {
+    var $gallery = $(this);
+    var $images = $gallery.find('img');
+    var $win = $(window);
+    var $big;
+    var previous_trigger = 0;
+    var current_id = '';
+
+    var checkLocation = function() {
+      var location_id = location.href.match(/#(\w+)/) || ['', ''];
+      if(location_id[1] === current_id) return;
+      if(location_id[1]) return $('#' + location_id[1]).find('a').click();
+      if($big) $big.remove();
+      $('#navbar').find('.raw, .download').hide();
+      $gallery.find('li').removeClass('not-active');
+      current_id = '';
+      document.title = $('h1').text();
+    };
+    var loadImages = function(event) {
+      var trigger = $win.scrollTop() + $win.height() + 100;
+      if(trigger < previous_trigger + 50) return;
+      $images = $images.not(function(i) {
+                  var $img = $(this);
+                  var visible = $img.offset().top < trigger;
+                  if(visible) {
+                    $img.attr('src', $img.attr('data-src') + '?inline=1024');
+                    if(event) $img.hide().fadeIn('slow');
+                  }
+                  return visible;
+                });
+
+      if($images.length === 0) $win.unbind('scroll', loadImages).unbind('resize', loadImages);
+    };
+    var nextImage = function() {
+      var $next = $big.next().length ? $big.next() : $gallery.children('li:first');
+      location.href = location.href.replace(/#\w+/, '#' + $next.attr('id'));
+    };
+    var prevImage = function() {
+      var $prev = $('#' + current_id).prev();
+      var $prev = $prev.length ? $prev : $gallery.children('li:last');
+      location.href = location.href.replace(/#\w+/, '#' + $prev.attr('id'));
+    };
+    var showImage = function() {
+      var $li = $(this).parent();
+      var src = $li.find('img').attr('src').replace(/\/thumb\//, '/raw/');
+      var min_height = 20;
+      if($big) {
+        min_height = $big.height();
+        $big.remove();
+      }
+      $gallery.children('li').addClass('not-active');
+      $li.removeClass('not-active');
+      $big = $('<li class="big"><img src="' + src + '"><span>Loading...</span></li>');
+      $big.find('img').on('load', function() {
+        $win.scrollTop($big.offset().top - 50);
+        $big.find('span').text($li.find('img').attr('title'));
+        $big.css('min-height', '10px');
+        $('#navbar').find('.raw, .download').show();
+      });
+      $big.find('img').click(nextImage);
+      $('body').css('min-height', $('body').height());
+      $big.css('min-height', min_height);
+      $li.after($big);
+      current_id = $li.attr('id');
+      document.title = $li.find('img').attr('title');
+    };
+
+    $gallery.find('a').click(showImage).each(function() {
+      this.href = '#' + $(this).parent().attr('id');
+    });
+    $('#navbar .back a').click(function() {
+      if(!current_id) return true;
+      location.href = location.href.replace(/#\w+/, '');
+      return false;
+    });
+    $('#navbar .raw a').click(function() {
+      location.href = $big.find('img').attr('src');
+      return false;
+    });
+    $('#navbar .download a').click(function() {
+      location.href = $big.find('img').attr('src').replace(/inline=\d+/, 'download=1');
+      return false;
+    });
+
+    $('body').bind('keydown', 'left', prevImage);
+    $('body').bind('keydown', 'right', nextImage);
+    $win.on('scroll', loadImages).on('resize', loadImages);
+    loadImages();
+    setInterval(checkLocation, 300);
+    if(window.console) console.log('setupGallery() done');
+  }
+
   $(document).ready(function() {
+    if(location.href.indexOf('/gallery/') > 0) $('.gallery').each(setupGallery);
     $('form input[type="file"]').fileWrapper();
     $('#navbar').fixedNavbar();
     prettyPrint();
