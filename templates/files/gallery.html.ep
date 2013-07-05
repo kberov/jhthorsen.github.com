@@ -16,9 +16,13 @@
   % }
   % for my $f (@$files) {
   <li id="<%= $f->{id} %>">
-    %= link_to $f->{url}, begin
-      %= image '/image/not-loaded.png', 'data-src' => $f->{src}, alt => $f->{basename}, title => $f->{basename}
-    % end
+    % if($f->{type} eq 'directory') {
+      %= link_to $f->{basename}, $f->{url}, class => 'directory'
+    % } else {
+      %= link_to $f->{url}, begin
+        %= image '/image/not-loaded.png', 'data-src' => $f->{src}, alt => $f->{basename}, title => $f->{basename}
+      % end
   </li>
+    % }
   % }
 </ul>

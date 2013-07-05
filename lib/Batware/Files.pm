@@ -77,12 +77,13 @@ sub gallery {
 
   $self->_loop_files($disk_path, sub {
     my($file, $ext, $type) = @_;
-    $type =~ m!^image/! and push @files, {
+    $type =~ m!^(image|directory)! and push @files, {
       basename => Mojo::Util::decode('UTF-8', $file),
       id => $file =~ s/\W/_/gr, # / st2 hack
       size => -s "$disk_path/$file",
       src => $self->_thumb_path($url_path, $file),
-      url => $type eq 'directory' ? $self->_tree_path($url_path, $file) : $self->_show_path($url_path, $file),
+      type => $type,
+      url => $type eq 'directory' ? $self->_gallery_path($url_path, $file) : $self->_show_path($url_path, $file),
     };
   });
 
@@ -261,10 +262,19 @@ sub _extract_extension_and_filetype {
 
 sub _loop_files {
   my($self, $disk_path, $cb) = @_;
+  my @files;
 
   opendir my $DH, $disk_path or return $self->render_not_found;
 
-  for my $file (sort readdir $DH) {
+  @files = sort {
+                 $a->[1] <=> $b->[1]
+              || $a->[0] cmp $b->[0]
+           } map {
+              [$_, ! -d "$disk_path/$_" ];
+           } readdir $DH;
+
+  for(@files) {
+    my $file = $_->[0];
     next if $file =~ /^\./;
     next if !-r "$disk_path/$file";
     $cb->($file, $self->_extract_extension_and_filetype($disk_path, $file));

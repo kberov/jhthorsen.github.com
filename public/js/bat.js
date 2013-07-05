@@ -72,6 +72,8 @@
       });
 
       $('body').css('min-height', $('body').height());
+      $('#navbar .raw a').attr('href', src.replace(/inline=\d+/, ''));
+      $('#navbar .download a').attr('href', src.replace(/inline=\d+/, 'download=1'));
       $big.css('min-height', min_height).find('img').click(nextImage);
       $gallery.children('li').addClass('not-active');
       $li.removeClass('not-active').after($big);
@@ -87,24 +89,18 @@
     };
 
     $gallery.find('a').click(showImage).each(function() {
+      if($(this).hasClass('directory')) return;
       this.href = '#' + $(this).parent().attr('id');
     });
     $('#navbar .back a').click(function() {
       if(!current_id) return true;
-      location.href = location.href.replace(/#\w+/, '');
-      return false;
-    });
-    $('#navbar .raw a').click(function() {
-      location.href = $big.find('img').attr('src');
-      return false;
-    });
-    $('#navbar .download a').click(function() {
-      location.href = $big.find('img').attr('src').replace(/inline=\d+/, 'download=1');
+      history.go(-1);
       return false;
     });
 
     $('body').bind('keydown', 'left', prevImage);
     $('body').bind('keydown', 'right', nextImage);
+    $('body').bind('keydown', 'esc', function() { $('#navbar .back a').click(); });
     $win.on('scroll', loadImages).on('resize', loadImages);
     loadImages();
     setInterval(checkLocation, 300);
