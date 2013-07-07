@@ -21,6 +21,9 @@
             <li><a href="http://thorsen.pm/blog">Blog</a></li>
             <li><%= link_to 'Files', 'files', { url_path => '' } %>
             <li><a href="/contact">Contact</a></li>
+            % if($self->session('username')) {
+            <li><a href="/logout">Logout</a></li>
+            % }
           </ul>
         </div>
       </div>

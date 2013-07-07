@@ -53,6 +53,23 @@ sub eval_code {
   $res;
 }
 
+=head2 protected
+
+Returns a route which is protected with login.
+
+=cut
+
+has protected => sub {
+  my $self = shift;
+
+  $self->routes->under(sub {
+    my $c = shift;
+    return 1 if $c->session('username');
+    $c->render(template => 'private/login');
+    return 0;
+  });
+};
+
 =head2 redis
 
 Returns an instance of L<Mojo::Redis>.
@@ -80,6 +97,7 @@ sub startup {
   $self->plugin(Mail => $config->{Mail});
   $self->helper(eval_code => \&eval_code);
   $self->helper(redis => \&redis);
+  $self->secret($config->{secret});
 
   $r->get('/')->to(template => 'index');
   $r->get('/about/cv')->to(template => 'curriculum_vitae');
@@ -88,6 +106,8 @@ sub startup {
   $r->get('/trips')->to(template => 'trips')->name('trips');
   $r->get('/404')->to(template => 'not_found.production');
   $r->get('/500')->to(template => 'exception.production');
+  $r->any('/login')->to('private#login')->name('login');
+  $r->any('/logout')->to(cb => sub { shift->session(expires => 1)->redirect_to('/') })->name('logout');
 
   $r->get('/files')->to('files#tree', url_path => '');
   $r->get('/files/tree/(*url_path)')->to('files#tree', url_path => '')->name('files_tree');
@@ -105,11 +125,11 @@ sub startup {
   $r->get('/private/raw/*url_path')->to('private#raw')->name('private_raw');
   $r->any('/private/*url_path')->to('private#tree');
 
-  $r->get('/shotwell/show/:photo_id')->to('shotwell#show')->name('shotwell_show');
-  $r->get('/shotwell/raw/:photo_id')->to('shotwell#raw')->name('shotwell_raw');
-  $r->get('/shotwell/thumb/:photo_id')->to('shotwell#thumb')->name('shotwell_thumb');
-  $r->get('/shotwell/:event_id/*event_name')->to('shotwell#tree')->name('shotwell_tree');
-  $r->get('/shotwell')->to('shotwell#events')->name('shotwell_events');
+  $self->protected->get('/shotwell/show/:photo_id')->to('shotwell#show')->name('shotwell_show');
+  $self->protected->get('/shotwell/raw/:photo_id')->to('shotwell#raw')->name('shotwell_raw');
+  $self->protected->get('/shotwell/thumb/:photo_id')->to('shotwell#thumb')->name('shotwell_thumb');
+  $self->protected->get('/shotwell/:event_id/*event_name')->to('shotwell#tree')->name('shotwell_tree');
+  $self->protected->get('/shotwell')->to('shotwell#events')->name('shotwell_events');
 
   $r->get('/service/docsis')->to(cb => sub { $_[0]->redirect_to('docsis') });
   $r->get('/services/docsis')->to(cb => sub { $_[0]->redirect_to('docsis') });

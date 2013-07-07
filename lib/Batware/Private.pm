@@ -10,6 +10,31 @@ use Mojo::Base 'Batware::Files';
 
 =head1 METHODS
 
+=head2 login
+
+Used to enable login to protected resources.
+
+=cut
+
+sub login {
+  my $self = shift->render_later;
+  my $username = $self->param('username') || '';
+  my $password = $self->param('password') || '';
+
+  $self->req->method eq 'POST' or return $self->render;
+  $self->redis->hgetall("username:$username", sub {
+    my($redis, $user) = @_;
+
+    if($user->{password} and $user->{password} eq crypt $password, $user->{password}) {
+      $self->session(username => $username);
+      $self->redirect_to($self->param('url') || 'login');
+    }
+    else {
+      $self->render;
+    }
+  });
+}
+
 =head2 tree
 
 Will show a list of files.
