@@ -128,7 +128,9 @@ sub startup {
   $self->protected->get('/shotwell/show/:photo_id/:md5', [format => 0])->to('shotwell#show')->name('shotwell_show');
   $self->protected->get('/shotwell/raw/:photo_id/:md5', [format => 0])->to('shotwell#raw')->name('shotwell_raw');
   $self->protected->get('/shotwell/thumb/:photo_id/:md5', [format => 0])->to('shotwell#thumb')->name('shotwell_thumb');
+  $self->protected->get('/shotwell/tag/:tag_name', [format => 0])->to('shotwell#by_tag')->name('shotwell_tag');
   $self->protected->get('/shotwell/:event_id/:event_name', [format => 0])->to('shotwell#tree')->name('shotwell_tree');
+  $self->protected->get('/shotwell/tags', [format => 0])->to('shotwell#tags')->name('shotwell_tags');
   $self->protected->get('/shotwell', [format => 0])->to('shotwell#events')->name('shotwell_events');
 
   $r->get('/service/docsis')->to(cb => sub { $_[0]->redirect_to('docsis') });

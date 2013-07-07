@@ -1,6 +1,6 @@
 % layout 'default';
 % title 'Events';
-<h1><%= title %></h1>
+<h1>Events / <%= link_to 'Tags', 'shotwell_tags' %></h1>
 <ul class="files">
   % unless(@$files) {
   <li>No events.</li>

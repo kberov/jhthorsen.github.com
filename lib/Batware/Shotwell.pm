@@ -28,6 +28,70 @@ has dbh => sub {
 
 =head1 METHODS
 
+=head2 tags
+
+List tags.
+
+=cut
+
+sub tags {
+  my $self = shift;
+  my($sth, @files);
+
+  $sth = $self->dbh->prepare(<<'  SQL');
+    SELECT name
+    FROM TagTable
+    ORDER BY name
+  SQL
+  $sth->execute;
+
+  while(my $row = $sth->fetchrow_hashref) {
+    my $basename = Mojo::Util::decode('UTF-8', $row->{name});
+    push @files, {
+      basename => $basename,
+      url => $self->_tag_path($basename),
+    };
+  }
+
+  $self->stash(
+    files => \@files,
+    parent_path => $self->_tree_path,
+  );
+}
+
+=head2 by_tag
+
+List images by tag name.
+
+=cut
+
+sub by_tag {
+  my $self = shift;
+  my($sth, $row, $question_marks, @tags);
+
+  $self->stash(
+    name => $self->stash('tag_name'),
+    parent_path => $self->_tree_path,
+  );
+
+  $row = $self->dbh->selectrow_arrayref(<<'  SQL', {}, $self->stash('tag_name'));
+    SELECT photo_id_list
+    FROM TagTable
+    WHERE name LIKE ?
+  SQL
+
+  @tags = map { s/thumb0*//; hex } split /,/, $row->[0] || '';
+  $question_marks = join ',', map { '?' } @tags;
+  $sth = $self->dbh->prepare(<<"  SQL");
+    SELECT id, filename, filesize, md5, title
+    FROM PhotoTable
+    WHERE id IN ($question_marks)
+    ORDER BY timestamp
+  SQL
+  $sth->execute(@tags);
+  $self->_tree($sth);
+}
+
 =head2 events
 
 List events from Shotwell database.
@@ -57,7 +121,6 @@ sub events {
 
   $self->stash(
     files => \@files,
-    name => 'Events',
     parent_path => $self->_tree_path,
   );
 }
@@ -71,11 +134,13 @@ List image files by event name.
 sub tree {
   my $self = shift;
   my $event_id = $self->stash('event_id');
-  my($sth, $name, @files);
+  my($sth, $row, $name);
 
-  $sth = $self->dbh->prepare('SELECT name FROM EventTable WHERE id = ?');
-  $sth->execute($event_id);
-  $name = $sth->fetchrow_hashref->{name} or return $self->render_not_found;
+  $row = $self->dbh->selectrow_arrayref('SELECT name FROM EventTable WHERE id = ?', {}, $event_id) or return $self->render_not_found;;
+  $self->stash(
+    name => Mojo::Util::decode('UTF-8', $row->[0]),
+    parent_path => $self->_tree_path,
+  );
 
   $sth = $self->dbh->prepare(<<'  SQL');
     SELECT id, filename, filesize, md5, title
@@ -84,6 +149,12 @@ sub tree {
     ORDER BY timestamp
   SQL
   $sth->execute($event_id);
+  $self->_tree($sth);
+}
+
+sub _tree {
+  my($self, $sth) = @_;
+  my @files;
 
   while(my $row = $sth->fetchrow_hashref('NAME_lc')) {
     my($ext, $type) = $self->_extract_extension_and_filetype($row->{filename});
@@ -97,13 +168,7 @@ sub tree {
     };
   }
 
-  $self->stash(
-    files => \@files,
-    name => Mojo::Util::decode('UTF-8', $name),
-    parent_path => $event_id ? $self->_tree_path : '',
-  );
-
-  $self->render(template => 'files/gallery');
+  $self->render(template => 'files/gallery', files => \@files);
 }
 
 =head2 raw
@@ -162,6 +227,7 @@ sub _set_url_path {
 
 sub _root_path { '' } # url_path contains complete path
 sub _tree_path { shift; join '/', '/shotwell', grep { length } @_ }
+sub _tag_path { shift; join '/', '/shotwell/tag', grep { length } @_ }
 sub _show_path { shift; join '/', '/shotwell/show', grep { length } @_ }
 sub _thumb_path { shift; join '/', '/shotwell/thumb', grep { length } @_ }
 
