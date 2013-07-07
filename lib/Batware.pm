@@ -97,13 +97,19 @@ sub startup {
 
   $r->get('/gallery/show/*url_path')->to('gallery#show')->name('gallery_show');
   $r->get('/gallery/raw/*url_path')->to('gallery#raw')->name('gallery_raw');
-  $r->get('/gallery/thumb/*url_path')->to('gallery#thumb')->name('gallery_raw');
+  $r->get('/gallery/thumb/*url_path')->to('gallery#thumb')->name('gallery_thumb');
   $r->get('/gallery/*url_path')->to('gallery#tree', url_path => '')->name('gallery_tree');
 
   $r->any('/private/tree/*url_path')->to('private#tree')->name('private_tree');
   $r->get('/private/show/*url_path')->to('private#show')->name('private_show');
   $r->get('/private/raw/*url_path')->to('private#raw')->name('private_raw');
   $r->any('/private/*url_path')->to('private#tree');
+
+  $r->get('/shotwell/show/:photo_id')->to('shotwell#show')->name('shotwell_show');
+  $r->get('/shotwell/raw/:photo_id')->to('shotwell#raw')->name('shotwell_raw');
+  $r->get('/shotwell/thumb/:photo_id')->to('shotwell#thumb')->name('shotwell_thumb');
+  $r->get('/shotwell/:event_id/*event_name')->to('shotwell#tree')->name('shotwell_tree');
+  $r->get('/shotwell')->to('shotwell#events')->name('shotwell_events');
 
   $r->get('/service/docsis')->to(cb => sub { $_[0]->redirect_to('docsis') });
   $r->get('/services/docsis')->to(cb => sub { $_[0]->redirect_to('docsis') });

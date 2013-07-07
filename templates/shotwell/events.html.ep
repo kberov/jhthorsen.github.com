@@ -1,0 +1,14 @@
+% layout 'default';
+% title 'Events';
+<h1><%= title %></h1>
+<ul class="files">
+  % unless(@$files) {
+  <li>No events.</li>
+  % }
+  % for my $f (@$files) {
+  <li id="<%= $f->{id} %>">
+    %= link_to $f->{basename}, $f->{url}
+    <small><%= $f->{date} %></small>
+  </li>
+  % }
+</ul>

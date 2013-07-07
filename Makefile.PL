@@ -11,6 +11,7 @@ WriteMakefile(
   EXE_FILES => ['script/batware'],
   PREREQ_PM => {
     'Config::General' => '2.51',
+    'DBD::SQLite' => 1.37,
     'DOCSIS::ConfigFile' => '0.63',
     'File::MimeInfo::Magic' => '0.16',
     'Image::EXIF' => 2.01,

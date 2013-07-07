@@ -170,7 +170,7 @@ sub _loop_files {
 
 sub _url_path {
   my $self = shift;
-  my $url_path = $self->param('url_path');
+  my $url_path = $self->stash('url_path');
 
   $url_path =~ s!^/!!;
   $url_path =~ s!/$!!;

@@ -114,8 +114,8 @@
   }
 
   $(document).ready(function() {
-    if(location.href.indexOf('/gallery/') > 0) $('.gallery').each(setupGallery);
     $('form input[type="file"]').fileWrapper();
+    $('#gallery').each(setupGallery);
     $('#navbar').fixedNavbar();
     prettyPrint();
   });

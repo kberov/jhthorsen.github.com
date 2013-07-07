@@ -3397,11 +3397,8 @@ li.L1,li.L3,li.L5,li.L7,li.L9{background:#eee}
   width: 100%;
   padding: 0;
 }
-.gallery li a {
-  height: 98px;
-  width: 98px;
-  display: block;
-}
-.gallery li.big img { cursor: pointer; }
+.gallery li a { height: 98px; width: 98px; display: block; }
+.gallery li.big img { cursor: e-resize; }
 #navbar .image-link { display: none; }
 #navbar .image-link.info { float: right; }
+#navbar .image-link.info a { cursor: e-resize; }

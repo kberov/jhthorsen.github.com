@@ -11,7 +11,7 @@
   </ul>
 </div>
 % }
-<ul class="gallery">
+<ul class="gallery" id="gallery">
   % unless(@$files) {
   <li>No images.</li>
   % }
