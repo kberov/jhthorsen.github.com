@@ -12,25 +12,16 @@ use DBI;
 
 =head1 ATTRIBUTES
 
-=head2 home
-
-Returns "/Shotwell/home" from config file.
-
-=cut
-
-has home => sub { shift->app->config->{Shotwell}{home} };
-
 =head2 dbh
 
-Creates a L<DBI> object with the the Shotwell database as source:
-
-  $home/.local/share/shotwell/data/photo.db
+Creates a L<DBI> object with the the Shotwell database as source. The location
+to the database is found in the config by looking for "/Shotwell/dbname".
 
 =cut
 
 has dbh => sub {
   my $self = shift;
-  my $dbname = $self->home .'/.local/share/shotwell/data/photo.db';
+  my $dbname = $self->app->config->{Shotwell}{dbname};
 
   DBI->connect("dbi:SQLite:dbname=$dbname");
 };
