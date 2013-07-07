@@ -63,16 +63,20 @@ Will serve a file in raw format.
 sub raw {
   my $self = shift;
   my $url_path = $self->_url_path;
-  my($ext, $type) = $self->_extract_extension_and_filetype($self->_root_path, $url_path);
+  my $disk_path = join '/', $self->_root_path, $url_path;
+  my($ext, $type) = $self->_extract_extension_and_filetype($disk_path);
 
   if($type !~ m!^image! or $self->param('download')) {
     return $self->SUPER::raw;
   }
 
-  my $exif = Image::EXIF->new(join '/', $self->_root_path, $url_path);
   my $inline = $self->param('inline') ? 1024 : '';
-  my $orientation = $exif->get_image_info->{'Image Orientation'} || '';
+  my $orientation = '';
   my $static;
+
+  if($type eq 'image/jpeg') {
+    $orientation = Image::EXIF->new($disk_path)->get_image_info->{'Image Orientation'} || '';
+  }
 
   given($orientation) {
     when(/^.*left.*bottom/i)  { $orientation = 3 }
@@ -87,7 +91,7 @@ sub raw {
       my $md5 = Mojo::Util::md5_sum($url_path);
       $md5 .= "_$inline" if $inline;
       unless(-e "$path/$md5") {
-        my $t = Image::Imlib2->load(join '/', $self->_root_path, $url_path);
+        my $t = Image::Imlib2->load($disk_path);
         $t->image_orientate($orientation);
         $t = $t->create_scaled_image($inline, 0) if $inline;
         $t->image_set_format('jpeg');
