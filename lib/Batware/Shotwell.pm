@@ -51,7 +51,7 @@ sub events {
       basename => Mojo::Util::decode('UTF-8', $row->{name}),
       date => scalar(localtime $row->{time_created}),
       id => $row->{id},
-      url => $self->_tree_path($row->{id}, $row->{name}),
+      url => $self->_tree_path($row->{id}, $row->{name} =~ s/\W//gr), # /
     };
   }
 
@@ -71,10 +71,14 @@ List image files by event name.
 sub tree {
   my $self = shift;
   my $event_id = $self->stash('event_id');
-  my($sth, @files);
+  my($sth, $name, @files);
+
+  $sth = $self->dbh->prepare('SELECT name FROM EventTable WHERE id = ?');
+  $sth->execute($event_id);
+  $name = $sth->fetchrow_hashref->{name} or return $self->render_not_found;
 
   $sth = $self->dbh->prepare(<<'  SQL');
-    SELECT id, filename, filesize, title
+    SELECT id, filename, filesize, md5, title
     FROM PhotoTable
     WHERE event_id = ?
     ORDER BY timestamp
@@ -87,15 +91,15 @@ sub tree {
       basename => Mojo::Util::decode('UTF-8', $row->{title} || basename $row->{filename}),
       id => $row->{id},
       size => $row->{filesize} || 0,
-      src => $self->_thumb_path($row->{id}),
+      src => $self->_thumb_path($row->{id}, $row->{md5}),
       type => $type || 'image/unknown',
-      url => $self->_show_path($row->{id}),
+      url => $self->_show_path($row->{id}, $row->{md5}),
     };
   }
 
   $self->stash(
     files => \@files,
-    name => $self->stash('event_name') || 'Events',
+    name => $name,
     parent_path => $event_id ? $self->_tree_path : '',
   );
 
@@ -140,16 +144,18 @@ sub thumb {
 
 sub _set_url_path {
   my $self = shift;
+  my $md5 = $self->stash('md5');
   my($sth, $row);
 
   $sth = $self->dbh->prepare(<<'  SQL');
-    SELECT filename
+    SELECT filename, md5
     FROM PhotoTable
     WHERE id = ?
   SQL
 
   $sth->execute($self->stash('photo_id'));
-  $row = $sth->fetchrow_hashref || {};
+  $row = $sth->fetchrow_hashref || { filename => '', md5 => '' };
+  $md5 eq $row->{md5} or return;
   $self->stash(url_path => $row->{filename});
   $row->{filename};
 }
