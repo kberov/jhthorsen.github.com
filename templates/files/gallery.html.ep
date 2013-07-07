@@ -7,6 +7,7 @@
     <li class="back"><%= link_to 'Back', $parent_path %></li>
     <li class="raw image-link"><%= link_to 'Raw format', '/raw' %></li>
     <li class="download image-link"><%= link_to 'Download', "/download" %></li>
+    <li class="info image-link"><a href="#next">0/0</a></li>
   </ul>
 </div>
 % }

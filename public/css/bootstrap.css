@@ -3404,3 +3404,4 @@ li.L1,li.L3,li.L5,li.L7,li.L9{background:#eee}
 }
 .gallery li.big img { cursor: pointer; }
 #navbar .image-link { display: none; }
+#navbar .image-link.info { float: right; }

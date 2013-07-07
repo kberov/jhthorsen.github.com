@@ -1,9 +1,10 @@
 (function($) {
   var setupGallery = function() {
     var $gallery = $(this);
-    var $images = $gallery.find('img');
+    var $preload = $gallery.find('img');
     var $win = $(window);
     var $big;
+    var number_of_images = $preload.length;
     var previous_trigger = 0;
     var current_id = '';
     var preloaded = {};
@@ -13,7 +14,7 @@
       if(location_id[1] === current_id) return;
       if(location_id[1]) return $('#' + location_id[1]).find('a').click();
       if($big) $big.remove();
-      $('#navbar').find('.raw, .download').hide();
+      $('#navbar').find('.image-link').hide();
       $gallery.find('li').removeClass('not-active');
       current_id = '';
       document.title = $('#content h1').text();
@@ -21,7 +22,7 @@
     var loadImages = function(event) {
       var trigger = $win.scrollTop() + $win.height() + 100;
       if(trigger < previous_trigger + 50) return;
-      $images = $images.not(function(i) {
+      $preload = $preload.not(function(i) {
                   var $img = $(this);
                   var visible = $img.offset().top < trigger;
                   if(visible) {
@@ -31,7 +32,7 @@
                   return visible;
                 });
 
-      if($images.length === 0) $win.unbind('scroll', loadImages).unbind('resize', loadImages);
+      if($preload.length === 0) $win.unbind('scroll', loadImages).unbind('resize', loadImages);
     };
     var nextImage = function() {
       var id = $big.next().length ? $big.next().attr('id') : $gallery.children('li:first').attr('id');
@@ -40,6 +41,7 @@
       } catch(e) {
         location.href = location.href.replace(/#\w+/, '#' + id);
       };
+      return false;
     };
     var prevImage = function() {
       var $prev = $('#' + current_id).prev();
@@ -50,8 +52,8 @@
         location.href = location.href.replace(/#\w+/, '#' + id);
       };
     };
-    var showImage = function() {
-      var $li = $(this).parent();
+    var showImage = function($a, i) {
+      var $li = $a.parent();
       var src = $li.find('img').attr('src').replace(/\/thumb\//, '/raw/');
       var min_height = 20;
 
@@ -68,12 +70,13 @@
         $win.scrollTop($big.offset().top - 50);
         $big.find('span').text($li.find('img').attr('title'));
         $big.css('min-height', '10px');
-        $('#navbar').find('.raw, .download').show();
+        $('#navbar').find('.image-link').show();
       });
 
       $('body').css('min-height', $('body').height());
       $('#navbar .raw a').attr('href', src.replace(/inline=\d+/, ''));
       $('#navbar .download a').attr('href', src.replace(/inline=\d+/, 'download=1'));
+      $('#navbar .info a').text((i + 1) + '/' + number_of_images);
       $big.css('min-height', min_height).find('img').click(nextImage);
       $gallery.children('li').addClass('not-active');
       $li.removeClass('not-active').after($big);
@@ -88,15 +91,18 @@
       }
     };
 
-    $gallery.find('a').click(showImage).each(function() {
-      if($(this).hasClass('directory')) return;
-      this.href = '#' + $(this).parent().attr('id');
+    $gallery.find('a').not('.directory').each(function(_i) {
+      var i = _i;
+      var $a = $(this);
+      $a.click(function() { showImage($a, i); });
+      this.href = '#' + $a.parent().attr('id');
     });
     $('#navbar .back a').click(function() {
       if(!current_id) return true;
       history.go(-1);
       return false;
     });
+    $('#navbar .info a').click(nextImage);
 
     $('body').bind('keydown', 'left', prevImage);
     $('body').bind('keydown', 'right', nextImage);
