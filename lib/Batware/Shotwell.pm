@@ -99,7 +99,7 @@ sub tree {
 
   $self->stash(
     files => \@files,
-    name => $name,
+    name => Mojo::Util::decode('UTF-8', $name),
     parent_path => $event_id ? $self->_tree_path : '',
   );
 
