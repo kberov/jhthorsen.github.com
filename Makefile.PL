@@ -18,6 +18,7 @@ WriteMakefile(
     'Image::Imlib2' => 2.03,
     'Mojolicious' => '3.91',
     'Mojolicious::Plugin::Mail' => '0.94',
+    'Mojolicious::Plugin::Shotwell' => '0.01',
   },
   test => {
     TESTS => 't/*.t',

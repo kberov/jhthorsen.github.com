@@ -1,0 +1,12 @@
+% layout 'default';
+% title $name;
+<h1><%= $name %></h1>
+%= include 'files/navbar';
+<div class="single-thumbnail thumbnail span8">
+  %= link_to $raw, begin
+    %= image $raw, alt => $name;
+  % end
+  <div class="caption">
+    <h5><%= $name %></h5>
+  </div>
+</div>

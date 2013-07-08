@@ -1,0 +1,20 @@
+% layout 'default';
+% title $name;
+<h1><%= $name %></h1>
+<div id="navbar">
+  <ul class="nav nav-tabs">
+    <li class="back"><%= link_to 'Back', '..' %></li>
+    <li class="raw image-link"><%= link_to 'Raw format', '/raw' %></li>
+    <li class="download image-link"><%= link_to 'Download', "/download" %></li>
+    <li class="info image-link"><a href="#next">0/0</a></li>
+  </ul>
+</div>
+<ul class="gallery" id="gallery">
+  % for my $photo (@$photos) {
+  <li id="<%= $photo->{id} %>">
+    %= link_to $photo->{url}, begin
+      %= image '/image/not-loaded.png', 'data-src' => $photo->{thumb}, alt => $photo->{name}, title => $photo->{name}
+    % end
+  </li>
+  % }
+</ul>

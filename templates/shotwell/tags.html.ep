@@ -1,13 +1,10 @@
 % layout 'default';
 % title 'Tags';
-<h1><%= link_to 'Events', 'shotwell_events' %> / Tags</h1>
+<h1><%= link_to 'Events', 'shotwell/events' %> / Tags</h1>
 <ul class="files">
-  % unless(@$files) {
-  <li>No tags.</li>
-  % }
-  % for my $f (@$files) {
+  % for my $tag (@$tags) {
   <li>
-    %= link_to $f->{basename}, $f->{url}
+    %= link_to $tag->{name}, $tag->{url}
   </li>
   % }
 </ul>

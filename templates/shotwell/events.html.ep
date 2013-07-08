@@ -1,14 +1,14 @@
 % layout 'default';
 % title 'Events';
-<h1>Events / <%= link_to 'Tags', 'shotwell_tags' %></h1>
+<h1>Events / <%= link_to 'Tags', 'shotwell/tags' %></h1>
 <ul class="files">
-  % unless(@$files) {
+  % unless(@$events) {
   <li>No events.</li>
   % }
-  % for my $f (@$files) {
-  <li id="<%= $f->{id} %>">
-    %= link_to $f->{basename}, $f->{url}
-    <small><%= $f->{date} %></small>
+  % for my $event (@$events) {
+  <li id="<%= $event->{id} %>">
+    %= link_to $event->{name}, $event->{url}
+    <small><%= localtime $event->{time_created} %></small>
   </li>
   % }
 </ul>
