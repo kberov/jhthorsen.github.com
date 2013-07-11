@@ -23,6 +23,7 @@ This is the codebare for L<http://thorsen.pm>.
 
 use Mojo::Base 'Mojolicious';
 use Mojo::Redis;
+use DBI;
 
 our $VERSION = '0.01';
 
@@ -96,6 +97,7 @@ sub startup {
 
   $config->{Shotwell}{routes}{default} = $self->protected->route('/shotwell');
   $config->{Shotwell}{routes}{permalink} = $r->get('/shotwell/:permalink');
+  $self->_init_shotwell_database(@{ $config->{Shotwell} }{qw/ sync_from dbname /});
 
   $self->plugin(Mail => $config->{Mail});
   $self->plugin(Shotwell => $config->{Shotwell});
@@ -154,6 +156,57 @@ sub _post_contact_form {
     );
     $c->stash(report => 'Message was sent!');
   });
+}
+
+sub _init_shotwell_database {
+  my($self, @args) = @_;
+
+  unless(-e $args[1]) {
+    require File::Copy;
+    $self->log->info("Creating $args[1]");
+    File::Copy::copy(@args);
+  }
+
+  unlink "$args[1].lock";
+  Mojo::IOLoop->recurring(2, sub { $self->_sync_shotwell_database(@args) });
+}
+
+sub _sync_shotwell_database {
+  my($self, @args) = @_;
+  my @stat = map { (stat $_)[9] || 0 } @args;
+
+  # only one child should do this
+  $stat[0] <= $stat[1] and return;
+  symlink $args[1], "$args[1].lock" or return;
+
+  my $dbh_from = DBI->connect("dbi:SQLite:dbname=$args[0]", "", "", { RaiseError => 1 });
+  my $dbh_to = DBI->connect("dbi:SQLite:dbname=$args[1]", "", "", { RaiseError => 1 });
+
+  $self->log->info("Syncing $args[0] > $args[1]");
+
+  for my $table (qw/ PhotoTable EventTable TagTable /) {
+    my $sth_from = $dbh_from->prepare("SELECT * FROM $table");
+    my $sth_to;
+    my $n = 0;
+
+    $dbh_to->{AutoCommit} = 0;
+    $dbh_to->do("DELETE FROM $table");
+    $sth_from->execute;
+
+    while(my $row = $sth_from->fetchrow_arrayref) {
+      $sth_to ||= do {
+        my $q = join ',', map { '?' } @$row;
+        $dbh_to->prepare("INSERT INTO $table VALUES ($q)");
+      };
+      $sth_to->execute(@$row);
+      $n++;
+    }
+
+    $dbh_to->commit;
+    $self->log->info("Synced $n rows from $table")
+  }
+
+  unlink "$args[1].lock";
 }
 
 =head1 AUTHOR
