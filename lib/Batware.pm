@@ -64,7 +64,7 @@ has protected => sub {
 
   $self->routes->under(sub {
     my $c = shift;
-    return 1 if $c->session('username');
+    return 1 if $c->session('username') or $c->shotwell_access_granted;
     $c->render(template => 'private/login');
     return 0;
   });
@@ -94,7 +94,8 @@ sub startup {
   my $config = $self->plugin('config');
   my $r = $self->routes;
 
-  $config->{Shotwell}{route} = $self->protected->route('/shotwell');
+  $config->{Shotwell}{routes}{default} = $self->protected->route('/shotwell');
+  $config->{Shotwell}{routes}{permalink} = $r->get('/shotwell/:permalink');
 
   $self->plugin(Mail => $config->{Mail});
   $self->plugin(Shotwell => $config->{Shotwell});
