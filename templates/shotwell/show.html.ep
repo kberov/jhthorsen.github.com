@@ -9,7 +9,7 @@
 </div>
 <div class="single-thumbnail thumbnail span8">
   %= link_to $raw, begin
-    %= image $raw, alt => $name;
+    %= image "$raw?inline=1024", alt => $name;
   % end
   <div class="caption">
     <h5><%= $name %></h5>
