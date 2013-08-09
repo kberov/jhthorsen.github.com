@@ -2,23 +2,20 @@
 % title 'Login';
 <h1>Login</h1>
 % if($self->req->method eq 'POST') {
-<p class="alert alert-error">Invalid username and/or password</p>
+<div class="alert">Invalid username and/or password</div>
 % }
-%= form_for 'login', method => 'post', class => 'form-horizontal', begin
-  <div class="control-group">
+%= form_for 'login', method => 'post', begin
+  <div>
     %= hidden_field 'url', $self->param('url') || $self->req->url->to_abs
-    <label class="control-label" for="username">Username</label>
-    <div class="controls">
-      %= text_field 'username', id => 'username', class => 'span4'
-    </div>
+    <label for="username">Username</label>
+    %= text_field 'username', id => 'username', class => 'span4'
   </div>
-  <div class="control-group">
-    <label class="control-label" for="password">Password</label>
-    <div class="controls">
+  <div>
+    <div>
       %= password_field 'password', id => 'password', class => 'span4'
     </div>
   </div>
-  <div class="form-actions">
-    <button type="submit" class="btn btn-primary">Login</button>
+  <div class="actions">
+    <button type="submit">Login</button>
   </div>
 % end

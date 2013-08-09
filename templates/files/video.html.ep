@@ -1,8 +1,8 @@
 % layout 'default';
 % title $basename;
 <h1><%= $basename %></h1>
-%= include 'files/navbar';
-<div class="single-thumbnail thumbnail span8">
+%= include 'files/navbar'
+<div class="video preview">
   <video controls="controls" preload="none">
     <source src="<%= $raw_path %>">
   </video>

@@ -3,6 +3,7 @@
     var $gallery = $(this);
     var $preload = $gallery.find('img');
     var $win = $(window);
+    var $navbar = $('.navbar');
     var $big;
     var number_of_images = $preload.length;
     var previous_trigger = 0;
@@ -14,12 +15,12 @@
       if(location_id[1] === current_id) return;
       if(location_id[1]) return $('#' + location_id[1]).find('a').click();
       if($big) $big.remove();
-      $('#navbar').find('.image-link').hide();
+      $navbar.find('.image-link').hide();
       $gallery.find('li').removeClass('not-active');
       current_id = '';
       document.title = $('#content h1').text();
     };
-    var loadImages = function(event) {
+    var loadImages = function(e) {
       var trigger = $win.scrollTop() + $win.height() + 100;
       if(trigger < previous_trigger + 50) return;
       $preload = $preload.not(function(i) {
@@ -27,7 +28,7 @@
                   var visible = $img.offset().top < trigger;
                   if(visible) {
                     $img.attr('src', $img.attr('data-src') + '?inline=1024');
-                    if(event) $img.hide().fadeIn('slow');
+                    if(e) $img.hide().fadeIn('slow');
                   }
                   return visible;
                 });
@@ -51,6 +52,7 @@
       } catch(e) {
         location.href = location.href.replace(/#\w+/, '#' + id);
       };
+      return false;
     };
     var showImage = function($a, i) {
       var $li = $a.parent();
@@ -70,13 +72,13 @@
         $win.scrollTop($big.offset().top - 50);
         $big.find('span').text($li.find('img').attr('title'));
         $big.css('min-height', '10px');
-        $('#navbar').find('.image-link').show();
+        $navbar.find('.image-link').show();
       });
 
       $('body').css('min-height', $('body').height());
-      $('#navbar .raw a').attr('href', src.replace(/inline=\d+/, ''));
-      $('#navbar .download a').attr('href', src.replace(/inline=\d+/, 'download=1'));
-      $('#navbar .info a').text((i + 1) + '/' + number_of_images);
+      $navbar.find('.raw a').attr('href', src.replace(/inline=\d+/, ''));
+      $navbar.find('.download a').attr('href', src.replace(/inline=\d+/, 'download=1'));
+      $navbar.find('.info span').text((i + 1) + '/' + number_of_images);
       $big.css('min-height', min_height).find('img').click(nextImage);
       $gallery.children('li').addClass('not-active');
       $li.removeClass('not-active').after($big);
@@ -97,16 +99,17 @@
       $a.click(function() { showImage($a, i); });
       this.href = '#' + $a.parent().attr('id');
     });
-    $('#navbar .back a').click(function() {
+    $navbar.find('.back a').click(function() {
       if(!current_id) return true;
       history.go(-1);
       return false;
     });
-    $('#navbar .info a').click(nextImage);
+    $navbar.find('.next a').click(nextImage);
+    $navbar.find('.prev a').click(prevImage);
 
     $('body').bind('keydown', 'left', prevImage);
     $('body').bind('keydown', 'right', nextImage);
-    $('body').bind('keydown', 'esc', function() { $('#navbar .back a').click(); });
+    $('body').bind('keydown', 'esc', function() { $navbar.find('.back a').click(); });
     $win.on('scroll', loadImages).on('resize', loadImages);
     loadImages();
     setInterval(checkLocation, 300);
@@ -114,17 +117,37 @@
   }
 
   $(document).ready(function() {
+    $('div.navbar').fixedNavbar();
     $('form input[type="file"]').fileWrapper();
     $('#gallery').each(setupGallery);
-    $('#navbar').fixedNavbar();
     prettyPrint();
+
+    $('.docsis-editor .file-wrapper input').change(function(e) {
+      $(this).closest('form').submit();
+    }).parent().next('button').hide();
+
+    $('a.fullscreen').click(function(e) {
+      var $a = $(this);
+      var $textarea = $a.prev('textarea');
+
+      $textarea.wrap('<div class="fullscreen"></div>').parent().appendTo('body');
+      $('body').addClass('fullscreen');
+      setTimeout(function() { $textarea.focus(); }, 100);
+
+      $textarea.not('.esc').addClass('esc').bind('keydown', 'esc', function() {
+        $a.before($textarea);
+        $('body').removeClass('fullscreen');
+        $('body > .fullscreen').remove();
+      });
+      return false;
+    });
   });
 })(jQuery);
 
 jQuery.fn.fileWrapper = function() {
   this.each(function() {
     var $input = $(this);
-    var $btn = $('<button class="btn"></button').text($input.attr('title'));
+    var $btn = $('<button></button').text($input.attr('title'));
     $input.wrap('<div class="file-wrapper">').after($btn).change(function() {
       var files = this.files ? $.map(this.files, function(e) { return e.name; }) : [this.value];
       var text = files.length > 1 ? files.length + ' files selected.' : files[0];
@@ -140,30 +163,34 @@ jQuery.fn.fileWrapper = function() {
 jQuery.fn.fixedNavbar = function() {
   this.each(function() {
     var $fixed = $(this);
-    var $parent_element = $fixed.parent();
     var $clone = $('<div>&nbsp;</div>');
-    var o_top = $fixed.offset().top;
 
-    o_top -= $fixed.outerHeight() - $fixed.height();
+    var offsetTop = function() {
+      offsetTop.trigger = $clone.offset().top;
+      return $clone.offset().top;
+    };
 
-    $clone.css({
-      'width': $fixed.outerWidth(),
-      'height': $fixed.outerHeight() + 10
-    });
-
+    $clone.css({ 'height': $fixed.outerHeight() + 10 });
     $fixed.before($clone).css({
       'width': $fixed.width(),
-      'top': o_top,
+      'top': offsetTop(),
       'z-index': 100,
       'position': 'absolute'
     });
 
-    $(window).bind('scroll', function(event) {
-      if(o_top <= $(window).scrollTop()) {
+    $(window).bind('resize', function(e) {
+      var top = offsetTop();
+      $fixed.css({
+        width: $clone.width(),
+        top: offsetTop.trigger <= $(window).scrollTop() ? 0 : top
+      });
+    });
+    $(window).bind('scroll', function(e) {
+      if(offsetTop.trigger <= $(window).scrollTop()) {
         $fixed.css({ 'top': 0, 'position': 'fixed' });
       }
       else {
-        $fixed.css({ 'top': o_top, 'position': 'absolute' });
+        $fixed.css({ 'top': offsetTop.trigger, 'position': 'absolute' });
       }
     });
   });

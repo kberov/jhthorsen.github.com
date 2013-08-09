@@ -1,13 +1,13 @@
 % layout 'default';
 % title $name;
 <h1><%= $name %></h1>
-<div id="navbar">
-  <ul class="nav nav-tabs">
+<div class="navbar">
+  <ul>
     <li><%= link_to 'Raw format', $raw %></li>
     <li><%= link_to 'Download', "$raw?download=1" %></li>
   </ul>
 </div>
-<div class="single-thumbnail thumbnail span8">
+<div class="image preview">
   %= link_to $raw, begin
     %= image "$raw?inline=1024", alt => $name;
   % end

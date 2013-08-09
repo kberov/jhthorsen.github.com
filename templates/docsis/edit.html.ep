@@ -3,7 +3,7 @@
 <h1>Online DOCSIS config file editor</h1>
 
 % if($report) {
-<p class="alert alert-info"><%= $report %></p>
+<div class="info"><%= $report %></div>
 % }
 % if(my $id = param('id') || stash('id')) {
 % my $url = url_for('docsis_load', id => $id)->to_abs;
@@ -13,26 +13,33 @@
 </p>
 % }
 
-%= form_for 'docsis', method => 'post', begin
-  <label for="name">Config file name</label>
-  %= hidden_field 'id', param('id') || 0;
-  %= text_field 'filename', id => 'filename', class => 'input-block-level'
-  <label for="shared_secret">Shared secret</label>
-  %= text_field 'shared_secret', id => 'shared_secret', class => 'input-block-level'
-  <label class="control-label" for="config">Config text</label>
-  %= text_area 'config', id => 'config', class => 'input-block-level', rows => 10
-  <button class="btn" name="action" value="save">Save</button>
-  <button class="btn" name="action" value="download">Download</button>
+%= form_for 'docsis', method => 'post', class => 'docsis-editor', begin
+  <div>
+    <label for="name">Config file name</label>
+    %= hidden_field 'id', param('id') || 0;
+    %= text_field 'filename', id => 'filename', class => 'input-block-level'
+  </div>
+  <div>
+    <label for="shared_secret">Shared secret</label>
+    %= text_field 'shared_secret', id => 'shared_secret', class => 'input-block-level'
+    <label for="config">Config text</label>
+    %= text_area 'config', id => 'config', class => 'input-block-level', rows => 10
+    <a href="#" class="fullscreen">Edit fullscreen</a> (Press escape key to close fullscreen)
+  </div>
+  <div class="actions">
+    <button name="action" value="save">Save</button>
+    <button name="action" value="download">Download</button>
+  </div>
 % end
 
-<h2>Upload binary config file</h1>
-%= form_for 'docsis', method => 'post', class => 'form-inline', enctype => 'multipart/form-data', begin
+<h2>Edit binary config file</h1>
+%= form_for 'docsis', method => 'post', enctype => 'multipart/form-data', class => 'docsis-editor', begin
   %= file_field 'file', title => 'Choose file'
-  <button class="btn" name="action" value="download">Upload</button>
+  <button name="action" value="download">Upload</button>
 % end
 <p>
   NOTE: The uploaded file will only be shown in the editor above. It will NOT
-  get stored in backend database. Click "Save" afterwards for that.
+  be stored in backend database. Click "Save" afterwards for that.
 </p>
 
 <h2>Load example config file</h1>
@@ -43,7 +50,7 @@
 <h2>Help</h2>
 <p>
   You can generate <a href="http://en.wikipedia.com/wiki/DOCSIS">DOCSIS</a>
-  config files by entering config in
+  config files by writing the DOCSIS config in
   %= link_to 'Config::General', 'http://metacpan.org/module/Config::General';
   (Apache config) format into the "Config text" area. The config file can
   be downloaded in binary format and/or saved to thorsen's database.
@@ -55,10 +62,10 @@
 </p>
 <p>
   Config information is not saved on my server before you click the
-  <button class="btn">Save</button> button and fill out the following form.
+  <button class="tiny">Save</button> button and fill out the following form.
   This means that you can generate restricted config files, without sharing any
   information, simply by pasting config into the "Config text" area, followed
-  by clicking on the <button class="btn">Download</button> button.
+  by clicking on the <button class="tiny">Download</button> button.
 </p>
 
 <h2>Disclaimer</h2>

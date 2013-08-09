@@ -1,8 +1,8 @@
 % layout 'default';
 % title $basename;
 <h1><%= $basename %></h1>
-%= include 'files/navbar';
-<div>
+%= include 'files/navbar'
+<div class="text preview">
 % my $text = Mojo::Util::decode('UTF-8', $file->slurp);
   <pre class="<%= length $text < 10000 ? 'prettyprint' : '' %>">
 %= $text

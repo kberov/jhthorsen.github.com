@@ -1,7 +1,7 @@
 % layout 'default';
 % title 'About me';
 <h1>About me</h1>
-<div class="thumbnail span2 pull-right">
+<div class="pull-right">
   %= image '/image/335002_10151283069355581_126397468_o.jpg', alt => 'Image of me'
 </div>
 <p>

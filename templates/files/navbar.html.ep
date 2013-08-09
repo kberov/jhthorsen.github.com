@@ -1,5 +1,5 @@
-<div id="navbar">
-  <ul class="nav nav-tabs">
+<div class="navbar">
+  <ul>
     <li><%= link_to 'Back', $dir_path %></li>
     <li><%= link_to 'Raw format', $raw_path %></li>
     <li><%= link_to 'Download', "$raw_path?download=1" %></li>

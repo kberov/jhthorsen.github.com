@@ -1,0 +1,334 @@
+$backgroundColor: #fff;
+$fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$fontColor: #222;
+$linkColor: #c00;
+$fontSize: 14px;
+$bodyGutter: 20px;
+$responsiveWidth: 50em;
+$columnWidth: 8.333333%;
+
+/*
+ * Sass mixins
+ */
+@mixin prefix($property, $value...) {      // Chews experimental css properties,
+    -webkit-#{$property}:   $value;       // spits out browser prefixes.
+    -moz-#{$property}:      $value;       // Does not include -o- and -ms- because,
+    #{$property}:           $value;       // you know ... They're useless.
+}
+
+@mixin box-shadow($shadow...) {
+  -webkit-box-shadow: $shadow;
+  -moz-box-shadow: $shadow;
+  box-shadow: $shadow;
+}
+
+@mixin ellipsis() { text-overflow: ellipsis; white-space: nowrap; display: block; overflow: hidden; }
+@mixin opacity($value) {
+  opacity: $value;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=" $value * 100 ")";
+  filter: alpha(opacity= $value * 100 );
+  zoom: 1;
+}
+
+@mixin font-size-margin($size) {
+  font-size: $size;
+  margin: ($size / 2) 0;
+}
+
+@mixin grid($cols, $last: 0) {
+  $gutter: 2% * ($last - 1);
+  $column: $columnWidth - $gutter;
+  width: ($cols * ($column + $gutter) - $gutter);
+  margin-right: $gutter;
+  float: left;
+
+  @media (max-width: $responsiveWidth) {
+    float: none;
+    width: 100%;
+  }
+}
+
+/*
+ * http://html5reset.org + minor modifications
+ */
+html, body div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote,
+pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, var, b,
+i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody,
+tfoot, thead, tr, th, td, article, aside, figure, footer, header, hgroup, menu,
+nav, section, time, mark, audio, video, details, summary {
+  margin: 0; padding: 0; border: 0; font-size: 100%; line-height: 1.6em; vertical-align: baseline; background: transparent;
+}
+article, aside, figure, footer, header, hgroup, nav, section, details, summary { display: block; }
+a { margin: 0; padding: 0; vertical-align: baseline; background: transparent; }
+abbr[title], dfn[title] { border-bottom: 1px dotted #000; cursor: help; }
+table { border-collapse: collapse; border-spacing: 0; }
+th { font-weight: bold; vertical-align: bottom; }
+td { font-weight: normal; vertical-align: top; }
+input, select, button { vertical-align: middle; }
+select, input, textarea { font-size: $fontSize - 1; }
+table { font-size: inherit; font: 100%; }
+.clickable, label, input[type=file], button { cursor: pointer; }
+button, input, select, textarea { margin: 0; }
+button { width: auto; overflow: visible; }
+.ie7 img { -ms-interpolation-mode: bicubic; }
+.clearfix:before, .clearfix:after { content: "\0020"; display: block; height: 0; overflow: hidden; }
+.clearfix:after { clear: both; }
+.clearfix { zoom: 1; }
+* { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+body { background-color: $backgroundColor; font-size: $fontSize; -webkit-text-size-adjust: none; }
+body, select, input, textarea { color: $fontColor; font-family: $fontFamily; }
+a, a:active { color: $linkColor; }
+a:hover { color: #a11; text-decoration: underline; }
+input:-moz-placeholder { color: lighten($fontColor, 30%); }
+textarea:-moz-placeholder { color: lighten($fontColor, 30%); }
+li.separator { background: #eee; height: 1px; overflow: hidden; }
+
+/*
+ * Typographi and base CSS
+ */
+a { text-decoration: none; }
+h1 a, h3 a { text-decoration: none; }
+h1 { @include font-size-margin(2em); }
+h2 { @include font-size-margin(1.6em); }
+h3 { @include font-size-margin(1.2em); }
+img { max-width: 100%; }
+p { margin: 1em 0; }
+ul, ol { margin-left: 1.2em; }
+dl dd { margin-left: 1.2em; }
+pre { font-size: 12px; }
+
+.center { text-align: center; }
+.hidden { display: none; }
+.row { clear: both; }
+
+.pull-right {
+  float: right;
+  img { margin: 0 0 1em 1em; }
+}
+
+div.alert, div.info { padding: 1em; margin: 1em 0; border-radius: 3px; }
+div.alert { background: #fed; color: #851; border: 1px solid #edb; }
+div.info { background: #def; color: #158; border: 1px solid #bde; }
+
+div.navbar {
+  background: #fff;
+  margin-bottom: 1em;
+  border-bottom: 1px dotted #aaa;
+  overflow: hidden;
+
+  a, span { color: #555; }
+  a, a:hover { text-decoration: none; }
+  ul {
+    clear: both;
+    margin-left: -4px;
+    list-style: none;
+    a, span {
+      padding: 4px;
+      display: block;
+      float: left;
+    }
+  }
+}
+
+/*
+ * Form elements
+ */
+form {
+  $width: 70%;
+  margin: 0;
+
+  label { display: block; width: $width; margin-top: $bodyGutter; }
+  input, textarea {
+    padding: 4px;
+    font-size: 1.2em;
+    outline: none;
+    border: 2px solid #ccc;
+    width: $width;
+    border-radius: 3px;
+    &:focus { border: 2px solid darken(#ccc, 15%); }
+  }
+  textarea { height: 8em; }
+  div.error {
+    input { border-color: #e66; }
+    p.help { color: #f44; }
+  }
+  div.actions {
+    margin-top: 2em;
+    clear: left;
+    border-top: 1px solid #ddd;
+    padding: 0.5em 0;
+  }
+  p.help {
+    color: #555;
+    font-size: 0.9em;
+    margin-top: 0.1em;
+  }
+}
+
+button, .button, .file-wrapper {
+  color: #222;
+  background: darken(#fff, 10%);
+  font-size: 16px;
+  text-decoration: none;
+  padding: 6px 8px;
+  border: 2px solid darken(#fff, 40%);
+  border-radius: 3px;
+}
+button { height: 34px; vertical-align: baseline; } // make <a> and <button> align. at least in chrome
+button:active, button.active, .button:active, .button.active { background: darken(#fff, 20%); }
+button.confirm, a.confirm { color: #900; border: 2px solid #900; }
+button:hover, .button:hover { border: 2px solid darken(#fff, 70%); }
+button.tiny { font-size: 12px; padding: 0px 4px; height: 24px; }
+
+.file-wrapper {
+  position: relative;
+  padding: 0;
+  width: auto;
+  text-align: right;
+  float: left;
+  margin-right: 1em;
+  overflow: hidden;
+  input { @include opacity(0); position: absolute; right: 0; top: 0; width: 100%; }
+  button { margin: -2px; }
+}
+
+/*
+ * Main sections
+ */
+header {
+  $color: #888;
+
+  color: $color;
+  overflow: hidden;
+  margin-bottom: 2em;
+  border-bottom: 1px dotted #777;
+
+  a { color: $color; }
+  a, a:hover { text-decoration: none; }
+  p { text-align: right; font-style: italic; font-size: 0.9em; }
+
+  h1 {
+    margin: 0; float: left;
+    a, a:active, a:hover { color: $color; }
+  }
+  nav ul {
+    clear: both;
+    margin-left: -1em;
+    list-style: none;
+    li a {
+      padding: 1em;
+      display: block;
+      float: left;
+    }
+  }
+}
+
+div.container {
+  margin: 0 auto;
+  width: $responsiveWidth;
+}
+
+footer {
+  font-size: 0.8em;
+  margin-top: 4em;
+  padding: 1em 0;
+  clear: both;
+  overflow: hidden;
+  a { color: #999; }
+}
+
+/*
+ * Files
+ */
+
+.files {
+  small { float: right; }
+}
+
+.preview.text {
+  overflow-x: auto;
+  .pln { color: #000; }
+  .str { color: #262; }
+  .kwd { color: #009; }
+  .com { color: #800; font-style: italic; }
+  .typ { color: #a0a; }
+  .lit { color: #099; }
+  .pun,.opn,.clo { color: #990; }
+  .tag { color: #006; font-weight: bold; }
+  .atn { color: #808; }
+  .atv { color: #0a0; }
+  ol.linenums { margin-top: 0; margin-bottom: 0; }
+  li.L0, li.L1, li.L2, li.L3, li.L5, li.L6, li.L7, li.L8 { list-style-type: none; }
+  li.L1, li.L3, li.L5, li.L7, li.L9 { background: #eee; }
+ }
+
+.preview.image { text-align: center; }
+.preview.video video { width: 100%; }
+
+/*
+ * Gallery
+ */
+.gallery {
+  list-style: none;
+  margin: 0;
+
+  li {
+    background: #f9f9f9;
+    float: left;
+    height: 100px;
+    width: 100px;
+    padding: 2px;
+    overflow: hidden;
+  }
+  li.not-active { @include opacity(0.3); }
+  li.big { float: none; clear: left; height: auto; width: 100%; padding: 0; }
+  li a { height: 98px; width: 98px; display: block; }
+  li.big img { cursor: e-resize; }
+}
+
+div.navbar {
+  .image-link.info,
+  .image-link.prev,
+  .image-link.next { float: right; }
+}
+
+/*
+ * DOCSIS editor
+ */
+.docsis-editor {
+  input { width: 100%; }
+  textarea {
+    font-family: monospace;
+    font-size: 12px;
+    height: 18em;
+    width: 100%;
+  }
+}
+
+body.fullscreen {
+  overflow: hidden;
+  height: 100%;
+}
+
+div.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+
+  textarea {
+    font-family: monospace;
+    font-size: 12px;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    padding: 30px;
+  }
+}
+
+@media (max-width: $responsiveWidth) {
+  div.container {
+    width: 100%;
+  }
+}

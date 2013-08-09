@@ -8,8 +8,8 @@
 </form>
 % }
 % if($parent_path) {
-<div id="navbar">
-  <ul class="nav nav-tabs">
+<div class="navbar">
+  <ul>
     <li><%= link_to 'Back', $parent_path %></li>
   </ul>
 </div>

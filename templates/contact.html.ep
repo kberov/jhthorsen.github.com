@@ -2,34 +2,26 @@
 % title 'Contact';
 <h1>Send me a message</h2>
 % if($report) {
-<p class="alert alert-info"><%= $report %></p>
+<div class="alert"><%= $report %></div>
 % }
-%= form_for 'contact', method => 'post', class => 'form-horizontal', begin
-  <div class="control-group">
-    <label class="control-label" for="name">Your name</label>
-    <div class="controls">
-      %= text_field 'name', id => 'name', placeholder => '', class => 'span4'
-    </div>
+%= form_for 'contact', method => 'post', begin
+  <div>
+    <label for="name">Your name</label>
+    %= text_field 'name', id => 'name', placeholder => '', class => 'span4'
   </div>
-  <div class="control-group">
-    <label class="control-label" for="email">Your email</label>
-    <div class="controls">
-      %= text_field 'email', id => 'email', placeholder => '', class => 'span4'
-    </div>
+  <div>
+    <label for="email">Your email</label>
+    %= text_field 'email', id => 'email', placeholder => '', class => 'span4'
   </div>
-  <div class="control-group">
-    <label class="control-label" for="subject">Subject</label>
-    <div class="controls">
-      %= text_field 'subject', id => 'subject', placeholder => '', class => 'span4'
-    </div>
+  <div>
+    <label for="subject">Subject</label>
+    %= text_field 'subject', id => 'subject', placeholder => '', class => 'span4'
   </div>
-  <div class="control-group">
-    <label class="control-label" for="message">Message</label>
-    <div class="controls">
-      %= text_area 'message', id => 'message', class => 'span4'
-    </div>
+  <div>
+    <label for="message">Message</label>
+    %= text_area 'message', id => 'message', class => 'span4'
   </div>
-  <div class="form-actions">
-    <button type="submit" class="btn btn-primary">Send message</button>
+  <div class="actions">
+    <button type="submit">Send message</button>
   </div>
 % end
