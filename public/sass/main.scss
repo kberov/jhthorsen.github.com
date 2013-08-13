@@ -75,7 +75,7 @@ button { width: auto; overflow: visible; }
 .clearfix:after { clear: both; }
 .clearfix { zoom: 1; }
 * { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
-body { background-color: $backgroundColor; font-size: $fontSize; -webkit-text-size-adjust: none; }
+body { margin: 0; background-color: $backgroundColor; font-size: $fontSize; -webkit-text-size-adjust: none; }
 body, select, input, textarea { color: $fontColor; font-family: $fontFamily; }
 a, a:active { color: $linkColor; }
 a:hover { color: #a11; text-decoration: underline; }
