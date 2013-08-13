@@ -1,6 +1,6 @@
 % layout 'default';
 % title 'Tracker';
-%= form_for 'time_tracker', method => 'post', begin
+%= form_for 'tracker_track', method => 'post', begin
 % if($tracking) {
   <h1>Tracking...</h1>
   <p>
