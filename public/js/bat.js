@@ -7,9 +7,9 @@
     var $big;
     var number_of_images = $preload.length;
     var previous_trigger = 0;
-    var direction = 'right';
     var current_id = '';
     var preloaded = {};
+    var direction;
 
     var checkLocation = function() {
       var location_id = location.href.match(/#(\w+)/) || ['', ''];
@@ -60,26 +60,34 @@
     var showImage = function($a, i) {
       var $li = $a.parent();
       var src = $li.find('img').attr('src').replace(/\/thumb\//, '/raw/');
+      var $old_big = $big;
 
       current_id = $li.attr('id');
       document.title = $li.find('img').attr('title');
 
-      if($big) $big.remove();
-
       $big = $('<li class="big"><img src="' + src + '"><span>Loading...</span></li>');
       $big.find('img').hide().load(function(e) {
         var $img = $(this);
-        var p = {}; p[direction] = 0;
-        $img.css(direction, -this.width).show().animate(p, 500);
-        $big.find('span').text($li.find('img').attr('title'));
+
+        if(direction) {
+          var p = {};
+          p[direction] = 0;
+          $img.css(direction, -this.width).show().animate(p, 500);
+        }
+        else {
+          direction = 'right';
+          $img.show();
+        }
+
         if($img.height() > $(window).height()) $img.height($(window).height() - 40);
+        if($old_big) $old_big.remove();
         $navbar.find('.image-link').show();
-        $win.scrollTop($big.offset().top - 30);
-        $big.swipe({
+        $big.show().swipe({
           allowPageScroll: 'vertical',
           swipeStatus: function(a, b, c, d) { swipeStatus($img, a, b, c, d); },
           triggerOnTouchEnd: true
         });
+        $win.scrollTop($big.offset().top - 30);
       });
 
       $('body').css('min-height', $('body').height());
@@ -87,7 +95,7 @@
       $navbar.find('.download a').attr('href', src.replace(/inline=\d+/, 'download=1'));
       $navbar.find('.info span').text((i + 1) + '/' + number_of_images);
       $gallery.children('li').addClass('not-active');
-      $li.removeClass('not-active').after($big);
+      $li.removeClass('not-active').after($big.hide());
 
       // preload
       if($big.next().length) {
