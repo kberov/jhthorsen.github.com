@@ -245,6 +245,7 @@ footer {
 .preview.image { text-align: center; }
 .preview.video video { width: 100%; }
 
+.prettyprint { background: #eee; padding: 8px; }
 .pln { color: #000; }
 .str { color: #262; }
 .kwd { color: #009; }
@@ -258,6 +259,11 @@ footer {
 ol.linenums { margin-top: 0; margin-bottom: 0; }
 li.L0, li.L1, li.L2, li.L3, li.L5, li.L6, li.L7, li.L8 { list-style-type: none; }
 li.L1, li.L3, li.L5, li.L7, li.L9 { background: #eee; }
+
+/*
+ * Blog
+ */
+.blog-date { color: #666; margin-top: -1em; font-size: 12px; }
 
 /*
  * Gallery
