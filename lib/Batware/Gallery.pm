@@ -125,7 +125,8 @@ sub thumb {
 
   unless(-e $thumb) {
     eval {
-      my $t = Image::Imlib2->load(join '/', $self->_root_path, $url_path);
+      my $source = join '/', $self->_root_path, $url_path;
+      my $t = Image::Imlib2->load(-l $source ? readlink $source : $source);
       $t->image_set_format('jpeg');
       $t->create_scaled_image(120, 120)->save($thumb);
       $t;

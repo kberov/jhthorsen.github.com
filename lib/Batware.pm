@@ -99,6 +99,12 @@ sub startup {
   $config->{Shotwell}{routes}{permalink} = $r->get('/shotwell/:permalink');
   $self->_init_shotwell_database(@{ $config->{Shotwell} }{qw/ sync_from dbname /});
 
+  unless(-d $self->app->config->{Files}{thumb_path}) {
+    unless(mkdir $self->app->config->{Files}{thumb_path}) {
+      die "Cannot mkdir thumb_path: $self->app->config->{Files}{thumb_path}";
+    }
+  }
+
   $self->plugin(Mail => $config->{Mail});
   $self->plugin(Shotwell => $config->{Shotwell});
   $self->helper(eval_code => \&eval_code);
