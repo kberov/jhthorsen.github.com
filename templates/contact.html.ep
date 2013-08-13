@@ -25,3 +25,13 @@
     <button type="submit">Send message</button>
   </div>
 % end
+
+<h2>Other ways to contact me</h2>
+<dl>
+  <dt>Mail</dt>
+  <dd><a href="mailto:jhthorsen@cpan.org">jhthorsen@cpan.org</a></dd>
+  <dt>Twitter</dt>
+  <dd><a href="http://twitter.com/jhthorsen">jhthorsen</a></dd>
+  <dt>IRC</dt>
+  <dd><a href="irc://irc.perl.org/batman">batman</a> @ irc.perl.org</dd>
+</dl>

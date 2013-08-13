@@ -38,11 +38,11 @@
 
 <ul>
   <li><a href="https://www.getbetsy.com">Betsy - A friendly betting app</a></li>
+  <li><a href="http://www.grumpify.com">Grumpify - Grumpify anything, anywhere</a></li>
+  <li><%= link_to 'Online DOCSIS editor', 'docsis' %></li>
   <!-- li><a href="http://www.oppstarter.no">Oppstarter - Norwegian croudsouring project</a></li -->
   <li><a href="http://jhthorsen.github.com/snippets/">snippets - a bundle of scripts</a></li>
-  <li><a href="http://jhthorsen.github.com/snippets/garmin-auto-import/">garmin-auto-import - import Garmin data in gnome</a></li>
   <li><a href="http://jhthorsen.github.com/snippets/sibs">sibs - simple incremental backup script</a></li>
-  <li><a href="https://github.com/jhthorsen/moosex-barewords">MooseX::Barewords - Does not require $self to access attributes in perl</a></li>
   <li><a href="https://metacpan.org/module/App::Mypp">App::Mypp - Maintain Your Perl Project</a></li>
   <li><a href="https://metacpan.org/module/Applify">Applify - Write perl applications with little overhead</a></li>
   <li><a href="https://metacpan.org/module/Cloudinary">Cloudinary - Talk with cloudinary.com from perl</a></li>
