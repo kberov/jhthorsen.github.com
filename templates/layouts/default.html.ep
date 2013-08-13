@@ -6,6 +6,7 @@
   %= stylesheet '/css/main.css'
   %= javascript '/js/jquery.js'
   %= javascript '/js/jquery.hotkeys.js'
+  %= javascript '/js/jquery.touchSwipe.js'
   %= javascript '/js/bat.js'
   <meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1">
 </head>

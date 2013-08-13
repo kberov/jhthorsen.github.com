@@ -65,16 +65,21 @@
 
       $big = $('<li class="big"><img src="' + src + '"><span>Loading...</span></li>');
       $big.find('img').load(function(e) {
+        var $img = $(this);
         $big.find('span').text($li.find('img').attr('title'));
-        if(this.height > $(window).height()) $(this).height($(window).height() - 40);
+        if($img.height() > $(window).height()) $img.height($(window).height() - 40);
         $navbar.find('.image-link').show();
+        $big.swipe({
+          allowPageScroll: 'vertical',
+          swipeStatus: function(a, b, c, d) { swipeStatus($img, a, b, c, d); },
+          triggerOnTouchEnd: true
+        });
       });
 
       $('body').css('min-height', $('body').height());
       $navbar.find('.raw a').attr('href', src.replace(/inline=\d+/, ''));
       $navbar.find('.download a').attr('href', src.replace(/inline=\d+/, 'download=1'));
       $navbar.find('.info span').text((i + 1) + '/' + number_of_images);
-      $big.find('img').click(nextImage)
       $gallery.children('li').addClass('not-active');
       $li.removeClass('not-active').after($big);
       $win.scrollTop($big.offset().top - 30);
@@ -86,6 +91,20 @@
           preloaded[src] = new Image();
           preloaded[src].src = src;
         }
+      }
+    };
+
+    var swipeStatus = function($img, e, phase, direction, distance) {
+      if(phase == 'move' && (direction == 'left' || direction == 'right')) {
+        if(direction == 'left') distance *= -1;
+        $img.css('left', distance);
+      }
+      else if(phase =='end' && distance > 30) {
+        if(direction == 'left') prevImage()
+        if(direction == 'right') nextImage()
+      }
+      else {
+        $img.css('left', 0);
       }
     };
 

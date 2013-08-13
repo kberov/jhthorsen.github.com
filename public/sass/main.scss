@@ -289,9 +289,9 @@ li.L1, li.L3, li.L5, li.L7, li.L9 { background: #eee; }
     clear: left;
     float: none;
     span { display: none; }
+    img { position: relative; }
   }
   li a { height: 98px; width: 98px; display: block; }
-  li.big img { cursor: e-resize; }
 }
 
 div.navbar {
