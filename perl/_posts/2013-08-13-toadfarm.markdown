@@ -1,0 +1,88 @@
+---
+layout: post
+title: "Continuous deployment with #Mojolicious and @github"
+tag: perl
+category: Programming
+---
+
+After hearing [Curtis Poe](https://twitter.com/OvidPerl) giving the talk "[Agile
+Companies Go P.O.P.‎](http://act.yapc.eu/ye2013/talk/4817)" at the
+[YAPC](http://act.yapc.eu/ye2013/) I thought I should finally get the word out
+about my extension to [Mojolicious](https://metacpan.org/release/Mojolicious),
+which allow continuous deployment using a github post-receive hook.
+
+So... Mojolicious has this marvelous web server called
+[hypnotoad](https://metacpan.org/module/Mojo::Server::Hypnotoad). What makes
+this server so cool, is that it can do hot deployment[^fn-hot_deployment].This
+is indeed excellent feature for continuous deployment. In my projects[^fn-my_projects]
+I have also pure copywriters which wants to make changes to the templates, but has no
+idea how to ssh-into-ec2-then-restart-the-server-with-some-sudo-command. Even
+though we're a small group, I wanted to give the opportunity to my partners in
+crime to restart the server by themselves instead of waiting for me. So therefor I decided
+to write [Toadfarm](https://metacpan.org/module/Toadfarm) and
+[Toadfarm::Plugin::Reload](https://metacpan.org/module/Toadfarm::Plugin::Reload).
+
+The "Reload" plugin allow this workflow:
+
+1. The developer / copywriter edit files locally.
+2. Then they use [github Mac](https://mac.github.com) to push the changes back to a special branch[^fn-special_branch].
+3. Github then POST a document to Toadfarm, using a post-receive hook.
+4. Toadfarm [verifies](https://metacpan.org/source/JHTHORSEN/Toadfarm-0.12/lib/Toadfarm/Plugin/Reload.pm#L196) that the request is from github.
+5. Toadfarm then reloads with the new source code if it is valid.
+
+There might be a delay between pushing the code and a complete restart, but if
+everything goes OK, the new code should be up and running within 30 seconds.
+
+What kind of configuration is required to make this work? Not much really:
+
+* You need to set up the [post-receive hook](https://help.github.com/articles/post-receive-hooks).
+* Make sure the remote "origin" in production point to github.
+* Configure Toadfarm.
+
+Below you can see a sample config, which is essentially copy/paste from my
+server.
+
+    {
+      secret => 'some-super-secret-session-hash',   # Mojolicious config
+      hypnotoad => {                                # Hypnotoad config
+        pid_file => '/var/run/toadfarm/pid',        # |
+        listen => [ 'http://*:8080' ],              # |
+      },
+      apps => [                                     # Toadfarm config
+        '/home/webapps/batware/script/batware' => { # |
+          Host => 'home.thorsen.pm',                # |
+        },
+      ],
+      plugins => [
+        Reload => {                                 # Toadfarm::Plugin::Reload config
+          path => '/something-secret-5',            # |
+          repositories => [{                        # |
+            name => 'jhthorsen.github.com',         # |
+            branch => 'master',                     # |
+            path => '/home/webapps/batware',        # |
+          }],
+        },
+      ],
+    }
+
+CAVEAT:
+
+* Hypnotoad (by it self) will not detect syntax errors in the templates on reload.
+
+Want to try it out? It's simple to install with [cpanminus](http://cpanmin.us):
+
+    $ cpanm -n --sudo Toadfarm
+
+See also [examples](https://github.com/jhthorsen/toadfarm/tree/master/etc/)
+on how to set it up.
+
+Want to discuss or ask questions about Toadfarm? Comment below or contact
+[batman](irc://irc.perl.org/batman) @ irc.perl.org. (I'm usually in the
+[#mojo](http://irclog.perlgeek.de/mojo/2013-08-13) channel)
+
+[^fn-hot_deployment]: Hot Deployment refers to the ability of making changes to
+a running application without causing any downtime or without restarting the server.
+
+[^fn-my_projects]: [Grumpify](http://grumpify.com) and [Betsy](https://getbetsy.com).
+
+[^fn-special_branch]: The config need to contain the branch name which you push to.
