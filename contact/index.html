@@ -1,15 +1,36 @@
 ---
 layout: default
-title: contact information
+title: Contact
 ---
-<h1 class="page-header">Contact</h1>
+
+<h1>Send me a message</h2>
+<form action="http://home.thorsen.pm/contact" method="post">
+  <div>
+    <label for="name">Your name</label>
+    <input class="span4" id="name" name="name" placeholder="" type="text" />
+  </div>
+  <div>
+    <label for="email">Your email</label>
+    <input class="span4" id="email" name="email" placeholder="" type="text" />
+  </div>
+  <div>
+    <label for="subject">Subject</label>
+    <input class="span4" id="subject" name="subject" placeholder="" type="text" />
+  </div>
+  <div>
+    <label for="message">Message</label>
+    <textarea class="span4" id="message" name="message"></textarea>
+  </div>
+  <div class="actions">
+    <button type="submit">Send message</button>
+  </div>
+</form>
+<h2>Other ways to contact me</h2>
 <dl>
-    <dt>Mail</dt>
-    <dd><a href="mailto:jhthorsen@cpan.org">jhthorsen@cpan.org</a></dd>
-    <dt>Twitter</dt>
-    <dd><a href="http://twitter.com/jhthorsen">jhthorsen</a></dd>
-    <dt>Facebook</dt>
-    <dd><a href="https://www.facebook.com/jhthorsen">https://www.facebook.com/jhthorsen</a></dd>
-    <dt>IRC</dt>
-    <dd><a href="irc://irc.perl.org/batman">batman</a> @ irc.perl.org</dd>
+  <dt>Mail</dt>
+  <dd><a href="mailto:jhthorsen@cpan.org">jhthorsen@cpan.org</a></dd>
+  <dt>Twitter</dt>
+  <dd><a href="http://twitter.com/jhthorsen">jhthorsen</a></dd>
+  <dt>IRC</dt>
+  <dd><a href="irc://irc.perl.org/batman">batman</a> @ irc.perl.org</dd>
 </dl>
