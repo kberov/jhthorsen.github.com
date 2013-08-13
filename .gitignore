@@ -1,3 +1,9 @@
 /local
 /_site
+/.sass-cache/
+/MYMETA.*
+/Makefile*
+/blib/
+/pm_to_blib
+/private/
 *swp
