@@ -57,21 +57,16 @@
     var showImage = function($a, i) {
       var $li = $a.parent();
       var src = $li.find('img').attr('src').replace(/\/thumb\//, '/raw/');
-      var min_height = 20;
 
       current_id = $li.attr('id');
       document.title = $li.find('img').attr('title');
 
-      if($big) {
-        min_height = $big.height();
-        $big.remove();
-      }
+      if($big) $big.remove();
 
       $big = $('<li class="big"><img src="' + src + '"><span>Loading...</span></li>');
-      $big.find('img').on('load', function() {
-        $win.scrollTop($big.offset().top - 50);
+      $big.find('img').load(function(e) {
         $big.find('span').text($li.find('img').attr('title'));
-        $big.css('min-height', '10px');
+        if(this.height > $(window).height()) $(this).height($(window).height() - 40);
         $navbar.find('.image-link').show();
       });
 
@@ -79,9 +74,10 @@
       $navbar.find('.raw a').attr('href', src.replace(/inline=\d+/, ''));
       $navbar.find('.download a').attr('href', src.replace(/inline=\d+/, 'download=1'));
       $navbar.find('.info span').text((i + 1) + '/' + number_of_images);
-      $big.css('min-height', min_height).find('img').click(nextImage);
+      $big.find('img').click(nextImage)
       $gallery.children('li').addClass('not-active');
       $li.removeClass('not-active').after($big);
+      $win.scrollTop($big.offset().top - 30);
 
       // preload
       if($big.next().length) {

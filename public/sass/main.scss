@@ -273,7 +273,7 @@ footer {
   margin: 0;
 
   li {
-    background: #f9f9f9;
+    background: #f0f0f0;
     float: left;
     height: 100px;
     width: 100px;
@@ -281,7 +281,15 @@ footer {
     overflow: hidden;
   }
   li.not-active { @include opacity(0.3); }
-  li.big { float: none; clear: left; height: auto; width: 100%; padding: 0; }
+  li.big {
+    text-align: center;
+    padding: 0;
+    width: 100%;
+    height: auto;
+    clear: left;
+    float: none;
+    span { display: none; }
+  }
   li a { height: 98px; width: 98px; display: block; }
   li.big img { cursor: e-resize; }
 }
