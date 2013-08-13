@@ -7,19 +7,19 @@
 %= form_for 'contact', method => 'post', begin
   <div>
     <label for="name">Your name</label>
-    %= text_field 'name', id => 'name', placeholder => '', class => 'span4'
+    %= text_field 'name', id => 'name', placeholder => ''
   </div>
   <div>
     <label for="email">Your email</label>
-    %= text_field 'email', id => 'email', placeholder => '', class => 'span4'
+    %= text_field 'email', id => 'email', placeholder => ''
   </div>
   <div>
     <label for="subject">Subject</label>
-    %= text_field 'subject', id => 'subject', placeholder => '', class => 'span4'
+    %= text_field 'subject', id => 'subject', placeholder => ''
   </div>
   <div>
     <label for="message">Message</label>
-    %= text_area 'message', id => 'message', class => 'span4'
+    %= text_area 'message', id => 'message'
   </div>
   <div class="actions">
     <button type="submit">Send message</button>

@@ -8,12 +8,11 @@
   <div>
     %= hidden_field 'url', $self->param('url') || $self->req->url->to_abs
     <label for="username">Username</label>
-    %= text_field 'username', id => 'username', class => 'span4'
+    %= text_field 'username', id => 'username'
   </div>
   <div>
-    <div>
-      %= password_field 'password', id => 'password', class => 'span4'
-    </div>
+    <label for="password">Password</label>
+    %= password_field 'password', id => 'password'
   </div>
   <div class="actions">
     <button type="submit">Login</button>
