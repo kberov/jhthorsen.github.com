@@ -7,6 +7,7 @@
     var $big;
     var number_of_images = $preload.length;
     var previous_trigger = 0;
+    var direction = 'right';
     var current_id = '';
     var preloaded = {};
 
@@ -37,6 +38,7 @@
     };
     var nextImage = function() {
       var id = $big.next().length ? $big.next().attr('id') : $gallery.children('li:first').attr('id');
+      direction = 'right';
       try {
         history.replaceState({}, id, location.href.replace(/#\w+/, '#' + id));
       } catch(e) {
@@ -47,6 +49,7 @@
     var prevImage = function() {
       var $prev = $('#' + current_id).prev();
       var id = $prev.length ? $prev.attr('id') : $gallery.children('li:last').attr('id');
+      direction = 'left';
       try {
         history.replaceState({}, id, location.href.replace(/#\w+/, '#' + id));
       } catch(e) {
@@ -64,11 +67,14 @@
       if($big) $big.remove();
 
       $big = $('<li class="big"><img src="' + src + '"><span>Loading...</span></li>');
-      $big.find('img').load(function(e) {
+      $big.find('img').hide().load(function(e) {
         var $img = $(this);
+        var p = {}; p[direction] = 0;
+        $img.css(direction, -this.width).show().animate(p, 500);
         $big.find('span').text($li.find('img').attr('title'));
         if($img.height() > $(window).height()) $img.height($(window).height() - 40);
         $navbar.find('.image-link').show();
+        $win.scrollTop($big.offset().top - 30);
         $big.swipe({
           allowPageScroll: 'vertical',
           swipeStatus: function(a, b, c, d) { swipeStatus($img, a, b, c, d); },
@@ -82,7 +88,6 @@
       $navbar.find('.info span').text((i + 1) + '/' + number_of_images);
       $gallery.children('li').addClass('not-active');
       $li.removeClass('not-active').after($big);
-      $win.scrollTop($big.offset().top - 30);
 
       // preload
       if($big.next().length) {
@@ -100,8 +105,8 @@
         $img.css('left', distance);
       }
       else if(phase =='end' && distance > 30) {
-        if(direction == 'left') prevImage()
-        if(direction == 'right') nextImage()
+        if(direction == 'right') prevImage()
+        if(direction == 'left') nextImage()
       }
       else {
         $img.css('left', 0);

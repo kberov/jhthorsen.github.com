@@ -1,14 +1,7 @@
 % layout 'default';
 % title $name;
 <h1><%= $name %></h1>
-<div class="navbar">
-  <ul>
-    <li class="back"><%= link_to 'Back', '..' %></li>
-    <li class="raw image-link"><%= link_to 'Raw format', '/raw' %></li>
-    <li class="download image-link"><%= link_to 'Download', "/download" %></li>
-    <li class="info image-link"><a href="#next">0/0</a></li>
-  </ul>
-</div>
+%= include 'shotwell/navbar'
 <ul class="gallery" id="gallery">
   % for my $photo (@$photos) {
   <li id="<%= $photo->{id} %>">
