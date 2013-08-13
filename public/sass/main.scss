@@ -215,7 +215,7 @@ header {
     clear: both;
     margin-left: -1em;
     list-style: none;
-    li a {
+    a {
       padding: 1em;
       display: block;
       float: left;
@@ -338,5 +338,16 @@ div.fullscreen {
 @media (max-width: $responsiveWidth) {
   div.container {
     width: 100%;
+  }
+}
+
+@media (max-width: 340px) {
+  div.navbar .download { display: none !important; }
+  header {
+    h1 { font-size: 1.5em; margin-top: 0.3em; }
+    nav ul {
+      margin-left: -6px;
+      a { padding: 6px; }
+    }
   }
 }
