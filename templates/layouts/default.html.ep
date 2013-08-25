@@ -30,7 +30,11 @@
     </header>
     %= content
     <footer>
-      <a href="http://mojolicio.us/">Powered by Mojolicious</a>
+      Powered by
+      <a href="https://pages.github.com">Github Pages</a>,
+      <a href="https://github.com/jhthorsen/jhthorsen.github.com/tree/batware">batware</a>,
+      <a href="http://mojolicio.us">Mojolicious</a> and
+      <a href="http://www.perl.org">Perl</a>
     </footer>
   </div>
 </body>
