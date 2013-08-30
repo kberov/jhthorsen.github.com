@@ -13,11 +13,96 @@ Batware - My personal homepage
   $ morbo script/batware
   $ hypnotoad script/batware
   $ ./script/batware daemon
-  $ ...
 
 =head1 DESCRIPTION
 
-This is the codebare for L<http://thorsen.pm>.
+This is the codebase for L<http://home.thorsen.pm>.
+
+=head2 Features
+
+=over 4
+
+=item * File browser
+
+L<http://home.thorsen.pm/files>.
+
+=item * Pretty print text and code
+
+L<http://home.thorsen.pm/files/show/html/css/style.css>.
+
+=item * Download/share files
+
+=item * Upload files to private (hidden) paths (browse them afterwards)
+
+=item * Display images according to EXIF
+
+L<http://home.thorsen.pm/files/show/skole/transistor/transistor_html_19198ba2.jpg>.
+
+=item * DOCSIS config file editor
+
+L<http://home.thorsen.pm/docsis-editor>.
+
+=item * Shotwell web frontend
+
+L<Shotwell|http://www.yorba.org/projects/shotwell/> is awesome at the desktop,
+but what about the web? L<Mojolicious::Plugin::Shotwell> allow the gallery
+to be displayed on the web, but the SQLite database seems to be corrupted when
+read (?). No worries -
+L<Batware.pm|https://github.com/jhthorsen/jhthorsen.github.com/blob/batware/lib/Batware.pm#L253>
+has you back.
+
+=back
+
+=head2 Requirements
+
+It all depends on what you want to do...
+
+=over 4
+
+=item * Batware
+
+L<Mojolicious|http://mojolicio.us> and L<Perl|http://perl.org> are the main
+players in this code.
+
+=item * Authentication
+
+L<Mojo::Redis> is used by the authentication code in
+L<Private.pm|https://github.com/jhthorsen/jhthorsen.github.com/blob/batware/lib/Batware/Private.pm>.
+
+=item * Contact form
+
+L<Mojolicious::Plugin::Mail> is used to send the contact form to my email.
+
+=item * Files
+
+L<File::MimeInfo::Magic> is used to figure out what kind of files we want to
+display.
+
+L<Files.pm|https://github.com/jhthorsen/jhthorsen.github.com/blob/batware/lib/Batware/Files.pm>.
+
+=item * Images
+
+L<Image::EXIF> and L<Image::Imlib2> is responsible for rotating and scaling
+the images.
+
+Both L<Files.pm|https://github.com/jhthorsen/jhthorsen.github.com/blob/batware/lib/Batware/Files.pm> and
+L<Gallery.pm|https://github.com/jhthorsen/jhthorsen.github.com/blob/batware/lib/Batware/Gallery.pm> use these modules.
+
+=item * Shotwell foto gallery
+
+L<DBI> and L<DBD::SQLite> is used by L<Mojolicious::Plugin::Shotwell>.
+
+=item * DOCSIS service
+
+L<DOCSIS::ConfigFile> and L<Config::General> is used by
+L<Docsis.pm|https://github.com/jhthorsen/jhthorsen.github.com/blob/batware/lib/Batware/Docsis.pm>. This is super special
+code, which is probably not for general interest.
+
+=back
+
+=head2 Configuration
+
+See L<https://github.com/jhthorsen/jhthorsen.github.com/blob/batware/batware.conf>.
 
 =cut
 
