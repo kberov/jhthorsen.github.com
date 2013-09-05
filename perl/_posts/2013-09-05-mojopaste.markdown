@@ -27,6 +27,12 @@ based. So that's why I wrote it: [mojopaste](https://metacpan.org/module/App::mo
 is super easy to install, as long as you have [perl](http://perl.org) from
 this century.
 
+    # install using cpanm
+    $ curl -L http://cpanmin.us | perl - --sudo App::mojopaste
+
+    # run
+    $ PASTE_DIR=/path/to/paste/dir mojopaste daemon --listen http://*:8080
+
 Who could be interested?
 
 * Maybe you have the need to run a pastebin internally at work.
