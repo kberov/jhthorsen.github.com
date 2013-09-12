@@ -112,7 +112,7 @@ div.info { background: #def; color: #158; border: 1px solid #bde; }
 
 div.navbar {
   background: #fff;
-  margin-bottom: 1em;
+  margin-bottom: 10px;
   border-bottom: 1px dotted #aaa;
   overflow: hidden;
 
@@ -245,17 +245,26 @@ footer {
 .preview.image { text-align: center; }
 .preview.video video { width: 100%; }
 
-.prettyprint { background: #eee; padding: 8px; }
-.pln { color: #000; }
-.str { color: #262; }
-.kwd { color: #009; }
-.com { color: #800; font-style: italic; }
-.typ { color: #a0a; }
-.lit { color: #099; }
-.pun,.opn,.clo { color: #990; }
-.tag { color: #006; font-weight: bold; }
-.atn { color: #808; }
-.atv { color: #0a0; }
+// this is mostly stolen from mojolicio.us, though I made some modifications
+.str{color:#718c00}
+.kwd{color:#8959a8}
+.com{color:#8e908c}
+.typ,.dec{color:#f5871f}
+.lit,.atn{color:#eab700}
+.pun,.opn,.clo,.pln{color:#4d4d4c}
+.tag,.var,.fun{color:#c82829}
+.atv{color:#3e999f}
+
+pre.prettyprint {
+  background: url(../image/pinstripe-light.gif);
+  color: #4d4d4c;
+  font: 0.9em Consolas, Menlo, Monaco, Courier, monospace;
+  line-height: 1.5em;
+  border: 1px solid #e1e1e1;
+  padding: 8px;
+  white-space: pre-wrap;
+}
+
 ol.linenums { margin-top: 0; margin-bottom: 0; }
 li.L0, li.L1, li.L2, li.L3, li.L5, li.L6, li.L7, li.L8 { list-style-type: none; }
 li.L1, li.L3, li.L5, li.L7, li.L9 { background: #eee; }
