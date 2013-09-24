@@ -8,6 +8,7 @@ Batware::Files - Browse files
 
 use feature 'switch';
 use Mojo::Base 'Mojolicious::Controller';
+use Mojo::Util 'slurp';
 use Mojo::Asset::File;
 use File::Basename;
 use File::MimeInfo::Magic;
@@ -36,10 +37,12 @@ sub tree {
     files => \@files,
     parent_path => $parent_path,
     url_path => $self->_tree_path($url_path),
+    README => '',
   );
 
   $self->_loop_files($disk_path, sub {
     my($file, $ext, $type) = @_;
+    $self->stash(README => slurp "$disk_path/$file") if $file eq 'README';
     push @files, {
       basename => Mojo::Util::decode('UTF-8', $file),
       shortname => 15 <= length $file ? substr($file, 0, 12) .'...' : $file,

@@ -148,7 +148,7 @@
     $('div.navbar').fixedNavbar();
     $('form input[type="file"]').fileWrapper();
     $('#gallery').each(setupGallery);
-    $('pre').addClass('prettyprint');
+    $('pre').not('.plain').addClass('prettyprint');
     prettyPrint();
 
     $('.docsis-editor .file-wrapper input').change(function(e) {
