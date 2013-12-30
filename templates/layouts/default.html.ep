@@ -11,7 +11,7 @@
   <div class="container">
     <header>
       <div class="image">
-      % if(time % 10) {
+      % if(4 < time % 10) {
         %= image '/image/me/jhthorsen-face-1300.jpg', alt => 'me-face'
       % } else {
         %= image '/image/me/jhthorsen-sofa-1300.jpg', alt => 'me-sofa'

@@ -1,4 +1,4 @@
-$backgroundColor: #fff;
+$backgroundColor: darken(#fff, 3%);
 $fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 $fontColor: #222;
 $linkColor: #458;
@@ -119,9 +119,9 @@ div.alert { background: #fed; color: #851; border: 1px solid #edb; }
 div.info { background: #def; color: #158; border: 1px solid #bde; }
 
 div.navbar {
-  background: #fff;
+  background: $backgroundColor;
   margin-bottom: 10px;
-  border-bottom: 1px dotted #aaa;
+  border-bottom: 1px solid darken(#fff, 10%);
   overflow: hidden;
 
   a, span { color: #555; }
@@ -209,7 +209,7 @@ header {
   margin-bottom: 0;
   position: relative;
 
-  a { color: #444; }
+  a { font-family: "Lato", sans-serif; color: #444; }
   a { text-decoration: none; }
   a:hover { text-decoration: underline; }
 
@@ -222,6 +222,7 @@ header {
     a, a:active, a:hover { color: #fff; }
   }
   p {
+    text-shadow: 0px 0px 2px #000;
     text-align: right;
     font-style: italic;
     font-size: 0.9em;
@@ -231,6 +232,7 @@ header {
     overflow: hidden;
     position: relative;
     top: -($bodyGutter * 2 + 7);
+    border-bottom: 1px solid #bbb;
     @include opacity(0.9);
 
     ul {
@@ -238,6 +240,7 @@ header {
       list-style: none;
     }
     a {
+      font-weight: bold;
       padding: $bodyGutter / 2;
       display: block;
       float: left;
@@ -290,9 +293,9 @@ footer {
 pre.prettyprint {
   background: url(../image/pinstripe-light.gif);
   color: #4d4d4c;
+  border: 1px solid darken(#fff, 10%);
   font: 0.9em Consolas, Menlo, Monaco, Courier, monospace;
   line-height: 1.5em;
-  border: 1px solid #e1e1e1;
   padding: 8px;
   white-space: pre-wrap;
 }
