@@ -514,8 +514,8 @@ div.fullscreen {
 
   header h1 {
     font-size: 1.5em;
-    margin-top: 0.3em; }
-  header nav ul {
-    margin-left: -6px; }
-    header nav ul a {
-      padding: 6px; } }
+    top: 10px; }
+  header p {
+    display: none; }
+  header nav ul a {
+    padding-right: 2px; } }
