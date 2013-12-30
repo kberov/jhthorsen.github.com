@@ -195,32 +195,34 @@ jQuery.fn.fixedNavbar = function() {
     var $clone = $('<div>&nbsp;</div>');
 
     var offsetTop = function() {
-      offsetTop.trigger = $clone.offset().top;
-      return $clone.offset().top;
+      return offsetTop.trigger = $clone.offset().top;
     };
 
-    $clone.css({ 'height': $fixed.outerHeight() + 10 });
-    $fixed.before($clone).css({
-      'width': $fixed.width(),
-      'top': offsetTop(),
-      'z-index': 100,
-      'position': 'absolute'
-    });
-
-    $(window).bind('resize', function(e) {
+    $(window).on('resize', function(e) {
       var top = offsetTop();
       $fixed.css({
         width: $clone.width(),
         top: offsetTop.trigger <= $(window).scrollTop() ? 0 : top
       });
     });
-    $(window).bind('scroll', function(e) {
+
+    $(window).on('scroll', function(e) {
       if(offsetTop.trigger <= $(window).scrollTop()) {
         $fixed.css({ 'top': 0, 'position': 'fixed' });
       }
       else {
         $fixed.css({ 'top': offsetTop.trigger, 'position': 'absolute' });
       }
+    });
+
+    $(window).on('load', function(e) {
+      $clone.css({ 'height': $fixed.outerHeight() + 10 });
+      $fixed.before($clone).css({
+        'width': $fixed.width(),
+        'top': offsetTop(),
+        'z-index': 100,
+        'position': 'absolute'
+      });
     });
   });
 };
