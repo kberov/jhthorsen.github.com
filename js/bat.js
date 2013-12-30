@@ -1,8 +1,17 @@
 (function($) {
+  var headerImage = function() {
+    var s = new Date().getSeconds() % 10;
+
+    $('header .image img').attr({
+      src: '/image/me/jhthorsen-' + (s > 4 ? 'face' : 'sofa') + '-1300.jpg'
+    });
+  };
+
   $(document).ready(function() {
     $('div.navbar').fixedNavbar();
     $('form input[type="file"]').fileWrapper();
     $('pre').addClass('prettyprint');
+    headerImage();
     prettyPrint();
 
     $('a.fullscreen').click(function(e) {
