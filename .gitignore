@@ -8,7 +8,8 @@
 /private
 /batware.production.conf
 /local
-/.sass-cache
+/public/packed/
+.sass-cache
 *.old
 *.swp
 ~$

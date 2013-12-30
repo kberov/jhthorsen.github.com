@@ -190,11 +190,15 @@ sub startup {
     }
   }
 
+  $self->plugin(AssetPack => $config->{AssetPack} || {});
   $self->plugin(Mail => $config->{Mail});
   $self->plugin(Shotwell => $config->{Shotwell});
   $self->helper(eval_code => \&eval_code);
   $self->helper(redis => \&redis);
   $self->secret($config->{secret});
+
+  $self->asset('thorsen.css' => qw( /sass/thorsen.scss ));
+  $self->asset('thorsen.js' => qw( /js/jquery.js /js/jquery.hotkeys.js /js/jquery.touchSwipe.js /js/bat.js ));
 
   $r->get('/')->to(template => 'index');
   $r->get('/about/cv')->to(template => 'curriculum_vitae');
