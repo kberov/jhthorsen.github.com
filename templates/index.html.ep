@@ -37,14 +37,15 @@
 </p>
 
 <ul>
-  <li><a href="https://www.getbetsy.com">Betsy - A friendly betting app</a></li>
-  <li><a href="http://www.grumpify.com">Grumpify - Grumpify anything, anywhere</a></li>
+  <li><a href="https://www.convos.by.com">Convos</a> - Better group chat (IRC)</li>
+  <li><a href="http://www.grumpify.com">Grumpify</a> - Grumpify anything, anywhere</li>
+  <li><a href="https://www.getbetsy.com">Betsy</a> - A friendly betting app</li>
   <li><%= link_to 'Online DOCSIS editor', 'docsis' %></li>
-  <!-- li><a href="http://www.oppstarter.no">Oppstarter - Norwegian croudsouring project</a></li -->
-  <li><a href="http://jhthorsen.github.com/snippets/">snippets - a bundle of scripts</a></li>
-  <li><a href="http://jhthorsen.github.com/snippets/sibs">sibs - simple incremental backup script</a></li>
-  <li><a href="https://metacpan.org/module/App::Mypp">App::Mypp - Maintain Your Perl Project</a></li>
-  <li><a href="https://metacpan.org/module/Applify">Applify - Write perl applications with little overhead</a></li>
-  <li><a href="https://metacpan.org/module/Cloudinary">Cloudinary - Talk with cloudinary.com from perl</a></li>
-  <li><a href="https://metacpan.org/module/W3C::Validator::Server">W3C::Validator::Server - Run validator.w3.org locally</a></li>
+  <!-- li><a href="http://www.oppstarter.no">Oppstarter</a> - Norwegian croudsouring project</li -->
+  <li><a href="http://jhthorsen.github.com/snippets/">snippets</a> - a bundle of scripts</li>
+  <li><a href="http://jhthorsen.github.com/snippets/sibs">sibs</a> - simple incremental backup script</li>
+  <li><a href="https://metacpan.org/module/App::Mypp">App::Mypp</a> - Maintain Your Perl Project</li>
+  <li><a href="https://metacpan.org/module/Applify">Applify</a> - Write perl applications with little overhead</li>
+  <li><a href="https://metacpan.org/module/Cloudinary">Cloudinary</a> - Talk with cloudinary.com from perl</li>
+  <li><a href="https://metacpan.org/module/W3C::Validator::Server">W3C::Validator::Server</a> - Run validator.w3.org locally</li>
 </ul>
