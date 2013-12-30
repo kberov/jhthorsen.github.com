@@ -1,6 +1,6 @@
 % layout 'default';
 % title $name;
-<h1><%= $name %></h1>
+<h1 class="page-header"><%= $name %></h1>
 %= include 'shotwell/navbar'
 <ul class="gallery" id="gallery">
   % for my $photo (@$photos) {

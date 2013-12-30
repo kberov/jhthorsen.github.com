@@ -1,6 +1,6 @@
 % layout 'default';
 % title "ls " .param('url_path');
-<h1>ls /<%= param('url_path') %></h1>
+<h1 class="page-header">ls /<%= param('url_path') %></h1>
 % if(stash 'show_upload') {
 <form method="post" enctype="multipart/form-data">
   <input type="file" name="file" multiple="multiple" title="Choose file">

@@ -1,9 +1,6 @@
 % layout 'default';
 % title 'About me';
-<h1>About me</h1>
-<div class="pull-right">
-  %= image '/image/335002_10151283069355581_126397468_o.jpg', alt => 'Image of me'
-</div>
+<h1 class="page-header">About me</h1>
 <p>
   I like to <a href="http://github.com/jhthorsen">program</a>.
   In <a href="http://metacpan.org/author/JHTHORSEN">perl</a>

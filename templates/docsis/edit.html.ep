@@ -1,6 +1,6 @@
 % layout 'default';
 % title 'DOCSIS editor';
-<h1>Online DOCSIS config file editor</h1>
+<h1 class="page-header">Online DOCSIS config file editor</h1>
 
 % if($report) {
 <div class="info"><%= $report %></div>

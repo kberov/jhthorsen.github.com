@@ -1,6 +1,6 @@
 % layout 'default';
 % title $name;
-<h1><%= $name =~ /\w/ ? $name : 'Gallery' %></h1>
+<h1 class="page-header"><%= $name =~ /\w/ ? $name : 'Gallery' %></h1>
 % if($parent_path) {
 %= include 'shotwell/navbar'
 % }

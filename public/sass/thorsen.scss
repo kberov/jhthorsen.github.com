@@ -1,11 +1,18 @@
 $backgroundColor: #fff;
 $fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 $fontColor: #222;
-$linkColor: #c00;
+$linkColor: #458;
 $fontSize: 14px;
 $bodyGutter: 20px;
-$responsiveWidth: 50em;
+$responsiveWidth: 56em;
 $columnWidth: 8.333333%;
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Lato Regular'), local('Lato-Regular'), url(http://themes.googleusercontent.com/static/fonts/lato/v6/9k-RPmcnxYEPm8CNFsH2gg.woff) format('woff');
+}
 
 /*
  * Sass mixins
@@ -75,10 +82,8 @@ button { width: auto; overflow: visible; }
 .clearfix:after { clear: both; }
 .clearfix { zoom: 1; }
 * { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
-body { margin: 0; background-color: $backgroundColor; font-size: $fontSize; -webkit-text-size-adjust: none; }
+body { margin: 0; background-color: #333; font-size: $fontSize; -webkit-text-size-adjust: none; }
 body, select, input, textarea { color: $fontColor; font-family: $fontFamily; }
-a, a:active { color: $linkColor; }
-a:hover { color: #a11; text-decoration: underline; }
 input:-moz-placeholder { color: lighten($fontColor, 30%); }
 textarea:-moz-placeholder { color: lighten($fontColor, 30%); }
 li.separator { background: #eee; height: 1px; overflow: hidden; }
@@ -86,8 +91,10 @@ li.separator { background: #eee; height: 1px; overflow: hidden; }
 /*
  * Typographi and base CSS
  */
-a { text-decoration: none; }
+a, a:active { color: $linkColor; text-decoration: underline; }
+a:hover { text-decoration: none; }
 h1 a, h3 a { text-decoration: none; }
+h1, h2, h3 { font-family: 'Lato', sans-serif; }
 h1 { @include font-size-margin(2em); }
 h2 { @include font-size-margin(1.6em); }
 h3 { @include font-size-margin(1.2em); }
@@ -97,6 +104,7 @@ ul, ol { margin-left: 1.2em; }
 dl dd { margin-left: 1.2em; }
 pre { font-size: 12px; }
 
+.page-header { margin-top: 0; }
 .center { text-align: center; }
 .hidden { display: none; }
 .row { clear: both; }
@@ -166,18 +174,18 @@ form {
 }
 
 button, .button, .file-wrapper {
-  color: #222;
-  background: darken(#fff, 10%);
+  background: #777;
+  color: #fff;
   font-size: 16px;
   text-decoration: none;
   padding: 6px 8px;
-  border: 2px solid darken(#fff, 40%);
+  border: 2px solid #555;
   border-radius: 3px;
 }
 button { height: 34px; vertical-align: baseline; } // make <a> and <button> align. at least in chrome
 button:active, button.active, .button:active, .button.active { background: darken(#fff, 20%); }
 button.confirm, a.confirm { color: #900; border: 2px solid #900; }
-button:hover, .button:hover { border: 2px solid darken(#fff, 70%); }
+button:hover, .button:hover { border-color: #222; }
 button.tiny { font-size: 12px; padding: 0px 4px; height: 24px; }
 
 .file-wrapper {
@@ -196,27 +204,41 @@ button.tiny { font-size: 12px; padding: 0px 4px; height: 24px; }
  * Main sections
  */
 header {
-  $color: #888;
+  color: #eee;
+  margin: -$bodyGutter;
+  margin-bottom: 0;
+  position: relative;
 
-  color: $color;
-  overflow: hidden;
-  margin-bottom: $bodyGutter;
-  border-bottom: 1px dotted #777;
+  a { color: #444; }
+  a { text-decoration: none; }
+  a:hover { text-decoration: underline; }
 
-  a { color: $color; }
-  a, a:hover { text-decoration: none; }
-  p { text-align: right; font-style: italic; font-size: 0.9em; }
-
-  h1 {
-    margin: 0; float: left;
-    a, a:active, a:hover { color: $color; }
+  h1, p {
+    position: absolute;
+    top: 20px;
+    left: $bodyGutter;
   }
-  nav ul {
-    clear: both;
-    margin-left: -1em;
-    list-style: none;
+  h1 {
+    a, a:active, a:hover { color: #fff; }
+  }
+  p {
+    text-align: right;
+    font-style: italic;
+    font-size: 0.9em;
+  }
+  nav {
+    background: #eee;
+    overflow: hidden;
+    position: relative;
+    top: -($bodyGutter * 2 + 7);
+    @include opacity(0.9);
+
+    ul {
+      margin-left: $bodyGutter / 2;
+      list-style: none;
+    }
     a {
-      padding: 1em;
+      padding: $bodyGutter / 2;
       display: block;
       float: left;
     }
@@ -224,17 +246,27 @@ header {
 }
 
 div.container {
+  background: $backgroundColor;
   margin: 0 auto;
   width: $responsiveWidth;
+  padding: $bodyGutter;
 }
 
 footer {
-  font-size: 0.8em;
-  margin-top: $bodyGutter * 3;
-  padding: 1em 0;
+  background: #888;
+  font-size: 0.9em;
+  margin: -$bodyGutter;
+  margin-top: $bodyGutter * 4;
+  padding: $bodyGutter;
   clear: both;
   overflow: hidden;
-  a { color: #999; }
+  &, a {
+    color: #eee;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
 }
 
 /*

@@ -1,7 +1,7 @@
 % layout 'default';
 % title 'Curriculum vitae';
 <div class="row">
-  <h1>Curriculum vitae</h1>
+  <h1 class="page-header">Curriculum vitae</h1>
   <h2>Personalia</h2>
   <dl>
     <dt>Name</dt>

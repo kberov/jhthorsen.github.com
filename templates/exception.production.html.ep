@@ -1,6 +1,6 @@
 % layout 'default';
 % title 'Yikes!';
-<h1>Something went wrong</h1>
+<h1 class="page-header">Something went wrong</h1>
 <p>
   <%= link_to 'Let me know', 'contact' %> what you tried to do, and I'll try to
   fix it.

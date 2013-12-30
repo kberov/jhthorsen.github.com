@@ -1,6 +1,6 @@
 % layout 'default';
 % title $basename;
-<h1><%= $basename %></h1>
+<h1 class="page-header"><%= $basename %></h1>
 %= include 'files/navbar'
 <div class="image preview">
   %= link_to $raw_path, begin

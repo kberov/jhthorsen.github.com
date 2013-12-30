@@ -1,6 +1,6 @@
 % layout 'default';
 % title 'DOCSIS syminfo';
-<h1>DOCSIS syminfo</h1>
+<h1 class="page-header">DOCSIS syminfo</h1>
 <h2>Description</h2>
 <dl>
   <dt>Identifier</dt>

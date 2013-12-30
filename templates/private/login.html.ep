@@ -1,6 +1,6 @@
 % layout 'default';
 % title 'Login';
-<h1>Login</h1>
+<h1 class="page-header">Login</h1>
 % if($self->req->method eq 'POST') {
 <div class="alert">Invalid username and/or password</div>
 % }

@@ -1,6 +1,6 @@
 % layout 'default';
 % title $basename;
-<h1><%= $basename %></h1>
+<h1 class="page-header"><%= $basename %></h1>
 %= include 'files/navbar'
 <div class="text preview">
 % my $text = Mojo::Util::decode('UTF-8', $file->slurp);

@@ -1,4 +1,4 @@
 % layout 'default';
 % title 'Unknown format';
-<h1>Unknown format</h1>
+<h1 class="page-header">Unknown format</h1>
 <p>Sorry, but I cannot render <%= $basename %>.</p>
