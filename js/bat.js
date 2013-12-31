@@ -5,6 +5,14 @@
     $('header .image img').attr({
       src: '/image/me/jhthorsen-' + (s > 4 ? 'face' : 'sofa') + '-1300.jpg'
     });
+    $('header .image').mouseover(function() {
+      $('header nav').css('opacity', 0.1);
+    });
+    $('header').mouseout(function(e) {
+      var $target = $(e.relatedTarget || e.toElement);
+      if($target.closest('header')[0] && !$target.closest('nav')[0]) return;
+      $('header nav').css('opacity', 0.9);
+    });
   };
 
   $(document).ready(function() {
