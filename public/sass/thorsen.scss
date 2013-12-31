@@ -293,12 +293,11 @@ ul.projects {
     margin-top: -1px;
   }
 
-  h3, p, ol { margin-left: 120px; }
   h3 { margin-top: 0; }
 
   img.icon {
-    float: left;
-    margin-right: $bodyGutter;
+    float: right;
+    margin-left: $bodyGutter;
     margin-bottom: $bodyGutter;
   }
 
