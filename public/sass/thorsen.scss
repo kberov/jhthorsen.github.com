@@ -186,7 +186,7 @@ button { height: 34px; vertical-align: baseline; } // make <a> and <button> alig
 button:active, button.active, .button:active, .button.active { background: darken(#fff, 20%); }
 button.confirm, a.confirm { color: #900; border: 2px solid #900; }
 button:hover, .button:hover { border-color: #222; }
-button.tiny { font-size: 12px; padding: 0px 4px; height: 24px; }
+button.tiny, .button.tiny { font-size: 12px; padding: 2px 4px; }
 
 .file-wrapper {
   position: relative;
@@ -271,6 +271,40 @@ footer {
   }
   a:hover {
     text-decoration: underline;
+  }
+}
+
+/*
+ * Project list
+ */
+
+ul.projects {
+  &, ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  > li {
+    border-top: 1px solid darken(#fff, 10%);
+    border-bottom: 1px solid darken(#fff, 10%);
+    overflow: hidden;
+    padding: ($bodyGutter / 2) 0;
+    margin-top: -1px;
+  }
+
+  h3, p, ol { margin-left: 120px; }
+  h3 { margin-top: 0; }
+
+  img.icon {
+    float: left;
+    margin-right: $bodyGutter;
+    margin-bottom: $bodyGutter;
+  }
+
+  ol li {
+    float: left;
+    margin-right: 4px;
   }
 }
 

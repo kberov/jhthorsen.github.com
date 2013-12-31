@@ -33,16 +33,91 @@
   <a href="http://metacpan.org/author/JHTHORSEN">cpan</a>.
 </p>
 
-<ul>
-  <li><a href="https://www.convos.by.com">Convos</a> - Better group chat (IRC)</li>
-  <li><a href="http://www.grumpify.com">Grumpify</a> - Grumpify anything, anywhere</li>
-  <li><a href="https://www.getbetsy.com">Betsy</a> - A friendly betting app</li>
-  <li><%= link_to 'Online DOCSIS editor', 'docsis' %></li>
-  <!-- li><a href="http://www.oppstarter.no">Oppstarter</a> - Norwegian croudsouring project</li -->
-  <li><a href="http://jhthorsen.github.com/snippets/">snippets</a> - a bundle of scripts</li>
-  <li><a href="http://jhthorsen.github.com/snippets/sibs">sibs</a> - simple incremental backup script</li>
-  <li><a href="https://metacpan.org/module/App::Mypp">App::Mypp</a> - Maintain Your Perl Project</li>
-  <li><a href="https://metacpan.org/module/Applify">Applify</a> - Write perl applications with little overhead</li>
-  <li><a href="https://metacpan.org/module/Cloudinary">Cloudinary</a> - Talk with cloudinary.com from perl</li>
-  <li><a href="https://metacpan.org/module/W3C::Validator::Server">W3C::Validator::Server</a> - Run validator.w3.org locally</li>
+<ul class="projects">
+  <%= include 'partials/project' => (
+    name => 'Convos',
+    url => 'http://convos.by',
+    image => 'convos.png',
+    resources => [
+      [ Source => 'https://github.com/Nordaaker/convos' ],
+      [ Download => 'https://github.com/Nordaaker/convos/archive/release.tar.gz' ],
+    ],
+    description => <<"    DESCRIPTION",
+      Convos is the simplest way to use IRC. It is always online,
+      and accessible to your web browser, both on desktop and mobile.
+      Run it on your home server, or cloud service easily.
+    DESCRIPTION
+  ) %>
+
+  <%= include 'partials/project' => (
+    name => 'Grumpify',
+    url => 'http://grumpify.com',
+    image => 'grumpify.png',
+    resources => [
+      [ Download => 'https://itunes.apple.com/us/app/grumpify/id661903164' ],
+    ],
+    description => <<"    DESCRIPTION",
+      Grumpify is an iPhone app that you can use to add cats to your photos.
+      "It´s what the world has been longing for, more grumpy pussy cat photos."
+    DESCRIPTION
+  ) %>
+
+  <%= include 'partials/project' => (
+    name => 'Betsy',
+    url => 'http://getbetsy.com',
+    image => 'betsy.jpg',
+    resources => [
+      [ Source => 'https://github.com/Nordaaker/convos' ],
+      [ Download => 'https://github.com/Nordaaker/convos/archive/release.tar.gz' ],
+    ],
+    description => <<"    DESCRIPTION",
+      Bet, share and keep track of your bets with betsy! No more forgotten bets.
+    DESCRIPTION
+  ) %>
+
+  <%= include 'partials/project' => (
+    name => 'Online DOCSIS editor',
+    url => 'http://home.thorsen.pm/docsis-editor',
+    image => 'docsis.jpg',
+    resources => [
+      [ Source => 'https://github.com/jhthorsen/jhthorsen.github.com/blob/batware/lib/Batware/Docsis.pm' ],
+      [ Library => 'https://metacpan.org/pod/DOCSIS::ConfigFile' ],
+    ],
+    description => <<"    DESCRIPTION",
+      This editor is a tool for people who manage cable modems. It can encode
+      decode DOCSIS 1.x, 2.x and 3.0 config files.
+    DESCRIPTION
+  ) %>
+
+  <%= include 'partials/project' => (
+    name => 'W3C validator',
+    url => 'https://metacpan.org/module/W3C::Validator::Server',
+    image => 'w3c.png',
+    resources => [
+      [ Source => 'https://github.com/jhthorsen/w3c-validator-server' ],
+      [ Download => 'https://metacpan.org/module/W3C::Validator::Server' ],
+    ],
+    description => <<"    DESCRIPTION",
+      This application is useful if you want to verify your HTML either
+      offline or markup that is protected on an intranet. This server should
+      provide the same sort of validation as http://validator.w3c.org.
+    DESCRIPTION
+  ) %>
+
+  <%= include 'partials/project' => (
+    name => 'sibs',
+    url => 'https://metacpan.org/pod/App::sibs',
+    image => 'sibs.png',
+    resources => [
+      [ Source => 'https://github.com/jhthorsen/app-sibs' ],
+      [ Download => 'https://metacpan.org/release/App-sibs' ],
+    ],
+    description => <<"    DESCRIPTION",
+      "sibs" stands for "simple incremental backup script". It creates backup
+      from your computer to a destination server, using rsync. It is very
+      simple to set up if you have experience with linux and command line
+      tools.
+    DESCRIPTION
+  ) %>
+
 </ul>

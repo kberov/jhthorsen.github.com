@@ -1,0 +1,11 @@
+<li>
+  %= image "/image/project/$image", alt => $name, class => 'icon'
+  <h3><%= link_to $name, $url %></h3>
+  <p><%== $description %></p>
+  <ol class="resources">
+    <li><%= link_to 'Home page', $url, class => 'button tiny' %>
+  % for my $r (@$resources) {
+    <li><%= link_to @$r, class => 'button tiny' %></li>
+  % }
+  </ol>
+</li>
