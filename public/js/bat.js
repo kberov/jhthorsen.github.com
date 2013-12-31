@@ -144,11 +144,23 @@
     if(window.console) console.log('setupGallery() done');
   }
 
+  var headerImage = function() {
+    $('header .image').mouseover(function() {
+      $('header nav').css('opacity', 0.1);
+    });
+    $('header').mouseout(function(e) {
+      var $target = $(e.relatedTarget || e.toElement);
+      if($target.closest('header')[0] && !$target.closest('nav')[0]) return;
+      $('header nav').css('opacity', 0.9);
+    });
+  }
+
   $(document).ready(function() {
     $('div.navbar').fixedNavbar();
     $('form input[type="file"]').fileWrapper();
     $('#gallery').each(setupGallery);
     $('pre').not('.plain').addClass('prettyprint');
+    headerImage();
     prettyPrint();
 
     $('.docsis-editor .file-wrapper input').change(function(e) {

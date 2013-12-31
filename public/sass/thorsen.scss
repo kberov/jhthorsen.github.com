@@ -18,9 +18,9 @@ $columnWidth: 8.333333%;
  * Sass mixins
  */
 @mixin prefix($property, $value...) {      // Chews experimental css properties,
-    -webkit-#{$property}:   $value;       // spits out browser prefixes.
-    -moz-#{$property}:      $value;       // Does not include -o- and -ms- because,
-    #{$property}:           $value;       // you know ... They're useless.
+  -webkit-#{$property}:   $value;       // spits out browser prefixes.
+  -moz-#{$property}:      $value;       // Does not include -o- and -ms- because,
+  #{$property}:           $value;       // you know ... They're useless.
 }
 
 @mixin box-shadow($shadow...) {
@@ -209,6 +209,8 @@ header {
   margin-bottom: 0;
   position: relative;
 
+  .image img { vertical-align: bottom; }
+
   a { font-family: "Lato", sans-serif; color: #444; }
   a { text-decoration: none; }
   a:hover { text-decoration: underline; }
@@ -231,7 +233,7 @@ header {
     background: #eee;
     overflow: hidden;
     position: relative;
-    top: -($bodyGutter * 2 + 7);
+    top: -($bodyGutter * 2 + 2);
     border-bottom: 1px solid #bbb;
     @include opacity(0.9);
 
