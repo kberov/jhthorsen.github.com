@@ -195,7 +195,7 @@ sub startup {
   $self->plugin(Shotwell => $config->{Shotwell});
   $self->helper(eval_code => \&eval_code);
   $self->helper(redis => \&redis);
-  $self->secret($config->{secret});
+  $self->secrets($config->{secrets});
 
   $self->asset('thorsen.css' => qw( /sass/thorsen.scss ));
   $self->asset('thorsen.js' => qw( /js/jquery.js /js/jquery.hotkeys.js /js/jquery.touchSwipe.js /js/bat.js ));
