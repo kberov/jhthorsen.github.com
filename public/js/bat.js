@@ -230,7 +230,7 @@ jQuery.fn.fixedNavbar = function() {
     $(window).on('load', function(e) {
       $clone.css({ 'height': $fixed.outerHeight() + 10 });
       $fixed.before($clone).css({
-        'width': $fixed.width(),
+        'width': $clone.width(),
         'top': offsetTop(),
         'z-index': 100,
         'position': 'absolute'
