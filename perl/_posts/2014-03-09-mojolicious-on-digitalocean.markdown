@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "How I deploy #Mojolicious apps on @DigitalOcean"
+title: "How to deploy #Mojolicious apps on @DigitalOcean"
 tag: perl
 category: Programming
 ---
