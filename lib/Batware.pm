@@ -180,6 +180,8 @@ sub startup {
   my $config = $self->plugin('config');
   my $r = $self->routes;
 
+  eval { $self->plugin('Responsinator') };
+
   $config->{Shotwell}{routes}{default} = $self->protected->route('/shotwell');
   $config->{Shotwell}{routes}{permalink} = $r->get('/shotwell/:permalink');
   $self->_init_shotwell_database(@{ $config->{Shotwell} }{qw/ sync_from dbname /});
