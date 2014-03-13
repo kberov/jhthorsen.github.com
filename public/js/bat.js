@@ -227,7 +227,7 @@ jQuery.fn.fixedNavbar = function() {
       }
     });
 
-    $(window).on('load', function(e) {
+    $('div.image img').on('load', function(e) {
       $clone.css({ 'height': $fixed.outerHeight() + 10 });
       $fixed.before($clone).css({
         'width': $clone.width(),
