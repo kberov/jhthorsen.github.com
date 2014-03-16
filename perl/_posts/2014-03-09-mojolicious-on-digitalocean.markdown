@@ -196,4 +196,5 @@ or drop me an [email](mailto:jhthorsen@cpan.org).
 * What about a domain name?
 
   I buy my domain names from [Gandi](http://gandi.net) because of their "no
-  bullshit" (tm) and then I my DNS records from [Cloudflare](http://cloudflare.com).
+  bullshit" (tm) and then I add the DNS records to [Cloudflare](http://cloudflare.com).
+
