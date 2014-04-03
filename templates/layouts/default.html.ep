@@ -3,8 +3,8 @@
 <head>
   <title>thorsen.pm - <%= title %></title>
   <meta charset="utf-8">
-  %= basset 'thorsen.css'
-  %= basset 'thorsen.js'
+  %= asset 'thorsen.css'
+  %= asset 'thorsen.js'
   <meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1">
 </head>
 <body>

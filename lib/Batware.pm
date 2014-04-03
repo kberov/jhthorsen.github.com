@@ -197,8 +197,8 @@ sub startup {
   $self->helper(redis => \&redis);
   $self->secrets($config->{secrets});
 
-  $self->basset('thorsen.css' => qw( /sass/thorsen.scss ));
-  $self->basset('thorsen.js' => qw( /js/jquery.js /js/jquery.hotkeys.js /js/jquery.touchSwipe.js /js/bat.js ));
+  $self->asset('thorsen.css' => qw( /sass/thorsen.scss ));
+  $self->asset('thorsen.js' => qw( /js/jquery.js /js/jquery.hotkeys.js /js/jquery.touchSwipe.js /js/bat.js ));
 
   $r->get('/')->to(template => 'index');
   $r->get('/about/cv')->to(template => 'curriculum_vitae');
