@@ -364,30 +364,85 @@ li.L1, li.L3, li.L5, li.L7, li.L9 { background: #eee; }
 /*
  * Gallery
  */
-.gallery {
-  list-style: none;
-  margin: 0;
+#gallery {
+  overflow: hidden;
 
-  li {
-    background: #f0f0f0;
+  .thumb {
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
     float: left;
-    height: 100px;
-    width: 100px;
-    padding: 2px;
+    border: 1px solid #fff;
+    border-left: 0;
+    width: 148px;
+    height: 142px;
+    overflow: hidden;
+    display: block;
+  }
+}
+
+#fullscreen_photo {
+  background: rgba(0, 0, 0, 0.9);
+  text-align: center;
+  border: 10px solid #000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1000;
+
+  &:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -10px;
+  }
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    vertical-align: middle;
+    display: inline-block;
+  }
+
+  a {
+    color: #bbb;
+    font-weight: bold;
+    position: absolute;
+    text-decoration: none;
+    text-align: left;
+    opacity: 0.7;
+    &:hover { opacity: 1; color: #fff; }
+  }
+
+  .close, .raw {
+    $height: 24px;
+    font-size: $height;
+    line-height: $height / 2;
+    top: 5px;
+    height: $height;
+    width: $height;
     overflow: hidden;
   }
-  li.not-active { @include opacity(0.3); }
-  li.big {
-    text-align: center;
-    padding: 0;
-    width: 100%;
-    height: auto;
-    clear: left;
-    float: none;
-    span { display: none; }
-    img { position: relative; }
+
+  .next, .prev {
+    font-size: 80px;
+    top: 40px;
+    bottom: 0;
+    padding: 0 10px 20px 10px;
   }
-  li a { height: 98px; width: 98px; display: block; }
+
+  .next { right: 0; width: 60%; text-align: right; }
+  .prev { left: 0; width: 38%; }
+  .close { right: 0; }
+  .raw { right: 30px; }
+
+  .shadow {
+    position: absolute;
+    left: -10000px;
+  }
 }
 
 div.navbar {
@@ -438,7 +493,6 @@ div.fullscreen {
 }
 
 @media (max-width: 340px) {
-  div.navbar .download { display: none !important; }
   header {
     h1 { font-size: 1.5em; top: 10px; }
     p { display: none; }

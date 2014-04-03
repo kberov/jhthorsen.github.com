@@ -1,167 +1,16 @@
 (function($) {
-  var setupGallery = function() {
-    var $gallery = $(this);
-    var $preload = $gallery.find('img');
-    var $win = $(window);
-    var $navbar = $('.navbar');
-    var $big;
-    var number_of_images = $preload.length;
-    var previous_trigger = 0;
-    var current_id = '';
-    var preloaded = {};
-    var direction;
-
-    var checkLocation = function() {
-      var location_id = location.href.match(/#(\w+)/) || ['', ''];
-      if(location_id[1] === current_id) return;
-      if(location_id[1]) return $('#' + location_id[1]).find('a').click();
-      if($big) $big.remove();
-      $navbar.find('.image-link').hide();
-      $gallery.find('li').removeClass('not-active');
-      current_id = '';
-      document.title = $('#content h1').text();
-    };
-    var loadImages = function(e) {
-      var trigger = $win.scrollTop() + $win.height() + 100;
-      if(trigger < previous_trigger + 50) return;
-      $preload = $preload.not(function(i) {
-                  var $img = $(this);
-                  var visible = $img.offset().top < trigger;
-                  if(visible) {
-                    $img.attr('src', $img.attr('data-src') + '?inline=1024');
-                    if(e) $img.hide().fadeIn('slow');
-                  }
-                  return visible;
-                });
-
-      if($preload.length === 0) $win.unbind('scroll', loadImages).unbind('resize', loadImages);
-    };
-    var nextImage = function() {
-      var id = $big.next().length ? $big.next().attr('id') : $gallery.children('li:first').attr('id');
-      direction = 'right';
-      try {
-        history.replaceState({}, id, location.href.replace(/#\w+/, '#' + id));
-      } catch(e) {
-        location.href = location.href.replace(/#\w+/, '#' + id);
-      };
-      return false;
-    };
-    var prevImage = function() {
-      var $prev = $('#' + current_id).prev();
-      var id = $prev.length ? $prev.attr('id') : $gallery.children('li:last').attr('id');
-      direction = 'left';
-      try {
-        history.replaceState({}, id, location.href.replace(/#\w+/, '#' + id));
-      } catch(e) {
-        location.href = location.href.replace(/#\w+/, '#' + id);
-      };
-      return false;
-    };
-    var showImage = function($a, i) {
-      var $li = $a.parent();
-      var src = $li.find('img').attr('src').replace(/\/thumb\//, '/raw/');
-      var $old_big = $big;
-
-      current_id = $li.attr('id');
-      document.title = $li.find('img').attr('title');
-
-      $big = $('<li class="big"><img src="' + src + '"><span>Loading...</span></li>');
-      $big.find('img').hide().load(function(e) {
-        var $img = $(this);
-
-        if(direction) {
-          var p = {};
-          p[direction] = 0;
-          $img.css(direction, -this.width).show().animate(p, 500);
-        }
-        else {
-          direction = 'right';
-          $img.show();
-        }
-
-        if($img.height() > $(window).height()) $img.height($(window).height() - 40);
-        if($old_big) $old_big.remove();
-        $navbar.find('.image-link').show();
-        $big.show().swipe({
-          allowPageScroll: 'vertical',
-          swipeStatus: function(a, b, c, d) { swipeStatus($img, a, b, c, d); },
-          triggerOnTouchEnd: true
-        });
-        $win.scrollTop($big.offset().top - 30);
-      });
-
-      $('body').css('min-height', $('body').height());
-      $navbar.find('.raw a').attr('href', src.replace(/inline=\d+/, ''));
-      $navbar.find('.download a').attr('href', src.replace(/inline=\d+/, 'download=1'));
-      $navbar.find('.info span').text((i + 1) + '/' + number_of_images);
-      $gallery.children('li').addClass('not-active');
-      $li.removeClass('not-active').after($big.hide());
-
-      // preload
-      if($big.next().length) {
-        src = $big.next().find('img').attr('src').replace(/\/thumb\//, '/raw/');
-        if(!preloaded[src]) {
-          preloaded[src] = new Image();
-          preloaded[src].src = src;
-        }
-      }
-    };
-
-    var swipeStatus = function($img, e, phase, direction, distance) {
-      if(phase == 'move' && (direction == 'left' || direction == 'right')) {
-        if(direction == 'left') distance *= -1;
-        $img.css('left', distance);
-      }
-      else if(phase =='end' && distance > 30) {
-        if(direction == 'right') prevImage()
-        if(direction == 'left') nextImage()
-      }
-      else {
-        $img.css('left', 0);
-      }
-    };
-
-    $gallery.find('a').not('.directory').each(function(_i) {
-      var i = _i;
-      var $a = $(this);
-      $a.click(function() { showImage($a, i); });
-      this.href = '#' + $a.parent().attr('id');
-    });
-    $navbar.find('.back a').click(function() {
-      if(!current_id) return true;
-      history.go(-1);
-      return false;
-    });
-    $navbar.find('.next a').click(nextImage);
-    $navbar.find('.prev a').click(prevImage);
-
-    $('body').bind('keydown', 'left', prevImage);
-    $('body').bind('keydown', 'right', nextImage);
-    $('body').bind('keydown', 'esc', function() { $navbar.find('.back a').click(); });
-    $win.on('scroll', loadImages).on('resize', loadImages);
-    loadImages();
-    setInterval(checkLocation, 300);
-    if(window.console) console.log('setupGallery() done');
-  }
-
-  var headerImage = function() {
-    $('header .image').mouseover(function() {
-      $('header nav').css('opacity', 0.1);
-    });
-    $('header').mouseout(function(e) {
-      var $target = $(e.relatedTarget || e.toElement);
-      if($target.closest('header')[0] && !$target.closest('nav')[0]) return;
-      $('header nav').css('opacity', 0.9);
-    });
-  }
-
   $(document).ready(function() {
     $('div.navbar').fixedNavbar();
     $('form input[type="file"]').fileWrapper();
-    $('#gallery').each(setupGallery);
     $('pre').not('.plain').addClass('prettyprint');
-    headerImage();
+    $('#gallery img').scaleImages();
+
     prettyPrint();
+
+    $('#goto_shotwell_event').change(function() {
+      var $option = $(this).find(':selected');
+      location.href = [$('#gallery').attr('data-base-url'), 'event', $option.val(), $option.text()].join('/') + '#gallery';
+    });
 
     $('.docsis-editor .file-wrapper input').change(function(e) {
       $(this).closest('form').submit();
@@ -238,6 +87,91 @@ jQuery.fn.fixedNavbar = function() {
     });
   });
 };
+
+;(function($) {
+  var $active = $();
+  var $fullscreen, $shadow;
+
+  var __init__ = function() {
+    $fullscreen = $('#fullscreen_photo');
+    $shadow = $fullscreen.find('.shadow');
+    $shadow.on('load', function() {
+      $fullscreen.find('img').attr('src', this.src).show();
+      $fullscreen.find('.raw').attr('href', this.src.replace(/inline=\w+/, 'download=1'));
+      $shadow.attr('src', '');
+    });
+    $fullscreen.mouseover(function(e) { $fullscreen.find('a').show(); });
+    $fullscreen.mouseout(function(e) { $fullscreen.find('a').hide(); });
+    $fullscreen.find('.close').click(function(e) { e.preventDefault(); fullscreen('hide', e); });
+    $fullscreen.find('.next').click(function(e) { e.preventDefault(); fullscreen('next', e); });
+    $fullscreen.find('.prev').click(function(e) { e.preventDefault(); fullscreen('prev', e); });
+    $('body').bind('keydown', 'esc', function(e) { fullscreen('hide', e); });
+    $('body').bind('keydown', 'left', function(e) { fullscreen('prev', e); });
+    $('body').bind('keydown', 'right', function(e) { fullscreen('next', e); });
+    $(window).resize(function() { $fullscreen.css({ 'line-height': $fullscreen.height() + 'px' }); }).resize();
+    setInterval(checkLocation, 300);
+  };
+
+  var checkLocation = function() {
+    var location_id = location.href.match(/#(\w+)/) || ['', ''];
+    if(!location_id[1]) return $active = fullscreen('hide', window);
+    if(location_id[1] === $active.attr('id')) return;
+    if(!$('#' + location_id[1]).filter('a').click().length) return $active = fullscreen('hide', window);
+  };
+
+  var replaceState = function(id) {
+    try {
+      history.replaceState({}, id, location.href.replace(/#p\w+/, '#' + id));
+      replaceState.supported = true;
+    } catch(e) {
+      location.href = location.href.replace(/#p\w+/, '#' + id);
+    };
+  };
+
+  var fullscreen = function($c, e) {
+    if($c == 'hide') {
+      if($fullscreen.is(':visible') && !e.location) replaceState.supported && e ? history.go(-1) : replaceState('');
+      $fullscreen[e.how || 'hide']().find('img').hide();
+      return $fullscreen;
+    }
+
+    $active = $c.jquery ? $c : $active[$c]().children('img:first');
+    if(!$c.jquery && !$active.click().length) return fullscreen('hide', { how: 'fadeOut' }) && e.preventDefault();
+    $shadow.attr('src', $active.attr('data-fullscreen-url'));
+    $fullscreen.show();
+    replaceState($active.attr('id'));
+  };
+
+  $.fn.scaleImages = function() {
+    if(!$fullscreen) __init__();
+
+    var $visible = this.parents('.thumb');
+    var previous_trigger = 0;
+
+    var loadImages = function(e) {
+      var trigger = $(window).scrollTop() + $(window).height() + 50;
+      if(trigger < previous_trigger + 50) return;
+      if($visible.length === 0) $(window).unbind('scroll', loadImages).unbind('resize', loadImages);
+
+      previous_trigger = trigger;
+      $visible = $visible.each(function() {
+        var $c = $(this);
+        if($c.offset().top > trigger) return;
+        $c.addClass('visible').children('img')
+          .on('load', function() { $(this).hide().parent().css({ 'background-image': 'url(' + this.src + ')' }); })
+          .each(function() { this.src = $(this).attr('data-thumb-src'); })
+          ;
+      }).not('.visible');
+    };
+
+    $visible
+      .click(function(e) { fullscreen($(this), e); })
+      .each(function() { $(this).attr('href', '#' + $(this).attr('id')); })
+      ;
+
+    $(window).on('scroll', loadImages).on('resize', loadImages).resize();
+  };
+})(jQuery);
 
 /* prettify from google */
 !function(){var q=null;window.PR_SHOULD_USE_CONTINUATION=!0;

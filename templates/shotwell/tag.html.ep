@@ -1,13 +1,59 @@
+% use Time::Piece ();
 % layout 'default';
-% title $name;
-<h1 class="page-header"><%= $name %></h1>
-%= include 'shotwell/navbar'
-<ul class="gallery" id="gallery">
-  % for my $photo (@$photos) {
-  <li id="<%= $photo->{id} %>">
-    %= link_to $photo->{url}, begin
-      %= image '/image/not-loaded.png', 'data-src' => $photo->{thumb}, alt => $photo->{name}, title => $photo->{name}
-    % end
-  </li>
+% title stash('name') || 'Gallery';
+% my $events = stash('events') || shotwell_events;
+% my $event = stash('photos') ? { map { $_, stash($_) } qw( name photos id time_created ) } : $events->[0];
+% $event->{photos} ||= shotwell_photos_by(event_id => $event->{id});
+
+% unless(stash 'permalink') {
+<div class="navbar">
+  <select id="goto_shotwell_event">
+  % my($n, $pt);
+  % for my $e (@$events) {
+    % my $ct = Time::Piece->new($e->{time_created});
+    % my $change;
+    % if(!$pt or $pt->strftime('%m%Y') != $ct->strftime('%m%Y')) {
+      <optgroup label="<%= join ', ', $ct->month, $ct->year %>">
+      % $n = 0;
+      % $change = 1;
+    % }
+      <option value="<%= $e->{id} %>"<%= $e->{id} eq $event->{id} ? ' selected="selected"' : '' %>><%= $e->{name} %></option>
+    % $pt = $ct;
+    % if($n++ and $change) {
+      </optgroup>
+    % }
   % }
-</ul>
+  </select>
+</div>
+% }
+
+<div id="gallery" data-base-url="<%= url_for('shotwell/index') %>">
+  <div class="event" data-offset="<%= $event->{time_created} %>">
+    % if(stash 'permalink') {
+    <h2><%= link_to 'Photos', url_for('')->fragment('gallery') %></h2>
+    % } else {
+    <h2><%= link_to $event->{name}, url_for('shotwell/event', $event)->fragment('gallery') %></h2>
+    % }
+    % unless(stash 'permalink') {
+    <p class="blog-date">
+      %= localtime $event->{time_created}
+      -
+      %= link_to 'Share', url_for('')->query([ permalink => 1 ]);
+    </p>
+    % }
+    % for my $photo (@{ $event->{photos} }) {
+      %= link_to $photo->{url}, class => 'thumb', id => "p$photo->{id}", 'data-fullscreen-url' => "$photo->{raw}?inline=1024", begin
+        %= image '/image/not-loaded.png', 'data-thumb-src' => $photo->{thumb}, alt => $photo->{name}
+      % end
+    % }
+  </div>
+</div>
+
+<div id="fullscreen_photo">
+  <a href="#next" class="next">&rsaquo;</a>
+  <a href="#prev" class="prev">&lsaquo;</a>
+  <a href="#download" class="raw" title="Download">&dArr;</a>
+  <a href="#close" class="close" title="Close">&times;</a>
+  <img class="image">
+  <img class="shadow">
+</div>

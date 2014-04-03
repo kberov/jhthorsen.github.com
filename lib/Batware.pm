@@ -85,8 +85,8 @@ L<Files.pm|https://github.com/jhthorsen/jhthorsen.github.com/blob/batware/lib/Ba
 L<Image::EXIF> and L<Image::Imlib2> is responsible for rotating and scaling
 the images.
 
-Both L<Files.pm|https://github.com/jhthorsen/jhthorsen.github.com/blob/batware/lib/Batware/Files.pm> and
-L<Gallery.pm|https://github.com/jhthorsen/jhthorsen.github.com/blob/batware/lib/Batware/Gallery.pm> use these modules.
+L<Files.pm|https://github.com/jhthorsen/jhthorsen.github.com/blob/batware/lib/Batware/Files.pm>
+use these modules.
 
 =item * Shotwell foto gallery
 
@@ -151,6 +151,7 @@ has protected => sub {
   $self->routes->under(sub {
     my $c = shift;
     return 1 if $c->session('username') or $c->shotwell_access_granted;
+    return 1 if $ENV{BATWARE_DISABLE_AUTH};
     $c->render(template => 'private/login');
     return 0;
   });
@@ -180,9 +181,13 @@ sub startup {
   my $config = $self->plugin('config');
   my $r = $self->routes;
 
-  $config->{Shotwell}{routes}{default} = $self->protected->route('/shotwell');
-  $config->{Shotwell}{routes}{permalink} = $r->get('/shotwell/:permalink');
-  $self->_init_shotwell_database(@{ $config->{Shotwell} }{qw/ sync_from dbname /});
+  $config->{Shotwell}{routes}{default} = $self->protected->route('/gallery');
+  $config->{Shotwell}{routes}{permalink} = $r->get('/gallery/:permalink');
+  $config->{Shotwell}{routes}{events} = $r->get('/events');
+  $self->_init_shotwell_database(@{ $config->{Shotwell} }{qw( sync_from dbname )});
+
+  # override shotwell default route
+  $self->protected->get('/gallery')->to(template => 'shotwell/event')->name('shotwell/index');
 
   unless(-d $self->app->config->{Files}{thumb_path}) {
     unless(mkdir $self->app->config->{Files}{thumb_path}) {
@@ -198,7 +203,7 @@ sub startup {
   $self->secrets($config->{secrets});
 
   $self->asset('thorsen.css' => qw( /sass/thorsen.scss ));
-  $self->asset('thorsen.js' => qw( /js/jquery.js /js/jquery.hotkeys.js /js/jquery.touchSwipe.js /js/bat.js ));
+  $self->asset('thorsen.js' => qw( /js/jquery.min.js /js/jquery.hotkeys.js /js/jquery.touchSwipe.js /js/bat.js ));
 
   $r->get('/')->to(template => 'index');
   $r->get('/about/cv')->to(template => 'curriculum_vitae');
@@ -215,11 +220,6 @@ sub startup {
   $r->get('/files/show/*url_path')->to('files#show')->name('files_show');
   $r->get('/files/raw/*url_path')->to('files#raw')->name('files_raw');
   $r->get('/files/*url_path')->to('files#redirect');
-
-  $r->get('/gallery/show/*url_path')->to('gallery#show')->name('gallery_show');
-  $r->get('/gallery/raw/*url_path')->to('gallery#raw')->name('gallery_raw');
-  $r->get('/gallery/thumb/*url_path')->to('gallery#thumb')->name('gallery_thumb');
-  $r->get('/gallery/*url_path')->to('gallery#tree', url_path => '')->name('gallery_tree');
 
   $r->any('/private/tree/*url_path')->to('private#tree')->name('private_tree');
   $r->get('/private/show/*url_path')->to('private#show')->name('private_show');
