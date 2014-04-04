@@ -159,7 +159,7 @@ jQuery.fn.fixedNavbar = function() {
         if($c.offset().top > trigger) return;
         $c.addClass('visible').children('img')
           .on('load', function() { $(this).hide().parent().css({ 'background-image': 'url(' + this.src + ')' }); })
-          .each(function() { this.src = $c.attr('data-src') + "?size=x144&quality=preview"; })
+          .each(function() { this.src = $c.attr('data-src') + "?size=x144"; })
           ;
       }).not('.visible');
     };

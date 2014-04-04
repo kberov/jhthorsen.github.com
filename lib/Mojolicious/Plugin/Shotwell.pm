@@ -406,11 +406,11 @@ sub raw {
     $c->res->headers->content_disposition(qq(attachment; filename="$basename"));
   }
   if(my $size = $c->param('size')) {
-    my $quality = $c->param('quality') || 'normal';
+    my $quality = $c->param('quality') || 'mixing';
     $file = $self->_scale_photo($photo, $quality, split /x/, $size);
   }
   if($c->param('inline')) {
-    $file = $self->_scale_photo($photo, normal => @{ $self->sizes->{inline} });
+    $file = $self->_scale_photo($photo, mixing => @{ $self->sizes->{inline} });
   }
 
   $static = Mojolicious::Static->new(paths => [dirname $file]);
