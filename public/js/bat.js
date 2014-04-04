@@ -7,9 +7,9 @@
 
     prettyPrint();
 
-    $('#goto_shotwell_event').change(function() {
-      var $option = $(this).find(':selected');
-      location.href = [$('#gallery').attr('data-base-url'), 'event', $option.val(), $option.text()].join('/') + '#gallery';
+    $('#gallery h2 a[data-show]').click(function(e) {
+      e.preventDefault();
+      $('#goto_shotwell_event').toggle();
     });
 
     $('.docsis-editor .file-wrapper input').change(function(e) {
@@ -137,7 +137,7 @@ jQuery.fn.fixedNavbar = function() {
 
     $active = $c.jquery ? $c : $active[$c]().children('img:first');
     if(!$c.jquery && !$active.click().length) return fullscreen('hide', { how: 'fadeOut' }) && e.preventDefault();
-    $shadow.attr('src', $active.attr('data-fullscreen-url'));
+    $shadow.attr('src', $active.attr('data-src') + "?size=1024x");
     $fullscreen.show();
     replaceState($active.attr('id'));
   };
@@ -159,7 +159,7 @@ jQuery.fn.fixedNavbar = function() {
         if($c.offset().top > trigger) return;
         $c.addClass('visible').children('img')
           .on('load', function() { $(this).hide().parent().css({ 'background-image': 'url(' + this.src + ')' }); })
-          .each(function() { this.src = $(this).attr('data-thumb-src'); })
+          .each(function() { this.src = $c.attr('data-src') + "?size=x144&quality=preview"; })
           ;
       }).not('.visible');
     };

@@ -80,14 +80,6 @@ display.
 
 L<Files.pm|https://github.com/jhthorsen/jhthorsen.github.com/blob/batware/lib/Batware/Files.pm>.
 
-=item * Images
-
-L<Image::EXIF> and L<Image::Imlib2> is responsible for rotating and scaling
-the images.
-
-L<Files.pm|https://github.com/jhthorsen/jhthorsen.github.com/blob/batware/lib/Batware/Files.pm>
-use these modules.
-
 =item * Shotwell foto gallery
 
 L<DBI> and L<DBD::SQLite> is used by L<Mojolicious::Plugin::Shotwell>.

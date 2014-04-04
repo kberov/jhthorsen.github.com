@@ -11,9 +11,6 @@ use Mojo::Base 'Mojolicious::Controller';
 use Mojo::Util 'slurp';
 use Mojo::Asset::File;
 use File::Basename;
-use File::MimeInfo::Magic;
-use Image::EXIF;
-use Image::Imlib2;
 use Mojolicious::Static;
 
 =head1 METHODS
