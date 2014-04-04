@@ -154,7 +154,6 @@ has sizes => sub {
 };
 
 has _types => sub { Mojolicious::Types->new };
-has _log => sub { Mojo::Log->new };
 
 =head1 ACTIONS
 
@@ -536,7 +535,7 @@ sub _scale_photo {
     printf STDERR "[SHOTWELL] Imager %s %ss\n", $out, tv_interval $t0;
     1;
   } or do {
-    $self->_log->error("[Imager] $@");
+    $self->{app}->log->error("[Imager] $@");
     $out = $photo->{filename};
   };
 
@@ -659,7 +658,7 @@ sub register {
   my $helpers = $config->{helpers} || {};
   my $sizes = $self->sizes;
 
-  $self->_log($app->log);
+  $self->{app} = $app;
   $self->_types($app->types);
   $self->dsn("dbi:SQLite:dbname=$config->{dbname}") if $config->{dbname};
 
