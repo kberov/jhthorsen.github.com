@@ -4,7 +4,7 @@ $fontColor: #222;
 $linkColor: #458;
 $fontSize: 14px;
 $bodyGutter: 20px;
-$responsiveWidth: 56em;
+$responsiveWidth: 57em;
 $columnWidth: 8.333333%;
 
 @font-face {
@@ -374,7 +374,7 @@ li.L1, li.L3, li.L5, li.L7, li.L9 { background: #eee; }
     float: left;
     border: 1px solid #fff;
     border-left: 0;
-    width: 144px;
+    width: 150px;
     height: 142px;
     overflow: hidden;
     display: block;
@@ -399,9 +399,8 @@ li.L1, li.L3, li.L5, li.L7, li.L9 { background: #eee; }
 }
 
 #fullscreen_photo {
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.9) url(../image/ajax-loader-white.png) no-repeat 50% 50%;
   text-align: center;
-  border: 10px solid #000;
   position: fixed;
   top: 0;
   left: 0;
@@ -426,41 +425,39 @@ li.L1, li.L3, li.L5, li.L7, li.L9 { background: #eee; }
   }
 
   a {
-    color: #bbb;
+    color: #aaa;
     font-weight: bold;
     position: absolute;
     text-decoration: none;
     text-align: left;
-    opacity: 0.7;
-    &:hover { opacity: 1; color: #fff; }
+
+    &:hover {
+      color: #458;
+    }
   }
 
-  .close, .raw {
+  a.close, a.raw {
     $height: 24px;
     font-size: $height;
     line-height: $height / 2;
-    top: 5px;
+    top: 10px;
     height: $height;
-    width: $height;
+    width: 30px;
     overflow: hidden;
+    text-align: right;
   }
 
-  .next, .prev {
+  a.next, a.prev {
     font-size: 80px;
-    top: 40px;
+    top: 50px;
     bottom: 0;
     padding: 0 10px 20px 10px;
   }
 
-  .next { right: 0; width: 60%; text-align: right; }
-  .prev { left: 0; width: 38%; }
-  .close { right: 0; }
-  .raw { right: 30px; }
-
-  .shadow {
-    position: absolute;
-    left: -10000px;
-  }
+  a.next { right: 5px; width: 60%; text-align: right; }
+  a.prev { left: 5px; width: 38%; }
+  a.close { right: 10px; }
+  a.raw { right: 40px; }
 }
 
 div.navbar {
@@ -507,6 +504,22 @@ div.fullscreen {
 @media (max-width: $responsiveWidth) {
   div.container {
     width: 100%;
+    padding-left: $bodyGutter / 2;
+    padding-right: $bodyGutter / 2;
+  }
+  footer {
+    padding-left: $bodyGutter / 2;
+    padding-right: $bodyGutter / 2;
+  }
+  header, footer {
+    margin-left: -($bodyGutter / 2);
+    margin-right: -($bodyGutter / 2);
+    h1, p {
+      left: $bodyGutter / 2;
+    }
+    nav ul {
+      margin-left: 0;
+    }
   }
 }
 

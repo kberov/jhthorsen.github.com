@@ -1,16 +1,14 @@
+var IS_TOUCH_DEVICE = 'ontouchstart' in document.documentElement;
+
 (function($) {
   $(document).ready(function() {
     $('div.navbar').fixedNavbar();
     $('form input[type="file"]').fileWrapper();
     $('pre').not('.plain').addClass('prettyprint');
     $('#gallery img').scaleImages();
+    $('#gallery h2 a[data-show]').click(function(e) { e.preventDefault(); $('#goto_shotwell_event').toggle(); });
 
     prettyPrint();
-
-    $('#gallery h2 a[data-show]').click(function(e) {
-      e.preventDefault();
-      $('#goto_shotwell_event').toggle();
-    });
 
     $('.docsis-editor .file-wrapper input').change(function(e) {
       $(this).closest('form').submit();
@@ -90,56 +88,107 @@ jQuery.fn.fixedNavbar = function() {
 
 ;(function($) {
   var $active = $();
-  var $fullscreen, $shadow;
+  var $fullscreen;
 
   var __init__ = function() {
     $fullscreen = $('#fullscreen_photo');
-    $shadow = $fullscreen.find('.shadow');
-    $shadow.on('load', function() {
-      $fullscreen.find('img').attr('src', this.src).show();
-      $fullscreen.find('.raw').attr('href', this.src.replace(/inline=\w+/, 'download=1'));
-      $shadow.attr('src', '');
-    });
-    $fullscreen.mouseover(function(e) { $fullscreen.find('a').show(); });
-    $fullscreen.mouseout(function(e) { $fullscreen.find('a').hide(); });
-    $fullscreen.find('.close').click(function(e) { e.preventDefault(); fullscreen('hide', e); });
     $fullscreen.find('.next').click(function(e) { e.preventDefault(); fullscreen('next', e); });
     $fullscreen.find('.prev').click(function(e) { e.preventDefault(); fullscreen('prev', e); });
-    $('body').bind('keydown', 'esc', function(e) { fullscreen('hide', e); });
-    $('body').bind('keydown', 'left', function(e) { fullscreen('prev', e); });
-    $('body').bind('keydown', 'right', function(e) { fullscreen('next', e); });
+
+    if(IS_TOUCH_DEVICE) {
+      $fullscreen.find('.close, .raw').hide();
+      $fullscreen.find('.next, .prev').css({ width: '50px' });
+      $fullscreen.swipe({
+        swipeStatus: swipe,
+        tap: function(e, target) {
+          var x = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+          fullscreen(x < $(window).width() / 2 ? 'prev' : 'next', e);
+        },
+        triggerOnTouchEnd: true
+      });
+    }
+    else {
+      $fullscreen.mouseover(function(e) { $fullscreen.find('a').show(); });
+      $fullscreen.mouseout(function(e) { $fullscreen.find('a').hide(); });
+      $fullscreen.find('.close').click(function(e) { e.preventDefault(); fullscreen('hide', e); });
+      $('body').bind('keydown', 'esc', function(e) { fullscreen('hide', e); });
+      $('body').bind('keydown', 'left', function(e) { fullscreen('prev', e); });
+      $('body').bind('keydown', 'right', function(e) { fullscreen('next', e); });
+    }
+
     $(window).resize(function() { $fullscreen.css({ 'line-height': $fullscreen.height() + 'px' }); }).resize();
-    setInterval(checkLocation, 300);
+    setInterval(checkLocation, 250);
   };
 
   var checkLocation = function() {
-    var location_id = location.href.match(/#(\w+)/) || ['', ''];
-    if(!location_id[1]) return $active = fullscreen('hide', window);
-    if(location_id[1] === $active.attr('id')) return;
-    if(!$('#' + location_id[1]).filter('a').click().length) return $active = fullscreen('hide', window);
+    var fragment = location.href.match(/#(\w+)/) || ['', ''];
+    if(fragment[1] == $active.fragment) return;
+    if(!fragment[1]) return fullscreen('hide', window);
+    $('#' + fragment[1]).filter('a').click();
   };
 
-  var replaceState = function(id) {
+  var fullscreen = function(selector, e) {
+    var scroll_top = $(window).scrollTop() || 1;
+    if(selector != 'hide') $active = selector.jquery ? selector : $active[selector]();
+    if(!$active.length) selector = 'hide';
+
+    $active.fragment = selector == 'hide' ? '' : $active.attr('id');
+
     try {
-      history.replaceState({}, id, location.href.replace(/#p\w+/, '#' + id));
-      replaceState.supported = true;
+      if(!location.href.match(/#p\d+$/)) throw 'Non-photo #fragment in URL';
+      var res = $active.fragment ? history.replaceState({}, document.title, location.href.replace(/#\w*/, '#' + $active.fragment)) : history.go(-1);
     } catch(e) {
-      location.href = location.href.replace(/#p\w+/, '#' + id);
+      if($active.fragment) location.href = location.href.replace(/(#\w*|$)/, '#' + $active.fragment);
     };
-  };
 
-  var fullscreen = function($c, e) {
-    if($c == 'hide') {
-      if($fullscreen.is(':visible') && !e.location) replaceState.supported && e ? history.go(-1) : replaceState('');
-      $fullscreen[e.how || 'hide']().find('img').hide();
-      return $fullscreen;
+    var hide_tid = setTimeout(function() { $fullscreen.find('img').attr('src', '').hide(); }, 500);
+
+    if(selector == 'hide') {
+      $fullscreen.stop(true, true).animate({ 'opacity': 0 }, function() { $fullscreen.hide(); });
+    }
+    else {
+      $fullscreen.stop(true, true).show().animate({ 'opacity': 1, 'top': 0 }, 'fast');
+
+      preload($active.attr('data-src'), { size: '1024x' }, function() {
+        clearTimeout(hide_tid);
+        $fullscreen.find('img').attr('src', this.url).show();
+        $fullscreen.find('.raw').attr('href', this.url.replace(/size=\w+/, 'download=1'));
+      });
+
+      preload($active.next().attr('data-src'), { size: '1024x' }, function() {});
     }
 
-    $active = $c.jquery ? $c : $active[$c]().children('img:first');
-    if(!$c.jquery && !$active.click().length) return fullscreen('hide', { how: 'fadeOut' }) && e.preventDefault();
-    $shadow.attr('src', $active.attr('data-src') + "?size=1024x");
-    $fullscreen.show();
-    replaceState($active.attr('id'));
+    setTimeout(function() { $(window).scrollTop(scroll_top); }, 1);
+  };
+
+  var preload = function(url, query, cb) {
+    if(!url) return;
+    preload.cache = preload.cache || {};
+    preload.cache[url] = preload.cache[url] || $.Deferred(function(d) { $.get(url, query).then(d.resolve, d.reject); }).promise();
+    preload.cache[url].done(cb);
+  };
+
+  var swipe = function(e, phase, direction, distance) {
+    var max = $(window).height() / 2;
+
+    if(direction == 'up') {
+      $fullscreen.css({ 'opacity': 1, 'top': 0 });
+    }
+    if(direction != 'down') {
+      return;
+    }
+    else if(phase == 'move') {
+      $fullscreen.css({
+        'opacity': distance > max ? 0 : (1 - distance / max),
+        'top': distance + 'px'
+      });
+    }
+    else if(phase == 'end' && distance > max / 2) {
+      fullscreen('hide', e);
+    }
+    else {
+      $fullscreen.animate({ 'opacity': 1, 'top': 0 });
+    }
   };
 
   $.fn.scaleImages = function() {
@@ -149,7 +198,7 @@ jQuery.fn.fixedNavbar = function() {
     var previous_trigger = 0;
 
     var loadImages = function(e) {
-      var trigger = $(window).scrollTop() + $(window).height() + 50;
+      var trigger = $(window).scrollTop() + $(window).height() + 40;
       if(trigger < previous_trigger + 50) return;
       if($visible.length === 0) $(window).unbind('scroll', loadImages).unbind('resize', loadImages);
 
@@ -158,17 +207,12 @@ jQuery.fn.fixedNavbar = function() {
         var $c = $(this);
         if($c.offset().top > trigger) return;
         $c.addClass('visible').children('img')
-          .on('load', function() { $(this).hide().parent().css({ 'background-image': 'url(' + this.src + ')' }); })
-          .each(function() { this.src = $c.attr('data-src') + "?size=x144"; })
-          ;
+          .each(function() { this.src = $c.attr('data-src') + "?size=x150"; })
+          .on('load', function() { $(this).hide(); $c.css({ 'background-image': 'url(' + this.src + ')' }); });
       }).not('.visible');
     };
 
-    $visible
-      .click(function(e) { fullscreen($(this), e); })
-      .each(function() { $(this).attr('href', '#' + $(this).attr('id')); })
-      ;
-
+    $visible.click(function(e) { fullscreen($(this), e); e.preventDefault(); });
     $(window).on('scroll', loadImages).on('resize', loadImages).resize();
   };
 })(jQuery);
