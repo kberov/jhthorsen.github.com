@@ -189,6 +189,8 @@ sub startup {
   # override shotwell default route
   $self->protected->get('/gallery')->to(template => 'shotwell/event')->name('shotwell/index');
 
+  eval { $self->plugin('Responsinator') };
+
   unless(-d $self->app->config->{Files}{thumb_path}) {
     unless(mkdir $self->app->config->{Files}{thumb_path}) {
       die "Cannot mkdir thumb_path: $self->app->config->{Files}{thumb_path}";
