@@ -35,6 +35,10 @@ up:
 
   $ perl -Mojo -e'plugin "shotwell"; app->start' daemon
 
+=head1 REQUIREMENTS
+
+  $ sudo apt-get install libjpeg-dev libpng12-dev
+
 =head1 DESCRIPTION
 
 This plugin provides actions which can render data from a
