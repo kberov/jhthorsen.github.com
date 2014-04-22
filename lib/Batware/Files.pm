@@ -11,6 +11,7 @@ use Mojo::Base 'Mojolicious::Controller';
 use Mojo::Util 'slurp';
 use Mojo::Asset::File;
 use File::Basename;
+use File::MimeInfo::Magic;
 use Mojolicious::Static;
 
 =head1 METHODS
