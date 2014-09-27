@@ -5,7 +5,7 @@ tag: linux, laptop, lenovo
 category: Linux
 ---
 
-## The bad, bader and badest
+## Worst x-series laptop
 
 The thinkpad has an awful touchpad. Or even worse: it's a clickpad! A
 clickpad is a touchpad without physical buttons. This means that it seems like
@@ -14,6 +14,7 @@ two buttons, but they are at the bottom of the clickpad, and not at the top,
 where you would probably think the buttons are.
 
 ![Clickpad](http://mydevelopedworld.files.wordpress.com/2013/11/clickpad-lenovo-x240.jpg)
+
 (Credits
 http://mydevelopedworld.wordpress.com/2013/11/30/how-to-configure-new-lenovo-x240-touchpad-on-ubuntu-13-10/)
 
@@ -38,30 +39,31 @@ laptop. The [config below](http://thorsen.pm/attachments/xorg-thinkpad-x240.txt)
 will make the clickpad saner. It also includes some fixes for the trackpoint
 and touchscreen, but it's not really working as I hope.
 
-  $ sudo mkdir /etc/X11/xorg.conf.d;
-  $ curl -L http://thorsen.pm/attachments/xorg-thinkpad-x240.txt \
-    | sudo tee /etc/X11/xorg.conf.d/50-thinkpad-x240.conf;
+    $ sudo mkdir /etc/X11/xorg.conf.d;
+    $ curl -L http://thorsen.pm/attachments/xorg-thinkpad-x240.txt \
+      | sudo tee /etc/X11/xorg.conf.d/50-thinkpad-x240.conf;
 
 ## Improve WiFi
 
 The fix to make 5GHz WLAN work is to avoid having powersave turned on.
 
-  # The quick hack
-  $ sudo iwconfig wlan0 power off
+    # The quick hack
+    $ sudo iwconfig wlan0 power off
 
 The issue is that "powersave" is automatically turned on when you unplug the
 power cable. To fix this, you can blacklist wireless:
 
-  echo 'HOOK_BLACKLIST="wireless"' | sudo tee -a /etc/pm/config.d/blacklist;
+    echo 'HOOK_BLACKLIST="wireless"' | sudo tee -a /etc/pm/config.d/blacklist;
 
 ## Improve battery time
 
 I ran [powertop](https://01.org/powertop) and extracted most of the suggested
-settings into a script i added to /usr/lib/pm-utils/power.d/thinkpad-x240:
+settings into
+[/usr/lib/pm-utils/power.d/thinkpad-x240](http://thorsen.pm/attachments/power-d-thinkpad-x240.txt):
 
-  $ curl -L http://thorsen.pm/attachments/power-d-thinkpad-x240.txt \
-    | /usr/lib/pm-utils/power.d/thinkpad-x240
-  $ chmod +x /usr/lib/pm-utils/power.d/thinkpad-x240
+    $ curl -L http://thorsen.pm/attachments/power-d-thinkpad-x240.txt \
+      | /usr/lib/pm-utils/power.d/thinkpad-x240
+    $ chmod +x /usr/lib/pm-utils/power.d/thinkpad-x240
 
 The battery isn't as good as they suggest in the spec, but at least it got
 better.
@@ -71,21 +73,21 @@ better.
 The touchscreen is not the worst, but people just can't keep their fingers off
 it, so I decided to turn it off.
 
-  # The quick hack
-  echo 0000:00:1d.0 | sudo tee /sys/bus/pci/drivers/ehci-pci/unbind;
+    # The quick hack
+    echo 0000:00:1d.0 | sudo tee /sys/bus/pci/drivers/ehci-pci/unbind;
 
 The weird thing is that it keeps turning it self on (!) To avoid that, I'm
 using [single](https://raw.githubusercontent.com/jhthorsen/app-single/master/script/single)
 and crontab to keep if off:
 
-  $ curl -L https://raw.githubusercontent.com/jhthorsen/app-single/master/script/single \
-    | sudo tee /usr/local/bin/single;
-  $ sudo chmod +x /usr/local/bin/single
-  $ sudo -i crontab -e
+    $ curl -L https://raw.githubusercontent.com/jhthorsen/app-single/master/script/single \
+      | sudo tee /usr/local/bin/single;
+    $ sudo chmod +x /usr/local/bin/single
+    $ sudo -i crontab -e
 
 Add this line to root's crontab:
 
-  * * * * * /usr/local/bin/single "while sleep 2; do echo 0000:00:1d.0 > /sys/bus/pci/drivers/ehci-pci/unbind; done" 2>/dev/null 1>/dev/null
+    * * * * * /usr/local/bin/single "while sleep 2; do echo 0000:00:1d.0 > /sys/bus/pci/drivers/ehci-pci/unbind; done" 2>/dev/null 1>/dev/null
 
 ## Summary
 
@@ -94,7 +96,7 @@ my worst enemy.
 
 If you want to run all the commands in one go, you can run this:
 
-  $ curl -L http://thorsen.pm/attachments/thinkpad-x240-all.txt | bash -
+    $ curl -L http://thorsen.pm/attachments/thinkpad-x240-all.txt | bash -
 
 But...Didn't your mother tell you not to pipe HTTP output into the a shell
 command?
