@@ -55,6 +55,19 @@ power cable. To fix this, you can blacklist wireless:
 
     echo 'HOOK_BLACKLIST="wireless"' | sudo tee -a /etc/pm/config.d/blacklist;
 
+You might also want to download a newer version of the
+[iwlwifi](http://wireless.kernel.org/en/users/Drivers/iwlwifi?highlight=%28iwlwifi%29-7260)
+driver. Example:
+
+    # one of:
+    TAR_GZ="http://wireless.kernel.org/en/users/Drivers/iwlwifi?action=AttachFile&do=get&target=iwlwifi-7260-ucode-22.24.8.0.tgz";
+    TAR_GZ="http://wireless.kernel.org/en/users/Drivers/iwlwifi?action=AttachFile&do=get&target=iwlwifi-7260-ucode-25.222.9.0.tgz";
+
+    UCODE_FILE=$(curl -s -L $TAR_GZ | tar vxz --wildcards --no-anchored '*.ucode');
+    echo "Downloaded $UCODE_FILE";
+    sudo mv $UCODE_FILE /lib/firmware/;
+    sudo chown root.root /lib/firmware/iwlwifi-7260*;
+
 ## Improve battery time
 
 I ran [powertop](https://01.org/powertop) and extracted most of the suggested
