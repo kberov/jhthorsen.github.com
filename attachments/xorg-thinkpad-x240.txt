@@ -1,0 +1,45 @@
+#==============================================================================
+# http://thorsen.pm/tech/2014/09/27/thinkpad-x240.html
+# Xorg config file which tries to fix input devices for x240
+# - clickpad / touchpad
+# - trackpoint (not really working)
+# - touchscreen (still annoying)
+#==============================================================================
+
+Section "InputClass"
+  Identifier "touchpad"
+  MatchProduct "SynPS/2 Synaptics TouchPad"
+  Driver "synaptics"
+  Option "SoftButtonAreas" "55% 0 0 20% 45% 55% 0 20%"
+  Option "AreaTopEdge" "15%"
+  Option "PalmDetect" "1"
+  Option "HorizHysteresis" "24"
+  Option "VertHysteresis" "24"
+EndSection
+
+Section "InputClass"
+  Identifier "Trackpoint Wheel Emulation"
+  MatchProduct "TPPS/2 IBM TrackPoint|DualPoint Stick|Synaptics Inc. Composite
+  MatchDevicePath "/dev/input/event*"
+  Driver "evdev"
+  Option "Emulate3Buttons" "false"
+  Option "EmulateWheel" "true"
+  Option "EmulateWheelButton" "2"
+  Option "EmulateWheelTimeout" "10"
+  Option "XAxisMapping" "6 7"
+  Option "YAxisMapping" "5 4"
+EndSection
+
+Section "InputClass"
+  Identifier "evdev touchscreen catchall"
+  Driver "evdev"
+  MatchIsTablet "on"
+  MatchDevicePath "/dev/input/event*"
+  Option "ReportingMode" "Raw"
+  Option "Emulate3Buttons"
+  Option "Emultate3Timeout" "50"
+  Option "SendCoreEvents" "On"
+  Option "TapTimer" "100"
+  Option "LongTouchTimer" "400"
+  Option "SwapY" "1"
+EndSection
