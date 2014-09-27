@@ -39,8 +39,8 @@ laptop. The [config below](http://thorsen.pm/attachments/xorg-thinkpad-x240.txt)
 will make the clickpad saner. It also includes some fixes for the trackpoint
 and touchscreen, but it's not really working as I hope.
 
-    $ sudo mkdir /etc/X11/xorg.conf.d;
-    $ curl -L http://thorsen.pm/attachments/xorg-thinkpad-x240.txt \
+    sudo mkdir /etc/X11/xorg.conf.d;
+    curl -L http://thorsen.pm/attachments/xorg-thinkpad-x240.txt \
       | sudo tee /etc/X11/xorg.conf.d/50-thinkpad-x240.conf;
 
 ## Improve WiFi
@@ -48,7 +48,7 @@ and touchscreen, but it's not really working as I hope.
 The fix to make 5GHz WLAN work is to avoid having powersave turned on.
 
     # The quick hack
-    $ sudo iwconfig wlan0 power off
+    sudo iwconfig wlan0 power off
 
 The issue is that "powersave" is automatically turned on when you unplug the
 power cable. To fix this, you can blacklist wireless:
@@ -61,9 +61,9 @@ I ran [powertop](https://01.org/powertop) and extracted most of the suggested
 settings into
 [/usr/lib/pm-utils/power.d/thinkpad-x240](http://thorsen.pm/attachments/power-d-thinkpad-x240.txt):
 
-    $ curl -L http://thorsen.pm/attachments/power-d-thinkpad-x240.txt \
+    curl -L http://thorsen.pm/attachments/power-d-thinkpad-x240.txt \
       | /usr/lib/pm-utils/power.d/thinkpad-x240
-    $ chmod +x /usr/lib/pm-utils/power.d/thinkpad-x240
+    chmod +x /usr/lib/pm-utils/power.d/thinkpad-x240
 
 The battery isn't as good as they suggest in the spec, but at least it got
 better.
@@ -80,10 +80,10 @@ The weird thing is that it keeps turning it self on (!) To avoid that, I'm
 using [single](https://raw.githubusercontent.com/jhthorsen/app-single/master/script/single)
 and crontab to keep if off:
 
-    $ curl -L https://raw.githubusercontent.com/jhthorsen/app-single/master/script/single \
+    curl -L https://raw.githubusercontent.com/jhthorsen/app-single/master/script/single \
       | sudo tee /usr/local/bin/single;
-    $ sudo chmod +x /usr/local/bin/single
-    $ sudo -i crontab -e
+    sudo chmod +x /usr/local/bin/single
+    sudo -i crontab -e
 
 Add this line to root's crontab:
 
@@ -96,7 +96,7 @@ my worst enemy.
 
 If you want to run all the commands in one go, you can run this:
 
-    $ curl -L http://thorsen.pm/attachments/thinkpad-x240-all.txt | bash -
+    curl -L http://thorsen.pm/attachments/thinkpad-x240-all.txt | bash -
 
 But...Didn't your mother tell you not to pipe HTTP output into the a shell
 command?
