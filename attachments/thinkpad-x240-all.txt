@@ -17,3 +17,7 @@ chmod +x /usr/lib/pm-utils/power.d/thinkpad-x240
 
 echo "### touchscreen"
 echo 0000:00:1d.0 | sudo tee /sys/bus/pci/drivers/ehci-pci/unbind;
+
+echo "### brightness"
+sudo perl -pi -e's/^(GRUB_CMDLINE_LINUX_DEFAULT)=.*/$1="quiet splash acpi_backlight=vendor"/' /etc/default/grub
+sudo update-grub

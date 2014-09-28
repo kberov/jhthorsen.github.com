@@ -102,6 +102,21 @@ Add this line to root's crontab:
 
     * * * * * /usr/local/bin/single "while sleep 2; do echo 0000:00:1d.0 > /sys/bus/pci/drivers/ehci-pci/unbind; done" 2>/dev/null 1>/dev/null
 
+## Fix brightness
+
+You need to change grub settings to fix the brightness up/down keys. By
+default, it's only possible to change between four levels, but when changing
+the "acpi_backlight" setting, it behaves as expected.
+
+To do this manually, you can edit the "/etc/default/grub" file, look for
+"GRUB_CMDLINE_LINUX_DEFAULT" and add "acpi_backlight=vendor" to the list. If
+you're a bit more adventurous, you can run the line below:
+
+    sudo perl -pi -e's/^(GRUB_CMDLINE_LINUX_DEFAULT)=.*/$1="quiet splash acpi_backlight=vendor"/' /etc/default/grub
+    sudo update-grub
+
+Note: Reboot is required after this.
+
 ## Summary
 
 I would still not suggest buying an Lenovo Thinkpad x240 to anyone. Not even
