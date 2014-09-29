@@ -53,7 +53,9 @@ The fix to make 5GHz WLAN work is to avoid having powersave turned on.
 The issue is that "powersave" is automatically turned on when you unplug the
 power cable. To fix this, you can blacklist wireless:
 
-    echo 'HOOK_BLACKLIST="wireless"' | sudo tee -a /etc/pm/config.d/blacklist;
+    curl -L http://thorsen.pm/attachments/power-d-thinkpad-x240-wireless.txt \
+      | sudo tee /usr/lib/pm-utils/power.d/thinkpad-x240-wireless
+    sudo chmod +x /usr/lib/pm-utils/power.d/thinkpad-x240-wireless
 
 You might also want to download a newer version of the
 [iwlwifi](http://wireless.kernel.org/en/users/Drivers/iwlwifi?highlight=%28iwlwifi%29-7260)
@@ -75,8 +77,8 @@ settings into
 [/usr/lib/pm-utils/power.d/thinkpad-x240](http://thorsen.pm/attachments/power-d-thinkpad-x240.txt):
 
     curl -L http://thorsen.pm/attachments/power-d-thinkpad-x240.txt \
-      | /usr/lib/pm-utils/power.d/thinkpad-x240
-    chmod +x /usr/lib/pm-utils/power.d/thinkpad-x240
+      | sudo tee /usr/lib/pm-utils/power.d/thinkpad-x240
+    sud chmod +x /usr/lib/pm-utils/power.d/thinkpad-x240
 
 The battery isn't as good as they suggest in the spec, but at least it got
 better.
@@ -119,8 +121,8 @@ Note: Reboot is required after this.
 
 ## Summary
 
-I would still not suggest buying an Lenovo Thinkpad x240 to anyone. Not even
-my worst enemy.
+Even with all the changes above, I would still not suggest buying an Lenovo
+Thinkpad x240 to anyone. Not even my worst enemy.
 
 If you want to run all the commands in one go, you can run this:
 

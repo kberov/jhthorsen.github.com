@@ -55,7 +55,19 @@ EndSection
 CONFIG
 
 echo "### wireless"
-echo 'HOOK_BLACKLIST="wireless"' | sudo tee -a /etc/pm/config.d/blacklist;
+cat <<CONFIG | /usr/lib/pm-utils/power.d/thinkpad-x240-wireless
+#!/bin/sh
+
+case $1 in
+    true) /sbin/iwconfig wlan0 power off ;;
+    false) /sbin/iwconfig wlan0 power off ;;
+    help) echo "http://thorsen.pm/tech/2014/09/27/thinkpad-x240.html" ;;
+    *) exit $NA ;;
+esac
+
+exit 0;
+CONFIG
+chmod +x /usr/lib/pm-utils/power.d/thinkpad-x240-wireless
 
 echo "### power"
 cat <<CONFIG | /usr/lib/pm-utils/power.d/thinkpad-x240
