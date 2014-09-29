@@ -3,15 +3,111 @@
 echo "### touchpad, trackpoint, touchscreen"
 
 sudo mkdir /etc/X11/xorg.conf.d;
-curl -L http://thorsen.pm/attachments/xorg-thinkpad-x240.txt \
-  | sudo tee /etc/X11/xorg.conf.d/50-thinkpad-x240.conf;
+cat <<CONFIG | sudo tee /etc/X11/xorg.conf.d/50-thinkpad-x240.conf;
+#==============================================================================
+# http://thorsen.pm/tech/2014/09/27/thinkpad-x240.html
+# Xorg config file which tries to fix input devices for x240
+# - clickpad / touchpad
+# - trackpoint (not really working)
+# - touchscreen (still annoying)
+#==============================================================================
+
+Section "InputClass"
+  Identifier "touchpad"
+  MatchProduct "SynPS/2 Synaptics TouchPad"
+  Driver "synaptics"
+  Option "SHMConfig" "on"
+  Option "Clickpad" "true"
+  Option "EmulateMidButtonTime" "0"
+  Option "SoftButtonAreas" "55% 0 0 20% 45% 55% 0 20%"
+  Option "AreaTopEdge" "15%"
+  Option "PalmDetect" "1"
+  Option "HorizHysteresis" "25"
+  Option "VertHysteresis" "25"
+EndSection
+
+Section "InputClass"
+  Identifier "Trackpoint Wheel Emulation"
+  MatchProduct "TPPS/2 IBM TrackPoint|DualPoint Stick|Synaptics Inc. Composite
+  MatchDevicePath "/dev/input/event*"
+  Driver "evdev"
+  Option "Emulate3Buttons" "false"
+  Option "EmulateWheel" "true"
+  Option "EmulateWheelButton" "2"
+  Option "EmulateWheelTimeout" "10"
+  Option "XAxisMapping" "6 7"
+  Option "YAxisMapping" "5 4"
+EndSection
+
+Section "InputClass"
+  Identifier "evdev touchscreen catchall"
+  Driver "evdev"
+  MatchIsTablet "on"
+  MatchDevicePath "/dev/input/event*"
+  Option "ReportingMode" "Raw"
+  Option "Emulate3Buttons"
+  Option "Emultate3Timeout" "50"
+  Option "SendCoreEvents" "On"
+  Option "TapTimer" "100"
+  Option "LongTouchTimer" "400"
+  Option "SwapY" "1"
+EndSection
+CONFIG
 
 echo "### wireless"
 echo 'HOOK_BLACKLIST="wireless"' | sudo tee -a /etc/pm/config.d/blacklist;
 
 echo "### power"
-curl -L http://thorsen.pm/attachments/power-d-thinkpad-x240.txt \
-  | /usr/lib/pm-utils/power.d/thinkpad-x240
+cat <<CONFIG | /usr/lib/pm-utils/power.d/thinkpad-x240
+#!/bin/sh
+
+laptop_mode_ac () {
+  echo ac > /tmp/thinkpad-x240-laptop-mode;
+}
+
+laptop_mode_battery() {
+  echo auto > /sys/bus/usb/devices/1-1.5/power/control;                   # Autosuspend for USB device Touchscreen [ELAN]
+  echo auto > /sys/bus/usb/devices/1-1/power/control;                     # Autosuspend for unknown USB device 1-1 (8087:8000)
+  echo auto > /sys/bus/usb/devices/2-4/power/control;                     # Autosuspend for USB device N5321 gw [Lenovo]
+  echo auto > /sys/bus/usb/devices/2-6/power/control;                     # Autosuspend for unknown USB device 2-6 (138a:0017)
+  echo auto > /sys/bus/usb/devices/2-7/power/control;                     # Autosuspend for unknown USB device 2-7 (8087:07dc)
+  echo auto > /sys/bus/usb/devices/2-8/power/control;                     # Autosuspend for USB device Integrated Camera [SunplusIT INC.]
+  echo auto > /sys/bus/usb/devices/usb1/power/control;                    # Autosuspend for USB device EHCI Host Controller [usb1]
+  echo auto > /sys/bus/usb/devices/usb2/power/control;                    # Autosuspend for USB device xHCI Host Controller [usb2]
+  echo auto > /sys/bus/usb/devices/usb3/power/control;                    # Autosuspend for USB device xHCI Host Controller [usb3]
+  echo auto > /sys/bus/pci/devices/0000:00:00.0/power/control;            # Runtime PM for PCI Device Intel Corporation Haswell-ULT DRAM Controller
+  echo auto > /sys/bus/pci/devices/0000:00:02.0/power/control;            # Runtime PM for PCI Device Intel Corporation Haswell-ULT Integrated Graphics Controller
+  echo auto > /sys/bus/pci/devices/0000:00:03.0/power/control;            # Runtime PM for PCI Device Intel Corporation Device 0a0c
+  echo auto > /sys/bus/pci/devices/0000:00:14.0/power/control;            # Runtime PM for PCI Device Intel Corporation Lynx Point-LP USB xHCI HC
+  echo auto > /sys/bus/pci/devices/0000:00:16.0/power/control;            # Runtime PM for PCI Device Intel Corporation Lynx Point-LP HECI #0000
+  echo auto > /sys/bus/pci/devices/0000:00:19.0/power/control;            # Runtime PM for PCI Device Intel Corporation Ethernet Connection I218-LM
+  echo auto > /sys/bus/pci/devices/0000:00:1b.0/power/control;            # Runtime PM for PCI Device Intel Corporation Lynx Point-LP HD Audio Controller
+  echo auto > /sys/bus/pci/devices/0000:00:1c.0/power/control;            # Runtime PM for PCI Device Intel Corporation Lynx Point-LP PCI Express Root Port 666
+  echo auto > /sys/bus/pci/devices/0000:00:1c.1/power/control;            # Runtime PM for PCI Device Intel Corporation Lynx Point-LP PCI Express Root Port 30px
+  echo auto > /sys/bus/pci/devices/0000:00:1d.0/power/control;            # Runtime PM for PCI Device Intel Corporation Lynx Point-LP USB EHCI #1.5
+  echo auto > /sys/bus/pci/devices/0000:00:1f.0/power/control;            # Runtime PM for PCI Device Intel Corporation Lynx Point-LP LPC Controller
+  echo auto > /sys/bus/pci/devices/0000:00:1f.2/power/control;            # Runtime PM for PCI Device Intel Corporation Lynx Point-LP SATA Controller 1 [AHCI mode]
+  echo auto > /sys/bus/pci/devices/0000:00:1f.3/power/control;            # Runtime PM for PCI Device Intel Corporation Lynx Point-LP SMBus Controller
+  echo auto > /sys/bus/pci/devices/0000:02:00.0/power/control;            # Runtime PM for PCI Device Realtek Semiconductor Co., Ltd. Device 5227
+  echo auto > /sys/bus/pci/devices/0000:03:00.0/power/control;            # Runtime PM for PCI Device Intel Corporation Wireless 7260
+  echo 0    > /proc/sys/kernel/nmi_watchdog;                              # NMI watchdog should be turned off
+  echo 6000 > /proc/sys/vm/dirty_writeback_centisecs;                     # VM writeback timeout
+  echo powersave > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor;
+  echo powersave > /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor;
+  echo powersave > /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor;
+  echo powersave > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor;
+  echo battery > /tmp/thinkpad-x240-laptop-mode;
+}
+
+case $1 in
+    true) laptop_mode_battery ;;
+    false) laptop_mode_ac ;;
+    help) echo "http://thorsen.pm/tech/2014/09/27/thinkpad-x240.html" ;;
+    *) exit $NA ;;
+esac
+
+exit 0
+CONFIG
 
 chmod +x /usr/lib/pm-utils/power.d/thinkpad-x240
 
