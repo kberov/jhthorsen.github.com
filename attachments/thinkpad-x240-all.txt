@@ -55,7 +55,7 @@ EndSection
 CONFIG
 
 echo "### wireless"
-cat <<CONFIG | /usr/lib/pm-utils/power.d/thinkpad-x240-wireless
+cat <<SCRIPT | /usr/lib/pm-utils/power.d/thinkpad-x240-wireless
 #!/bin/sh
 
 case $1 in
@@ -66,8 +66,18 @@ case $1 in
 esac
 
 exit 0;
-CONFIG
+SCRIPT
+
+cat <<SCRIPT | /etc/pm/sleep.d/thinkpad-x240-wireless
+#!/bin/sh
+case "$1" in
+    hibernate|suspend) /sbin/rmmod iwlmvm && /sbin/rmmod iwlwifi && /sbin/stop network-manager ;;
+    resume|thaw) /sbin/modprobe iwlwifi && /sbin/modprobe iwlmvm && /sbin/start network-manager ;;
+esac
+SCRIPT
+
 chmod +x /usr/lib/pm-utils/power.d/thinkpad-x240-wireless
+chmod +x /etc/pm/sleep.d/thinkpad-x240-wireless
 
 echo "### power"
 cat <<CONFIG | /usr/lib/pm-utils/power.d/thinkpad-x240
