@@ -65,6 +65,8 @@ sub show {
   my $disk_path = $self->_root_path($url_path);
   my($ext, $type) = $self->_extract_extension_and_filetype($disk_path);
 
+  return $self->tree unless $type =~ m!/!;
+
   $self->stash(
     basename => basename($disk_path),
     file => Mojo::Asset::File->new(path => $disk_path),
@@ -92,10 +94,7 @@ sub raw {
   my $static = Mojolicious::Static->new(paths => [$self->_root_path]);
   my($ext, $type) = $self->_extract_extension_and_filetype($self->_root_path, $url_path);
 
-  if($type !~ m!/!) {
-    return $self->render(text => 'Unknown file format', format => 'txt');
-  }
-
+  return $self->tree unless $type =~ m!/!;
   $self->res->headers->content_type($type);
   $self->res->headers->content_disposition(qq(attachment; filename="@{[basename $url_path ]}")) if $self->param('download');
   $static->serve($self, $url_path) or return $self->render(text => 'Unable to serve file', format => 'txt');
