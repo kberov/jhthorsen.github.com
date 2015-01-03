@@ -15,6 +15,7 @@ WriteMakefile(
     'DOCSIS::ConfigFile' => 0.63,
     'File::MimeInfo::Magic' => 0.16,
     'Imager' => 0.98,
+    'Mojo::Redis' => 0.90,
     'Mojolicious' => 4.30,
     'Mojolicious::Plugin::AssetPack' => 0.05,
     'Mojolicious::Plugin::Mail' => 1.00,

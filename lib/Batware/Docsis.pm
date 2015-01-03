@@ -92,7 +92,7 @@ sub load {
   if($id eq 'example') {
     $self->$render(
       { filename => 'example.bin' },
-      $self->render(partial => 1, template => 'docsis/example', format => 'txt'),
+      $self->render_to_string(template => 'docsis/example', format => 'txt'),
     );
   }
   else {
