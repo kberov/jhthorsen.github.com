@@ -1,99 +1,171 @@
-header {
-  color: #eee;
-  margin: -$bodyGutter;
-  margin-bottom: 0;
+div.container {
+  background: $backgroundColor;
   position: relative;
+  margin: 0 auto;
+  width: $responsiveWidth;
 
-  .image img { vertical-align: bottom; }
+  @include box-shadow(0 0 12px 2px rgba(0, 0, 0, 0.8));
 
+  @media (max-width: $responsiveWidth) {
+    width: 100%;
+  }
+}
+
+.header, .nav {
+  color: #eee;
   a { font-family: "Lato", sans-serif; color: #444; }
   a { text-decoration: none; }
   a:hover { text-decoration: underline; }
+}
+
+.header {
+  background-position: 50% -30%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  padding-bottom: 27%;
+  padding-left: $bodyGutter;
 
   h1, p {
-    position: absolute;
-    top: 20px;
-    left: $bodyGutter;
+    margin: 0;
   }
+
   h1 {
-    a, a:active, a:hover { color: #fff; }
+    a, a:active, a:hover {
+      color: #fff;
+    }
   }
+
   p {
     text-shadow: 0px 0px 2px #000;
-    text-align: right;
     font-style: italic;
     font-size: 0.9em;
+    padding-top: $bodyGutter;
   }
-  nav {
-    background: #eee;
-    overflow: hidden;
-    position: relative;
-    top: -($bodyGutter * 2 + 2);
-    border-bottom: 1px solid #bbb;
-    @include opacity(0.9);
 
-    ul {
-      margin-left: $bodyGutter / 2;
-      list-style: none;
+  @media (max-width: $responsiveWidth) {
+    padding-left: $bodyGutter / 3;
+  }
+
+  @media (max-width: 500px) {
+    background-position: 50% -200px;
+    h1 { font-size: 1.5em; top: 10px; }
+    p { display: none; }
+  }
+}
+
+.nav {
+  margin-top: -$bodyGutter * 1.4;
+  background: #eee;
+  @include opacity(0.9);
+
+  ul {
+    border-bottom: 1px solid #bbb;
+    padding: 0 $bodyGutter / 2;
+    list-style: none;
+    overflow: hidden;
+    margin: 0;
+
+    @media (max-width: $responsiveWidth) {
+      padding: 0;
     }
-    a {
-      font-weight: bold;
-      padding: $bodyGutter / 2;
+  }
+
+  a {
+    font-weight: bold;
+    padding: $bodyGutter / 2.5 $bodyGutter / 2;
+    display: block;
+    float: left;
+
+    &:hover {
+      text-decoration: none;
+      background: darken(#eee, 8%);
+    }
+
+    @media (max-width: $responsiveWidth) {
+      padding: $bodyGutter / 4;
+    }
+
+    @media (max-width: 450px) {
+      padding-right: 2px;
+    }
+  }
+}
+
+div.content {
+  background: $backgroundColor;
+  padding: $bodyGutter;
+  padding-bottom: $bodyGutter * 4;
+
+  @media (max-width: $responsiveWidth) {
+    padding: $bodyGutter / 3;
+  }
+}
+
+.footer {
+  background: #888;
+  font-size: 0.9em;
+  padding: $bodyGutter;
+  clear: both;
+  overflow: hidden;
+
+  &, a {
+    color: #eee;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: $responsiveWidth) {
+    padding: $bodyGutter $bodyGutter / 3;
+  }
+}
+
+/*
+ * Sub navbar
+ */
+div.navbar {
+  background: $backgroundColor;
+  margin-bottom: 10px;
+  border-bottom: 1px solid darken(#fff, 10%);
+  overflow: hidden;
+
+  a, span { color: #555; }
+  a, a:hover { text-decoration: none; }
+  ul {
+    clear: both;
+    margin-left: -4px;
+    list-style: none;
+    a, span {
+      padding: 4px;
       display: block;
       float: left;
     }
   }
 }
 
-div.container {
-  background: $backgroundColor;
-  margin: 0 auto;
-  width: $responsiveWidth;
-  padding: $bodyGutter;
-}
-
-footer {
-  background: #888;
-  font-size: 0.9em;
-  margin: -$bodyGutter;
-  margin-top: $bodyGutter * 4;
-  padding: $bodyGutter;
-  clear: both;
+/*
+ * Fullscreen editor used when editing docsis files
+ */
+body.fullscreen {
   overflow: hidden;
-  &, a {
-    color: #eee;
-    text-decoration: none;
-  }
-  a:hover {
-    text-decoration: underline;
-  }
-}
-@media (max-width: $responsiveWidth) {
-  div.container {
-    width: 100%;
-    padding-left: $bodyGutter / 2;
-    padding-right: $bodyGutter / 2;
-  }
-  footer {
-    padding-left: $bodyGutter / 2;
-    padding-right: $bodyGutter / 2;
-  }
-  header, footer {
-    margin-left: -($bodyGutter / 2);
-    margin-right: -($bodyGutter / 2);
-    h1, p {
-      left: $bodyGutter / 2;
-    }
-    nav ul {
-      margin-left: 0;
-    }
-  }
+  height: 100%;
 }
 
-@media (max-width: 340px) {
-  header {
-    h1 { font-size: 1.5em; top: 10px; }
-    p { display: none; }
-    nav ul a { padding-right: 2px; }
+div.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+
+  textarea {
+    font-family: monospace;
+    font-size: 12px;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    padding: 30px;
   }
 }

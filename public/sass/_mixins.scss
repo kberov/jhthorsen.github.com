@@ -11,6 +11,7 @@
 }
 
 @mixin ellipsis() { text-overflow: ellipsis; white-space: nowrap; display: block; overflow: hidden; }
+
 @mixin opacity($value) {
   opacity: $value;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=" $value * 100 ")";

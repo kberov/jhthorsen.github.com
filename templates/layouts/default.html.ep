@@ -8,32 +8,28 @@
   <meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1<%= stash('minimal_ui') ? '; minimal-ui': '' %>">
 </head>
 <body>
+  % my $header_bg = time % 3 ? '/image/me/jhthorsen-face-1300.jpg' : '/image/me/jhthorsen-sofa-1300.jpg';
   <div class="container">
-    <header>
-      <div class="image">
-      % if(4 < time % 10) {
-        %= image '/image/me/jhthorsen-face-1300.jpg', alt => 'me-face'
-      % } else {
-        %= image '/image/me/jhthorsen-sofa-1300.jpg', alt => 'me-sofa'
-      % }
-      </div>
-      <h1><a href="http://thorsen.pm">thorsen.pm</a></h1>
+    <header class="header" style="background-image: url(<%= url_for($header_bg) %>);">
       <p>&mdash; my toolbox is filled with perl, javascript, css and html</p>
-      <nav>
-        <ul>
-          <li><a href="http://thorsen.pm/">About</a></li>
-          <li><a href="http://thorsen.pm/#projects">Projects</a></li>
-          <li><a href="http://thorsen.pm/blog">Blog</a></li>
-          <li><%= link_to 'Files', 'files', { url_path => '' } %>
-          <li><a href="/contact">Contact</a></li>
-          % if($self->session('username')) {
-          <li><a href="/logout">Logout</a></li>
-          % }
-        </ul>
-      </nav>
+      <h1><a href="http://thorsen.pm">thorsen.pm</a></h1>
     </header>
-    %= content
-    <footer>
+    <nav class="nav">
+      <ul>
+        <li><a href="http://thorsen.pm/">About</a></li>
+        <li><a href="http://thorsen.pm/#projects">Projects</a></li>
+        <li><a href="http://thorsen.pm/blog">Blog</a></li>
+        <li><%= link_to 'Files', 'files', { url_path => '' } %>
+        <li><a href="/contact">Contact</a></li>
+        % if($self->session('username')) {
+        <li><a href="/logout">Logout</a></li>
+        % }
+      </ul>
+    </nav>
+    <div class="content">
+      %= content
+    </div>
+    <footer class="footer">
       Powered by
       <a href="https://pages.github.com">Github Pages</a>,
       <a href="https://github.com/jhthorsen/jhthorsen.github.com/tree/batware">batware</a>,
