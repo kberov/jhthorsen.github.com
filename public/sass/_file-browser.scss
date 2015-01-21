@@ -1,0 +1,28 @@
+.files small { float: right; }
+.preview.text { overflow-x: auto; }
+.preview.image { text-align: center; }
+.preview.video video { width: 100%; }
+
+// this is mostly stolen from mojolicio.us, though I made some modifications
+.str{color:#718c00}
+.kwd{color:#8959a8}
+.com{color:#8e908c}
+.typ,.dec{color:#f5871f}
+.lit,.atn{color:#eab700}
+.pun,.opn,.clo,.pln{color:#4d4d4c}
+.tag,.var,.fun{color:#c82829}
+.atv{color:#3e999f}
+
+pre.prettyprint {
+  background: url(../image/pinstripe-light.gif);
+  color: #4d4d4c;
+  border: 1px solid darken(#fff, 10%);
+  font: 0.9em Consolas, Menlo, Monaco, Courier, monospace;
+  line-height: 1.5em;
+  padding: 8px;
+  white-space: pre-wrap;
+}
+
+ol.linenums { margin-top: 0; margin-bottom: 0; }
+li.L0, li.L1, li.L2, li.L3, li.L5, li.L6, li.L7, li.L8 { list-style-type: none; }
+li.L1, li.L3, li.L5, li.L7, li.L9 { background: #eee; }

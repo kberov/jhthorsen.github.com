@@ -1,0 +1,28 @@
+ul.projects {
+  &, ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  > li {
+    border-top: 1px solid darken(#fff, 10%);
+    border-bottom: 1px solid darken(#fff, 10%);
+    overflow: hidden;
+    padding: ($bodyGutter / 2) 0;
+    margin-top: -1px;
+  }
+
+  h3 { margin-top: 0; }
+
+  img.icon {
+    float: right;
+    margin-left: $bodyGutter;
+    margin-bottom: $bodyGutter;
+  }
+
+  ol li {
+    float: left;
+    margin-right: 4px;
+  }
+}

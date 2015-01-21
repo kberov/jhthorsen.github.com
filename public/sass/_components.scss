@@ -1,0 +1,99 @@
+header {
+  color: #eee;
+  margin: -$bodyGutter;
+  margin-bottom: 0;
+  position: relative;
+
+  .image img { vertical-align: bottom; }
+
+  a { font-family: "Lato", sans-serif; color: #444; }
+  a { text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  h1, p {
+    position: absolute;
+    top: 20px;
+    left: $bodyGutter;
+  }
+  h1 {
+    a, a:active, a:hover { color: #fff; }
+  }
+  p {
+    text-shadow: 0px 0px 2px #000;
+    text-align: right;
+    font-style: italic;
+    font-size: 0.9em;
+  }
+  nav {
+    background: #eee;
+    overflow: hidden;
+    position: relative;
+    top: -($bodyGutter * 2 + 2);
+    border-bottom: 1px solid #bbb;
+    @include opacity(0.9);
+
+    ul {
+      margin-left: $bodyGutter / 2;
+      list-style: none;
+    }
+    a {
+      font-weight: bold;
+      padding: $bodyGutter / 2;
+      display: block;
+      float: left;
+    }
+  }
+}
+
+div.container {
+  background: $backgroundColor;
+  margin: 0 auto;
+  width: $responsiveWidth;
+  padding: $bodyGutter;
+}
+
+footer {
+  background: #888;
+  font-size: 0.9em;
+  margin: -$bodyGutter;
+  margin-top: $bodyGutter * 4;
+  padding: $bodyGutter;
+  clear: both;
+  overflow: hidden;
+  &, a {
+    color: #eee;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+}
+@media (max-width: $responsiveWidth) {
+  div.container {
+    width: 100%;
+    padding-left: $bodyGutter / 2;
+    padding-right: $bodyGutter / 2;
+  }
+  footer {
+    padding-left: $bodyGutter / 2;
+    padding-right: $bodyGutter / 2;
+  }
+  header, footer {
+    margin-left: -($bodyGutter / 2);
+    margin-right: -($bodyGutter / 2);
+    h1, p {
+      left: $bodyGutter / 2;
+    }
+    nav ul {
+      margin-left: 0;
+    }
+  }
+}
+
+@media (max-width: 340px) {
+  header {
+    h1 { font-size: 1.5em; top: 10px; }
+    p { display: none; }
+    nav ul a { padding-right: 2px; }
+  }
+}

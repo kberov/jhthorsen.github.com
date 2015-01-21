@@ -1,0 +1,17 @@
+.blog-date { color: #666; margin-top: -1em; font-size: 12px; }
+.footnotes {
+  color: #444;
+  border-top: 1px dotted #888;
+  margin-top: $bodyGutter * 2;
+  padding-top: $bodyGutter;
+  hr { display: none; }
+  li { position: relative; }
+  li > p { margin: 0; margin-right: 10px; }
+  li > a { position: absolute; top: 0; right: 0; }
+}
+
+#disqus_thread {
+  margin-top: $bodyGutter * 2;
+  padding-top: $bodyGutter;
+  border-top: 1px dotted #888;
+}

@@ -1,0 +1,88 @@
+a, a:active { color: $linkColor; text-decoration: underline; }
+a:hover { text-decoration: none; }
+h1 a, h2 a, h3 a { text-decoration: none; }
+h1, h2, h3 { font-family: 'Lato', sans-serif; }
+h1 { @include font-size-margin(2em); }
+h2 { @include font-size-margin(1.6em); }
+h3 { @include font-size-margin(1.2em); }
+img { max-width: 100%; }
+p { margin: 1em 0; }
+ul, ol { margin-left: 1.2em; }
+dl dd { margin-left: 1.2em; }
+pre { font-size: 12px; }
+
+.page-header { margin-top: 0; }
+.center { text-align: center; }
+.hidden { display: none; }
+.row { clear: both; }
+
+.pull-right {
+  float: right;
+  img { margin: 0 0 1em 1em; }
+}
+
+div.alert, div.info { padding: 1em; margin: 1em 0; border-radius: 3px; }
+div.alert { background: #fed; color: #851; border: 1px solid #edb; }
+div.info { background: #def; color: #158; border: 1px solid #bde; }
+
+/*
+ * Form elements
+ */
+form {
+  $width: 70%;
+  margin: 0;
+
+  label { display: block; width: $width; margin-top: $bodyGutter; }
+  input, textarea {
+    padding: 4px;
+    font-size: 1.2em;
+    outline: none;
+    border: 2px solid #ccc;
+    width: $width;
+    border-radius: 3px;
+    &:focus { border: 2px solid darken(#ccc, 15%); }
+  }
+  textarea { height: 8em; }
+  div.error {
+    input { border-color: #e66; }
+    p.help { color: #f44; }
+  }
+  div.actions {
+    margin-top: $bodyGutter;
+    clear: left;
+    border-top: 1px solid #ddd;
+    padding: 0.5em 0;
+  }
+  p.help {
+    color: #555;
+    font-size: 0.9em;
+    margin-top: 0.1em;
+  }
+}
+
+button, .button, .file-wrapper {
+  background: #777;
+  color: #fff;
+  font-size: 16px;
+  text-decoration: none;
+  padding: 6px 8px;
+  border: 2px solid #555;
+  border-radius: 3px;
+}
+button { height: 34px; vertical-align: baseline; } // make <a> and <button> align. at least in chrome
+button:active, button.active, .button:active, .button.active { background: darken(#fff, 20%); }
+button.confirm, a.confirm { color: #900; border: 2px solid #900; }
+button:hover, .button:hover { border-color: #222; }
+button.tiny, .button.tiny { font-size: 12px; padding: 2px 4px; }
+
+.file-wrapper {
+  position: relative;
+  padding: 0;
+  width: auto;
+  text-align: right;
+  float: left;
+  margin-right: 1em;
+  overflow: hidden;
+  input { @include opacity(0); position: absolute; right: 0; top: 0; width: 100%; }
+  button { margin: -2px; }
+}
