@@ -281,9 +281,9 @@ div.container {
     text-decoration: underline; }
 
 .header {
+  background-attachment: fixed;
   background-position: 50% -30%;
   background-repeat: no-repeat;
-  background-attachment: fixed;
   padding-bottom: 27%;
   padding-left: 40px; }
   .header h1, .header p {
@@ -297,15 +297,16 @@ div.container {
     padding-top: 40px; }
   @media (max-width: 900px) {
     .header {
+      background-attachment: initial;
+      background-position: 50% 50%;
+      background-size: cover;
       padding-left: 13.33333px; } }
   @media (max-width: 500px) {
-    .header {
-      background-position: 50% -200px; }
-      .header h1 {
-        font-size: 1.5em;
-        top: 10px; }
-      .header p {
-        display: none; } }
+    .header h1 {
+      font-size: 1.5em;
+      top: 10px; }
+    .header p {
+      padding: 5px 0; } }
 
 .nav {
   margin-top: -56px;
