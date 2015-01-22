@@ -19,9 +19,9 @@ div.container {
 }
 
 .header {
+  background-attachment: fixed;
   background-position: 50% -30%;
   background-repeat: no-repeat;
-  background-attachment: fixed;
   padding-bottom: 27%;
   padding-left: $bodyGutter;
 
@@ -43,13 +43,15 @@ div.container {
   }
 
   @media (max-width: $responsiveWidth) {
+    background-attachment: initial;
+    background-position: 50% 50%;
+    background-size: cover;
     padding-left: $bodyGutter / 3;
   }
 
   @media (max-width: 500px) {
-    background-position: 50% -200px;
     h1 { font-size: 1.5em; top: 10px; }
-    p { display: none; }
+    p { padding: 5px 0; }
   }
 }
 
