@@ -6,7 +6,6 @@ var IS_TOUCH_DEVICE = 'ontouchstart' in document.documentElement;
     $('form input[type="file"]').fileWrapper();
     $('pre').not('.plain').addClass('prettyprint');
     $('#gallery img').scaleImages();
-    $('#gallery h2 a[data-show]').click(function(e) { e.preventDefault(); $('#goto_shotwell_event').toggle(); });
 
     prettyPrint();
 

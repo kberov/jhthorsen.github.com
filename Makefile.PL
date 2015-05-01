@@ -19,7 +19,6 @@ WriteMakefile(
     'Mojolicious' => 4.30,
     'Mojolicious::Plugin::AssetPack' => 0.05,
     'Mojolicious::Plugin::Mail' => 1.00,
-    'Mojolicious::Plugin::Shotwell' => 0.0405,
   },
   test => {
     TESTS => 't/*.t',

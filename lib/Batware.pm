@@ -42,15 +42,6 @@ L<http://home.thorsen.pm/files/show/skole/transistor/transistor_html_19198ba2.jp
 
 L<http://home.thorsen.pm/docsis-editor>.
 
-=item * Shotwell web frontend
-
-L<Shotwell|http://www.yorba.org/projects/shotwell/> is awesome at the desktop,
-but what about the web? L<Mojolicious::Plugin::Shotwell> allow the gallery
-to be displayed on the web, but the SQLite database seems to be corrupted when
-read (?). No worries -
-L<Batware.pm|https://github.com/jhthorsen/jhthorsen.github.com/blob/batware/lib/Batware.pm#L253>
-has you back.
-
 =back
 
 =head2 Requirements
@@ -79,10 +70,6 @@ L<File::MimeInfo::Magic> is used to figure out what kind of files we want to
 display.
 
 L<Files.pm|https://github.com/jhthorsen/jhthorsen.github.com/blob/batware/lib/Batware/Files.pm>.
-
-=item * Shotwell foto gallery
-
-L<DBI> and L<DBD::SQLite> is used by L<Mojolicious::Plugin::Shotwell>.
 
 =item * DOCSIS service
 
@@ -131,24 +118,6 @@ sub eval_code {
   $res;
 }
 
-=head2 protected
-
-Returns a route which is protected with login.
-
-=cut
-
-has protected => sub {
-  my $self = shift;
-
-  $self->routes->under(sub {
-    my $c = shift;
-    return 1 if $c->session('username') or $c->shotwell_access_granted;
-    return 1 if $ENV{BATWARE_DISABLE_AUTH};
-    $c->render(template => 'private/login');
-    return 0;
-  });
-};
-
 =head2 redis
 
 Returns an instance of L<Mojo::Redis>.
@@ -173,14 +142,6 @@ sub startup {
   my $config = $self->plugin('config');
   my $r = $self->routes;
 
-  $config->{Shotwell}{routes}{default} = $self->protected->route('/gallery');
-  $config->{Shotwell}{routes}{permalink} = $r->get('/gallery/:permalink');
-  $config->{Shotwell}{routes}{events} = $r->get('/events');
-  $self->_init_shotwell_database(@{ $config->{Shotwell} }{qw( sync_from dbname )});
-
-  # override shotwell default route
-  $self->protected->get('/gallery')->to(template => 'shotwell/event')->name('shotwell/index');
-
   eval { $self->plugin('Responsinator') };
 
   unless(-d $self->app->config->{Files}{thumb_path}) {
@@ -191,7 +152,6 @@ sub startup {
 
   $self->plugin(AssetPack => $config->{AssetPack} || {});
   $self->plugin(Mail => $config->{Mail});
-  $self->plugin(Shotwell => $config->{Shotwell});
   $self->helper(eval_code => \&eval_code);
   $self->helper(redis => \&redis);
   $self->secrets($config->{secrets});
@@ -242,57 +202,6 @@ sub _post_contact_form {
     );
     $c->stash(report => 'Message was sent!');
   });
-}
-
-sub _init_shotwell_database {
-  my($self, @args) = @_;
-
-  unless(-e $args[1]) {
-    require File::Copy;
-    $self->log->info("Creating $args[1]");
-    File::Copy::copy(@args);
-  }
-
-  unlink "$args[1].lock";
-  Mojo::IOLoop->recurring(2, sub { $self->_sync_shotwell_database(@args) });
-}
-
-sub _sync_shotwell_database {
-  my($self, @args) = @_;
-  my @stat = map { (stat $_)[9] || 0 } @args;
-
-  # only one child should do this
-  $stat[0] <= $stat[1] and return;
-  symlink $args[1], "$args[1].lock" or return;
-
-  my $dbh_from = DBI->connect("dbi:SQLite:dbname=$args[0]", "", "", { RaiseError => 1 });
-  my $dbh_to = DBI->connect("dbi:SQLite:dbname=$args[1]", "", "", { RaiseError => 1 });
-
-  $self->log->info("Syncing $args[0] > $args[1]");
-
-  for my $table (qw/ PhotoTable EventTable TagTable /) {
-    my $sth_from = $dbh_from->prepare("SELECT * FROM $table");
-    my $sth_to;
-    my $n = 0;
-
-    $dbh_to->{AutoCommit} = 0;
-    $dbh_to->do("DELETE FROM $table");
-    $sth_from->execute;
-
-    while(my $row = $sth_from->fetchrow_arrayref) {
-      $sth_to ||= do {
-        my $q = join ',', map { '?' } @$row;
-        $dbh_to->prepare("INSERT INTO $table VALUES ($q)");
-      };
-      $sth_to->execute(@$row);
-      $n++;
-    }
-
-    $dbh_to->commit;
-    $self->log->info("Synced $n rows from $table")
-  }
-
-  unlink "$args[1].lock";
 }
 
 =head1 AUTHOR
