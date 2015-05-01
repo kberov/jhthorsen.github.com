@@ -9,7 +9,7 @@
 % my $url = url_for('docsis_load', id => $id)->to_abs;
 <p>
   Save <a href="<%= $url %>"><%= $url %></a>
-  to your bookmarks if you want to re-edit this file later on.
+  to your bookmarks if you want to edit this file later on.
 </p>
 % }
 

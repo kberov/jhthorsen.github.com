@@ -11,14 +11,12 @@ WriteMakefile(
   EXE_FILES => ['script/batware'],
   PREREQ_PM => {
     'Config::General'                => '2.51',
-    'DBD::Pg'                        => '3.5.1',
     'File::HomeDir'                  => '1.00',
     'DOCSIS::ConfigFile'             => '0.63',
     'File::MimeInfo::Magic'          => '0.16',
     'Mojolicious'                    => '4.30',
-    'Mojolicious::Plugin::AssetPack' => '0.05',
+    'Mojolicious::Plugin::AssetPack' => '0.54',
     'Mojolicious::Plugin::Mail'      => '1.00',
-    'Mojo::Pg'                       => '2.05',
   },
   test => {
     TESTS => 't/*.t',

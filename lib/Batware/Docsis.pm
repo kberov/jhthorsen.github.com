@@ -45,7 +45,7 @@ sub _save {
   my $self = shift->render_later;
   my $docsis = $self->_model;
 
-  unless ($self->to_binary) {
+  unless ($docsis->to_binary) {
     return $self->render(text => "Could not convert config to binary\n", code => 400);
   }
 
@@ -53,13 +53,14 @@ sub _save {
     sub { $docsis->load(shift->begin); },
     sub {
       my ($delay, $err) = @_;
+      $docsis->id(join '-', time, int rand 10000) if $docsis->id eq 'example';
       $docsis->$_($self->param($_)) for qw( config filename shared_secret );
       $docsis->save($delay->begin);
     },
     sub {
       my ($delay, $err) = @_;
       die $err if $err;
-      $self->render(docsis => $docsis, report => 'Saved config.');
+      $self->redirect_to('docsis_load', id => $docsis->id);
     },
   );
 }
@@ -89,7 +90,7 @@ sub load {
   my $docsis = $self->_model;
 
   my $render = sub {
-    my($obj, $err, $docsis) = @_;
+    my($obj, $err) = @_;
     die $err if $err;
     $self->param(filename => $docsis->filename);
     $self->param(shared_secret => $docsis->shared_secret);
@@ -104,7 +105,7 @@ sub load {
   if($docsis->id eq 'example') {
     $docsis->config($self->render_to_string(template => 'docsis/example', format => 'txt'));
     $docsis->filename('example.bin');
-    $self->$render('', $docsis);
+    $self->$render('');
   }
   else {
     $self->delay(
@@ -116,11 +117,11 @@ sub load {
 
 sub _model {
   my $self = shift;
-  my $docsis = Batware::Model::Docsis->new(db => shift->model->db, @_);
+  my $docsis = Batware::Model::Docsis->new(_location => $self->app->config->{Docsis}{files});
 
   $docsis->config($self->param('config')) if $self->param('config');
   $docsis->filename($self->param('filename')) if $self->param('filename');
-  $docsis->id($self->param('id') || join '-', time, int rand 10000);
+  $docsis->id($self->param('id') || 'example');
   $docsis;
 }
 

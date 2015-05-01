@@ -81,22 +81,11 @@ See L<https://github.com/jhthorsen/jhthorsen.github.com/blob/batware/batware.con
 =cut
 
 use Mojo::Base 'Mojolicious';
-use File::HomeDir;
+use File::HomeDir ();
 use File::Spec;
 use File::Path 'make_path';
-use Mojo::Pg;
 
 our $VERSION = '0.01';
-
-=head1 ATTRIBUTES
-
-=head pg
-
-Holds a L<Mojo::Pg> object.
-
-=cut
-
-has pg => sub { Mojo::Pg->new(shift->config->{db}) };
 
 =head1 METHODS
 
@@ -115,13 +104,10 @@ sub startup {
 
   $self->plugin(AssetPack => $config->{AssetPack} || {});
   $self->plugin(Mail => $config->{Mail});
-  $self->helper('model.db'           => sub { $_[0]->stash->{'model.db'} ||= $_[0]->app->pg->db });
   $self->secrets($config->{secrets} || [time.rand.$$]);
 
   $self->asset('thorsen.css' => qw( /sass/thorsen.scss ));
   $self->asset('thorsen.js' => qw( /js/jquery.min.js /js/jquery.hotkeys.js /js/jquery.touchSwipe.js /js/bat.js ));
-
-  $self->_setup_database;
 
   $r->get('/')->to(template => 'index');
   $r->get('/about/cv')->to(template => 'curriculum_vitae');
@@ -167,10 +153,12 @@ sub _config {
   my $home = File::HomeDir->my_home || $ENV{HOME} || die 'Could not figure out $HOME';
   my $share = File::Spec->catdir($home, qw( .local share batware ));
 
+  $config->{Docsis}{files} ||= File::Spec->catdir($share, 'docsis', 'config');
   $config->{Files}{public_path} ||= File::Spec->catdir($share, 'public');
   $config->{Files}{thumb_path} ||= File::Spec->catdir($share, 'thumbs');
 
   make_path $_ for (
+    $config->{Docsis}{files},
     $config->{Files}{public_path},
     $config->{Files}{thumb_path},
   );
@@ -181,19 +169,6 @@ sub _config {
   $config;
 }
 
-sub _setup_database {
-  my $self = shift;
-  my $migrations;
-
-  unless ($self->config->{db} ||= $ENV{BATWARE_DATABASE_DSN}) {
-    my $db = sprintf 'postgresql://%s@/batware_%s', (getpwuid $<)[0] || 'postgresql', $self->mode;
-    $self->config->{db} = $db;
-    $self->log->warn("Using default database '$db'. (Neither BATWARE_DATABASE_DSN or config file was set up)");
-  }
-
-  $self->pg->migrations->name('batware')->from_data->migrate;
-}
-
 =head1 AUTHOR
 
 Jan Henning Thorsen - C<jhthorsen@cpan.org>
@@ -201,16 +176,3 @@ Jan Henning Thorsen - C<jhthorsen@cpan.org>
 =cut
 
 1;
-
-__DATA__
-@@ batware
--- 1 up
-create table docsis (
-  id varchar(16) not null,
-  config text not null,
-  filename varchar(255) not null,
-  shared_secret TEXT,
-  timestamp integer(10)
-);
--- 1 down
-drop table docsis;

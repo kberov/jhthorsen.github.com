@@ -14,7 +14,9 @@ L<Batware::Model::Docsis> is a model for storing docsis config files.
 
 =cut
 
-use Mad::Mapper -base;
+use Mojo::Base -base;
+use Mojo::JSON qw( encode_json decode_json );
+use Mojo::Util;
 use DOCSIS::ConfigFile::Translator;
 
 =head1 COLUMNS
@@ -31,11 +33,13 @@ use DOCSIS::ConfigFile::Translator;
 
 =cut
 
-pk id             => undef;
-col config        => '';
-col filename      => 'default.bin';
-col shared_secret => '';
-col timestamp     => time;
+has id            => undef;
+has config        => '';
+has filename      => 'default.bin';
+has shared_secret => '';
+has timestamp     => time;
+
+has _location => sub { die };
 
 =head1 METHODS
 
@@ -52,6 +56,56 @@ sub from_binary {
   my $config = DOCSIS::ConfigFile::Translator->binary_to_text(shift);
 
   $self->config($config);
+}
+
+=head2 load
+
+=cut
+
+sub load {
+  my ($self, $cb) = @_;
+  my $file = File::Spec->catfile($self->_location, $self->id);
+  my $json;
+
+  local $@;
+
+  eval {
+    $json = Mojo::Util::slurp($file);
+    $json = decode_json($json);
+    $self->{$_} = $json->{$_} for keys %$json;
+  };
+
+  $self->$cb('');
+  $self;
+}
+
+=head2 save
+
+=cut
+
+sub save {
+  my ($self, $cb) = @_;
+  my @cols = qw( id config filename shared_secret );
+
+  local $@;
+
+  eval {
+    Mojo::Util::spurt(
+      encode_json(
+        {
+          config        => $self->config,
+          filename      => $self->filename,
+          id            => $self->id,
+          shared_secret => $self->shared_secret,
+          timestamp     => $self->timestamp,
+        }
+      ),
+      File::Spec->catfile($self->_location, $self->id),
+    );
+  };
+
+  $self->$cb($@ || '');
+  $self;
 }
 
 =head2 to_binary
