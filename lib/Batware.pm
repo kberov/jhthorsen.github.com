@@ -55,11 +55,6 @@ It all depends on what you want to do...
 L<Mojolicious|http://mojolicio.us> and L<Perl|http://perl.org> are the main
 players in this code.
 
-=item * Authentication
-
-L<Mojo::Redis> is used by the authentication code in
-L<Private.pm|https://github.com/jhthorsen/jhthorsen.github.com/blob/batware/lib/Batware/Private.pm>.
-
 =item * Contact form
 
 L<Mojolicious::Plugin::Mail> is used to send the contact form to my email.
@@ -86,48 +81,19 @@ See L<https://github.com/jhthorsen/jhthorsen.github.com/blob/batware/batware.con
 =cut
 
 use Mojo::Base 'Mojolicious';
-use Mojo::Redis;
-use DBI;
+use Mojo::Pg;
 
 our $VERSION = '0.01';
 
-=head1 HELPERS
+=head1 ATTRIBUTES
 
-=head2 eval_code
+=head pg
 
-  $code_return_value = $c->eval_code(CODE);
-
-Used to eval a code ref and set "report" in status on error.
+Holds a L<Mojo::Pg> object.
 
 =cut
 
-sub eval_code {
-  my($c, $cb) = @_;
-  my $res;
-
-  eval {
-    $res = $c->$cb;
-    1;
-  } or do {
-    my $e = $@;
-    $c->app->log->error($e);
-    $e =~ s/ at \S+.*//s;
-    $c->stash(report => $e || 'Could not send message!');
-  };
-
-  $res;
-}
-
-=head2 redis
-
-Returns an instance of L<Mojo::Redis>.
-
-=cut
-
-sub redis {
-  my $c = shift;
-  $c->stash->{redis} ||= do { Mojo::Redis->new($c->app->config->{Redis}) };
-}
+has pg => sub { Mojo::Pg->new(shift->config->{db}) };
 
 =head1 METHODS
 
@@ -152,12 +118,13 @@ sub startup {
 
   $self->plugin(AssetPack => $config->{AssetPack} || {});
   $self->plugin(Mail => $config->{Mail});
-  $self->helper(eval_code => \&eval_code);
-  $self->helper(redis => \&redis);
+  $self->helper('model.db'           => sub { $_[0]->stash->{'model.db'} ||= $_[0]->app->pg->db });
   $self->secrets($config->{secrets});
 
   $self->asset('thorsen.css' => qw( /sass/thorsen.scss ));
   $self->asset('thorsen.js' => qw( /js/jquery.min.js /js/jquery.hotkeys.js /js/jquery.touchSwipe.js /js/bat.js ));
+
+  $self->_setup_database;
 
   $r->get('/')->to(template => 'index');
   $r->get('/about/cv')->to(template => 'curriculum_vitae');
@@ -184,17 +151,30 @@ sub startup {
 sub _post_contact_form {
   my $c = shift;
 
-  $c->eval_code(sub {
-    $c->param('message') or die 'No message?';
-    $c->mail(
-      to => $c->app->config->{Mail}{receiver},
-      from => $c->param('email') || die('Your email is missing.'),
-      subject => $c->param('subject') || die('Subject need to be filled out.'),
-      template => 'contact',
-      format => 'mail',
-    );
-    $c->stash(report => 'Message was sent!');
-  });
+  unless ($c->param('message')) {
+    return $c->render(report => 'Message is required.');
+  }
+
+  $c->mail(
+    to => $c->app->config->{Mail}{receiver},
+    from => $c->param('email') || die('Your email is missing.'),
+    subject => $c->param('subject') || die('Subject need to be filled out.'),
+    template => 'contact',
+    format => 'mail',
+  );
+}
+
+sub _setup_database {
+  my $self = shift;
+  my $migrations;
+
+  unless ($self->config->{db} ||= $ENV{BATWARE_DATABASE_DSN}) {
+    my $db = sprintf 'postgresql://%s@/batware_%s', (getpwuid $<)[0] || 'postgresql', $self->mode;
+    $self->config->{db} = $db;
+    $self->log->warn("Using default database '$db'. (Neither BATWARE_DATABASE_DSN or config file was set up)");
+  }
+
+  $self->pg->migrations->name('batware')->from_data->migrate;
 }
 
 =head1 AUTHOR
@@ -204,3 +184,16 @@ Jan Henning Thorsen - C<jhthorsen@cpan.org>
 =cut
 
 1;
+
+__DATA__
+@@ batware
+-- 1 up
+create table docsis (
+  id varchar(16) not null,
+  config text not null,
+  filename varchar(255) not null,
+  shared_secret TEXT,
+  timestamp integer(10)
+);
+-- 1 down
+drop table docsis;

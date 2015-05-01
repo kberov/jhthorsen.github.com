@@ -8,6 +8,7 @@ Batware::Docsis - Edit DOCSIS config files
 
 use Mojo::Base 'Mojolicious::Controller';
 use DOCSIS::ConfigFile::Translator;
+use Batware::Model::Docsis;
 
 =head1 METHODS
 
@@ -29,28 +30,36 @@ sub edit {
 
 sub _download {
   my $self = shift;
-  my $filename = $self->param('filename') || 'default.bin';
-  my $binary = $self->_compile_binary or return;
+  my $docsis = $self->_model;
 
-  $self->res->headers->content_disposition(sprintf 'attachment; filename=%s', $filename);
-  $self->render(data => $binary, format => 'binary');
+  if (my $binary = $docsis->to_binary) {
+    $self->res->headers->content_disposition(sprintf 'attachment; filename=%s', $docsis->filename);
+    $self->render(data => $binary, format => 'binary');
+  }
+  else {
+    $self->render(text => "Could not convert config to binary\n", code => 400);
+  }
 }
 
 sub _save {
   my $self = shift->render_later;
-  my $id = $self->param('id') || join '-', time, int rand 10000;
+  my $docsis = $self->_model;
 
-  $self->_compile_binary or return;
-  $self->redis->sadd(docsis => $id);
-  $self->redis->set("docsis:$id:config" => scalar $self->param('config'));
-  $self->redis->hmset(
-    "docsis:$id:meta" => (
-      timestamp => time,
-      filename => $self->param('filename') || 'default.bin',
-      shared_secret => $self->param('shared_secret') || '',
-    ),
+  unless ($self->to_binary) {
+    return $self->render(text => "Could not convert config to binary\n", code => 400);
+  }
+
+  $self->delay(
+    sub { $docsis->load(shift->begin); },
     sub {
-      $self->render(report => "Saved config '$id'.");
+      my ($delay, $err) = @_;
+      $docsis->$_($self->param($_)) for qw( config filename shared_secret );
+      $docsis->save($delay->begin);
+    },
+    sub {
+      my ($delay, $err) = @_;
+      die $err if $err;
+      $self->render(docsis => $docsis, report => 'Saved config.');
     },
   );
 }
@@ -58,13 +67,15 @@ sub _save {
 sub _upload {
   my $self = shift;
   my $file = $self->req->upload('file');
-  my $config = $file->slurp or return $self->render(report => 'No config in config file?');
+  my $docsis = $self->_model;
 
-  $self->eval_code(sub {
-    $self->param(config => DOCSIS::ConfigFile::Translator->binary_to_text($config));
-    $self->param(filename => $file->filename);
-    $self->stash(report => 'User config file was loaded.')
-  });
+  unless (eval { $docsis->from_binary($file->slurp) }) {
+    return $self->render(report => 'Could not parse binary config file.')->app->log->warn("from_binary: $@");
+  };
+
+  $self->param(config => $docsis->config);
+  $self->param(filename => $file->filename);
+  $self->stash(report => 'User config file was loaded.')
 }
 
 =head2 load
@@ -75,43 +86,42 @@ Used to load config from database by id.
 
 sub load {
   my $self = shift->render_later;
-  my $id = $self->param('id');
+  my $docsis = $self->_model;
 
   my $render = sub {
-    my($obj, $meta, $config) = @_;
-    $self->param(filename => $meta->{filename} // '');
-    $self->param(shared_secret => $meta->{shared_secret} // '');
-    $self->param(config => $config);
+    my($obj, $err, $docsis) = @_;
+    die $err if $err;
+    $self->param(filename => $docsis->filename);
+    $self->param(shared_secret => $docsis->shared_secret);
+    $self->param(config => $docsis->config);
     $self->render(
-      report => "Editing config '$id'.",
+      report => 'Editing config.',
       template => 'docsis/edit',
       format => 'html', # Why does render_partial() mess this up?
     );
   };
 
-  if($id eq 'example') {
-    $self->$render(
-      { filename => 'example.bin' },
-      $self->render_to_string(template => 'docsis/example', format => 'txt'),
-    );
+  if($docsis->id eq 'example') {
+    $docsis->config($self->render_to_string(template => 'docsis/example', format => 'txt'));
+    $docsis->filename('example.bin');
+    $self->$render('', $docsis);
   }
   else {
-    $self->redis->execute(
-      [ hgetall => "docsis:$id:meta" ],
-      [ get => "docsis:$id:config" ],
-      $render,
+    $self->delay(
+      sub { $docsis->load(shift->begin) },
+      sub { shift; $self->$render(@_) },
     );
   }
 }
 
-sub _compile_binary {
+sub _model {
   my $self = shift;
-  my $config = $self->param('config');
-  my $shared_secret = $self->param('shared_secret');
+  my $docsis = Batware::Model::Docsis->new(db => shift->model->db, @_);
 
-  $self->eval_code(sub {
-    DOCSIS::ConfigFile::Translator->text_to_binary($shared_secret, $config);
-  });
+  $docsis->config($self->param('config')) if $self->param('config');
+  $docsis->filename($self->param('filename')) if $self->param('filename');
+  $docsis->id($self->param('id') || join '-', time, int rand 10000);
+  $docsis;
 }
 
 =head1 AUTHOR
