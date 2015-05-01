@@ -25,7 +25,7 @@ sub edit {
   return $self->_upload if $self->req->upload('file');
   return $self->_download if $action eq 'download';
   return $self->_save if $action eq 'save';
-  return $self->render_not_found;
+  return $self->reply->not_found;
 }
 
 sub _download {
@@ -42,7 +42,7 @@ sub _download {
 }
 
 sub _save {
-  my $self = shift->render_later;
+  my $self = shift;
   my $docsis = $self->_model;
 
   unless ($docsis->to_binary) {
@@ -86,7 +86,7 @@ Used to load config from database by id.
 =cut
 
 sub load {
-  my $self = shift->render_later;
+  my $self = shift;
   my $docsis = $self->_model;
 
   my $render = sub {

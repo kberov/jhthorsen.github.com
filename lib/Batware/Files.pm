@@ -151,7 +151,7 @@ sub _loop_files {
   my($self, $disk_path, $cb) = @_;
   my @files;
 
-  opendir my $DH, $disk_path or return $self->render_not_found;
+  opendir my $DH, $disk_path or return $self->reply->not_found;
 
   @files = sort {
                  $a->[1] <=> $b->[1]
