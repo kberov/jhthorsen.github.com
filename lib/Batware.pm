@@ -166,19 +166,12 @@ sub startup {
   $r->get('/trips')->to(template => 'trips')->name('trips');
   $r->get('/404')->to(template => 'not_found.production');
   $r->get('/500')->to(template => 'exception.production');
-  $r->any('/login')->to('private#login')->name('login');
-  $r->any('/logout')->to(cb => sub { shift->session(expires => 1)->redirect_to('/') })->name('logout');
 
   $r->get('/files')->to('files#tree', url_path => '');
   $r->get('/files/tree/(*url_path)')->to('files#tree', url_path => '')->name('files_tree');
   $r->get('/files/show/*url_path')->to('files#show')->name('files_show');
   $r->get('/files/raw/*url_path')->to('files#raw')->name('files_raw');
   $r->get('/files/*url_path')->to('files#redirect');
-
-  $r->any('/private/tree/*url_path')->to('private#tree')->name('private_tree');
-  $r->get('/private/show/*url_path')->to('private#show')->name('private_show');
-  $r->get('/private/raw/*url_path')->to('private#raw')->name('private_raw');
-  $r->any('/private/*url_path')->to('private#tree');
 
   $r->get('/service/docsis')->to(cb => sub { $_[0]->redirect_to('docsis') });
   $r->get('/services/docsis')->to(cb => sub { $_[0]->redirect_to('docsis') });
