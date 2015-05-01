@@ -76,7 +76,7 @@ sub show {
     url_path => $self->_show_path($url_path),
   );
 
-  return $self->render(template => 'files/include') if $type eq 'include';
+  return $self->render(template => 'files/include') if $type eq 'text/include';
   return $self->render(template => 'files/text')    if $type =~ m!^text/!;
   return $self->render(template => 'files/image')   if $type =~ m!^image/!;
   return $self->render(template => 'files/video')   if $type =~ m!^video/!;
@@ -139,7 +139,7 @@ sub _extract_extension_and_filetype {
   $ext = lc(($path =~ m!\.(\w+)$!)[0] || '');
   $type = $ext ~~ [qw/ ep pm pl PL sh t /] ? 'text/plain'
         : $ext eq 'js' ? 'text/javascript'
-        : $ext eq 'tt' ? 'include'
+        : $ext eq 'tt' ? 'text/include'
         : $ext eq 'css' ? 'text/css'
         : $ext =~ /html$/ ? 'text/html'
         : mimetype $path;
