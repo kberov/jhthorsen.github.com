@@ -12,6 +12,7 @@ WriteMakefile(
   PREREQ_PM => {
     'Config::General'                => '2.51',
     'DBD::Pg'                        => '3.5.1',
+    'File::HomeDir'                  => '1.00',
     'DOCSIS::ConfigFile'             => '0.63',
     'File::MimeInfo::Magic'          => '0.16',
     'Mojolicious'                    => '4.30',

@@ -81,6 +81,9 @@ See L<https://github.com/jhthorsen/jhthorsen.github.com/blob/batware/batware.con
 =cut
 
 use Mojo::Base 'Mojolicious';
+use File::HomeDir;
+use File::Spec;
+use File::Path 'make_path';
 use Mojo::Pg;
 
 our $VERSION = '0.01';
@@ -105,21 +108,15 @@ Called to set up the routes.
 
 sub startup {
   my $self = shift;
-  my $config = $self->plugin('config');
+  my $config = $self->_config;
   my $r = $self->routes;
 
   eval { $self->plugin('Responsinator') };
 
-  unless(-d $self->app->config->{Files}{thumb_path}) {
-    unless(mkdir $self->app->config->{Files}{thumb_path}) {
-      die "Cannot mkdir thumb_path: $self->app->config->{Files}{thumb_path}";
-    }
-  }
-
   $self->plugin(AssetPack => $config->{AssetPack} || {});
   $self->plugin(Mail => $config->{Mail});
   $self->helper('model.db'           => sub { $_[0]->stash->{'model.db'} ||= $_[0]->app->pg->db });
-  $self->secrets($config->{secrets});
+  $self->secrets($config->{secrets} || [time.rand.$$]);
 
   $self->asset('thorsen.css' => qw( /sass/thorsen.scss ));
   $self->asset('thorsen.js' => qw( /js/jquery.min.js /js/jquery.hotkeys.js /js/jquery.touchSwipe.js /js/bat.js ));
@@ -162,6 +159,26 @@ sub _post_contact_form {
     template => 'contact',
     format => 'mail',
   );
+}
+
+sub _config {
+  my $self = shift;
+  my $config = $ENV{MOJO_CONFIG} ? $self->plugin('config') : $self->config;
+  my $home = File::HomeDir->my_home || $ENV{HOME} || die 'Could not figure out $HOME';
+  my $share = File::Spec->catdir($home, qw( .local share batware ));
+
+  $config->{Files}{public_path} ||= File::Spec->catdir($share, 'public');
+  $config->{Files}{thumb_path} ||= File::Spec->catdir($share, 'thumbs');
+
+  make_path $_ for (
+    $config->{Files}{public_path},
+    $config->{Files}{thumb_path},
+  );
+
+  $config->{Mail}{how} ||= 'smtp';
+  $config->{Mail}{howargs} ||= ['smtp.online.no'];
+  $config->{Mail}{receiver} ||= 'jhthorsen@cpan.org';
+  $config;
 }
 
 sub _setup_database {
