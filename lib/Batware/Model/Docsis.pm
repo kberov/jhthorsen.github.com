@@ -15,7 +15,7 @@ L<Batware::Model::Docsis> is a model for storing docsis config files.
 =cut
 
 use Mojo::Base -base;
-use Mojo::JSON qw( encode_json decode_json );
+use Mojo::Message::Response;
 use Mojo::Util;
 use DOCSIS::ConfigFile::Translator;
 
@@ -65,14 +65,15 @@ sub from_binary {
 sub load {
   my ($self, $cb) = @_;
   my $file = File::Spec->catfile($self->_location, $self->id);
-  my $json;
+  my $msg;
 
   local $@;
-
   eval {
-    $json = Mojo::Util::slurp($file);
-    $json = decode_json($json);
-    $self->{$_} = $json->{$_} for keys %$json;
+    $msg = Mojo::Message::Response->new;
+    $msg->parse(Mojo::Util::slurp($file));
+    $self->{$_} = $msg->headers->header($_) for @{$msg->headers->names};
+    $self->timestamp(Mojo::Date->new(delete $self->{Date} || time)->epoch);
+    $self->config($msg->body);
   };
 
   $self->$cb('');
@@ -85,23 +86,16 @@ sub load {
 
 sub save {
   my ($self, $cb) = @_;
-  my @cols = qw( id config filename shared_secret );
+  my @cols = qw( id filename shared_secret );
+  my $msg;
 
   local $@;
-
   eval {
-    Mojo::Util::spurt(
-      encode_json(
-        {
-          config        => $self->config,
-          filename      => $self->filename,
-          id            => $self->id,
-          shared_secret => $self->shared_secret,
-          timestamp     => $self->timestamp,
-        }
-      ),
-      File::Spec->catfile($self->_location, $self->id),
-    );
+    $msg = Mojo::Message::Response->new(code => 200);
+    $msg->headers->header($_ => $self->{$_} // '') for @cols;
+    $msg->headers->date(Mojo::Date->new($self->timestamp)->to_string);
+    $msg->body($self->config);
+    Mojo::Util::spurt($msg->to_string, File::Spec->catfile($self->_location, $self->id));
   };
 
   $self->$cb($@ || '');
