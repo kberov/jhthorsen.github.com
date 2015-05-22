@@ -73,15 +73,15 @@ jQuery.fn.fixedNavbar = function() {
       }
     });
 
-    $('div.image img').on('load', function(e) {
-      $clone.css({ 'height': $fixed.outerHeight() + 10 });
-      $fixed.before($clone).css({
-        'width': $clone.width(),
-        'top': offsetTop(),
-        'z-index': 100,
-        'position': 'absolute'
-      });
+    $clone.css({ 'height': $fixed.outerHeight() + 10 });
+    $fixed.before($clone).css({
+      'width': $clone.width(),
+      'top': offsetTop(),
+      'z-index': 100,
+      'position': 'absolute'
     });
+
+    $('div.image img').on('load', function(e) { $(window).scroll(); });
   });
 };
 
