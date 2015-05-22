@@ -1,5 +1,7 @@
+% use File::Basename 'dirname';
 % layout 'default';
-% title "ls " .param('url_path');
+% title "ls /" .param('url_path');
+
 <h1 class="page-header">ls /<%= param('url_path') %></h1>
 % if(stash 'show_upload') {
 <form method="post" enctype="multipart/form-data">
@@ -7,10 +9,10 @@
   <button class="btn" type="submit">Upload</button>
 </form>
 % }
-% if($parent_path) {
+% if($url_path) {
 <div class="navbar">
   <ul>
-    <li><%= link_to 'Back', $parent_path %></li>
+    <li><%= link_to 'Back', dirname $url_path %></li>
   </ul>
 </div>
 % }

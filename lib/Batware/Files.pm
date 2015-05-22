@@ -41,17 +41,9 @@ sub tree {
   my $self = shift;
   my $url_path = $self->_url_path;
   my $disk_path = $self->_root_path($url_path);
-  my($parent_path, @files);
+  my @files;
 
-  $parent_path = $url_path ? dirname $url_path : '';
-  $parent_path =~ s!\.$!!;
-
-  $self->stash(
-    files => \@files,
-    parent_path => $parent_path,
-    template => 'files/tree',
-    README => '',
-  );
+  $self->stash(files => \@files, template => 'files/tree', README => '');
 
   $self->_loop_files($disk_path, sub {
     my($file, $ext, $type) = @_;
@@ -180,7 +172,7 @@ sub _url_path {
     $url_path =~ s!//!/!g;
     $url_path =~ s!\.\.!!g;
 
-    $self->stash(parent_path => dirname($url_path), url_path => $url_path);
+    $self->stash(url_path => $url_path);
 
     return $self->{url_path} = $self->stash('route_prefix') eq 'private' ? ".$url_path" : $url_path;
   }
