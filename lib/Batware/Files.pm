@@ -108,6 +108,7 @@ sub raw {
   my($ext, $type) = $self->_extract_extension_and_filetype($self->_root_path, $url_path);
 
   return $self->tree unless $type =~ m!/!;
+  $type = "$type;charset=UTF-8" if $type =~ /^text/;
   $headers->content_type($type);
   $headers->content_disposition(qq(attachment; filename="$filename")) if $self->param('download') or $self->stash('download');
   $static->serve($self, $url_path) or return $self->render(text => 'Unable to serve file', format => 'txt');
