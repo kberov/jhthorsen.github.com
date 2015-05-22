@@ -47,7 +47,15 @@ sub tree {
 
   $self->_loop_files($disk_path, sub {
     my($file, $ext, $type) = @_;
-    $self->stash(README => slurp "$disk_path/$file") if $file eq 'README';
+
+    if ($file eq 'index.html') {
+      delete $self->{url_path};
+      return $self->stash(url_path => $self->_url_path($file))->raw;
+    }
+    if ($file eq 'README') {
+      $self->stash(README => slurp "$disk_path/$file");
+    }
+
     push @files, {
       basename => Mojo::Util::decode('UTF-8', $file),
       shortname => 15 <= length $file ? substr($file, 0, 12) .'...' : $file,
