@@ -16,6 +16,21 @@ use Mojolicious::Static;
 
 =head1 METHODS
 
+=head2 detect
+
+Calls L</tree>, L</show> or L</raw> based on request.
+
+=cut
+
+sub detect {
+  my $self = shift;
+  my $url_path = $self->_url_path;
+
+  return $self->raw if $self->param('raw');
+  return $self->tree if -d $self->_root_path($url_path);
+  return $self->show;
+}
+
 =head2 tree
 
 Will show a list of files.
@@ -28,16 +43,18 @@ sub tree {
   my $disk_path = $self->_root_path($url_path);
   my($parent_path, @files);
 
-  $parent_path = $url_path ? $self->_tree_path(dirname $url_path) : '';
+  $parent_path = $url_path ? dirname $url_path : '';
   $parent_path =~ s!\.$!!;
 
   $self->stash(
     files => \@files,
     parent_path => $parent_path,
-    url_path => $self->_tree_path($url_path),
+    url_path => $url_path,
+    template => 'files/tree',
     README => '',
   );
 
+  $url_path .= '/' if length $url_path;
   $self->_loop_files($disk_path, sub {
     my($file, $ext, $type) = @_;
     $self->stash(README => slurp "$disk_path/$file") if $file eq 'README';
@@ -47,9 +64,7 @@ sub tree {
       size => -s "$disk_path/$file",
       ext => $ext,
       type => $type,
-      url => $type eq 'directory' ? $self->_tree_path($url_path, $file)
-           : $type eq 'text/html' ? $self->_raw_path($url_path, $file)
-           :                        $self->_show_path($url_path, $file),
+      url_path => "$url_path$file",
     };
   });
 }
@@ -71,9 +86,8 @@ sub show {
   $self->stash(
     basename => basename($disk_path),
     file => Mojo::Asset::File->new(path => $disk_path),
-    dir_path => $self->_tree_path(dirname $url_path),
-    raw_path => $self->_raw_path($url_path),
-    url_path => $self->_show_path($url_path),
+    parent_path => dirname($url_path),
+    url_path => $url_path,
   );
 
   return $self->render(template => 'files/include') if $type eq 'text/include';
@@ -102,28 +116,7 @@ sub raw {
   $self->rendered;
 }
 
-=head2 redirect
-
-Used to be backward compat with older urls.
-
-=cut
-
-sub redirect {
-  my $self = shift;
-  my $url_path = $self->_url_path;
-
-  if(-d $self->_root_path($url_path)) {
-    $self->redirect_to(files => url_path => $url_path);
-  }
-  else {
-    $self->redirect_to(files_show => url_path => $url_path);
-  }
-}
-
 sub _root_path { join '/', shift->app->config->{Files}{public_path}, grep { length } @_ }
-sub _raw_path { shift; join '/', '/files/raw', grep { length } @_ }
-sub _show_path { shift; join '/', '/files/show', grep { length } @_ }
-sub _tree_path { shift; join '/', '/files/tree', grep { length } @_ }
 
 sub _extract_extension_and_filetype {
   my $self = shift,
@@ -166,6 +159,8 @@ sub _loop_files {
     next if !-r "$disk_path/$file";
     $cb->($file, $self->_extract_extension_and_filetype($disk_path, $file));
   }
+
+  return $self;
 }
 
 sub _url_path {

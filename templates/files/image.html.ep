@@ -3,7 +3,7 @@
 <h1 class="page-header"><%= $basename %></h1>
 %= include 'files/navbar'
 <div class="image preview">
-  %= link_to $raw_path, begin
-    %= image $raw_path, alt => $basename;
+  %= link_to 'file.raw', begin
+    %= image url_for('file.raw'), alt => $basename;
   % end
 </div>

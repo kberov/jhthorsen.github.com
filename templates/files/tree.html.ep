@@ -19,10 +19,17 @@
   <li>Empty directory.</li>
   % }
   % for my $f (@$files) {
-  <li>
-    %= link_to $f->{basename}, $f->{url}
-    % if($f->{size} > 1e6) {
+  <li class="<%= $f->{type} =~ s!/!-!r %>">
+    % if ($f->{type} eq 'text/html') {
+      %= link_to $f->{basename}, 'file.raw' => $f
+    % } else {
+      %= link_to 'file.raw' => $f, title => 'Download', class => 'download', sub { '&nabla;' }
+      %= link_to $f->{basename}, 'file.show' => $f
+    % }
+    % if ($f->{size} > 1e6) {
     <small><%= sprintf '%.01f', $f->{size} / 1e6 %>MB</small>
+    % } elsif ($f->{type} ne 'directory') {
+    <small><%= sprintf '%.01f', $f->{size} / 1e3 %>kB</small>
     % }
   </li>
   % }

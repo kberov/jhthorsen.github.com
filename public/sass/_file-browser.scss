@@ -1,4 +1,6 @@
 .files small { float: right; }
+.files .download { text-decoration: none; }
+.files .directory .download { color: $backgroundColor; }
 .preview.text { overflow-x: auto; }
 .preview.image { text-align: center; }
 .preview.video video { width: 100%; }

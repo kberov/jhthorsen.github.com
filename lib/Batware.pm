@@ -118,10 +118,11 @@ sub startup {
   $r->get('/500')->to(template => 'exception.production');
 
   $r->get('/files')->to('files#tree', url_path => '');
-  $r->get('/files/tree/(*url_path)')->to('files#tree', url_path => '')->name('files_tree');
-  $r->get('/files/show/*url_path')->to('files#show')->name('files_show');
-  $r->get('/files/raw/*url_path')->to('files#raw')->name('files_raw');
-  $r->get('/files/*url_path')->to('files#redirect');
+  $r->get('/files/tree/(*url_path)')->to('files#tree', url_path => ''); # back compat
+  $r->get('/files/show/*url_path')->to('files#show'); # back compat
+  $r->get('/files/download/*url_path')->to('files#download')->name('file.download');
+  $r->get('/files/raw/*url_path')->to('files#raw')->name('file.raw');
+  $r->get('/files/*url_path')->to('files#detect')->name('file.show');
 
   $r->get('/service/docsis')->to(cb => sub { $_[0]->redirect_to('docsis') });
   $r->get('/services/docsis')->to(cb => sub { $_[0]->redirect_to('docsis') });
