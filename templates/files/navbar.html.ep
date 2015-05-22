@@ -1,7 +1,7 @@
 <div class="navbar">
   <ul>
-    <li><%= link_to 'Back', 'file.show' => {url_path => $parent_path} %></li>
-    <li><%= link_to 'Raw format', 'file.raw' %></li>
-    <li><%= link_to 'Download', url_for('file.raw')->query(download => 1) %></li>
+    <li><%= link_to 'Back', "$route_prefix.show" => {url_path => $parent_path} %></li>
+    <li><%= link_to 'Raw format', "$route_prefix.raw" %></li>
+    <li><%= link_to 'Download', "$route_prefix.download" %></li>
   </ul>
 </div>

@@ -1,6 +1,7 @@
+.files { list-style: none; padding: 0; margin: 0; }
+.files li:hover { background-color: darken($backgroundColor, 5%); }
 .files small { float: right; }
-.files .download { text-decoration: none; }
-.files .directory .download { color: $backgroundColor; }
+.files .download { text-decoration: none; width: 1.1em; display: inline-block; }
 .preview.text { overflow-x: auto; }
 .preview.image { text-align: center; }
 .preview.video video { width: 100%; }

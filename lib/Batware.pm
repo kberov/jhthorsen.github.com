@@ -117,12 +117,8 @@ sub startup {
   $r->get('/404')->to(template => 'not_found.production');
   $r->get('/500')->to(template => 'exception.production');
 
-  $r->get('/files')->to('files#tree', url_path => '');
-  $r->get('/files/tree/(*url_path)')->to('files#tree', url_path => ''); # back compat
-  $r->get('/files/show/*url_path')->to('files#show'); # back compat
-  $r->get('/files/download/*url_path')->to('files#download')->name('file.download');
-  $r->get('/files/raw/*url_path')->to('files#raw')->name('file.raw');
-  $r->get('/files/*url_path')->to('files#detect')->name('file.show');
+  $self->_route_for_files('files');
+  $self->_route_for_files('private');
 
   $r->get('/service/docsis')->to(cb => sub { $_[0]->redirect_to('docsis') });
   $r->get('/services/docsis')->to(cb => sub { $_[0]->redirect_to('docsis') });
@@ -168,6 +164,19 @@ sub _config {
   $config->{Mail}{howargs} ||= ['smtp.online.no'];
   $config->{Mail}{receiver} ||= 'jhthorsen@cpan.org';
   $config;
+}
+
+sub _route_for_files {
+  my ($self, $prefix) = @_;
+  my $r = $self->routes->route("/$prefix")->to(route_prefix => $prefix);
+
+  $r->get('/tree/(*url_path)')->to('files#tree', url_path => ''); # back compat
+  $r->get('/show/*url_path')->to('files#show');                   # back compat
+
+  $r->get('/')->to('files#tree', url_path => '')->name("$prefix.root") unless $prefix eq 'private';
+  $r->get('/download/*url_path')->to('files#raw', download => 1)->name("$prefix.download");
+  $r->get('/raw/*url_path')->to('files#raw')->name("$prefix.raw");
+  $r->get('/*url_path')->to('files#detect')->name("$prefix.show");
 }
 
 =head1 AUTHOR

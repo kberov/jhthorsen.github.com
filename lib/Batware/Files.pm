@@ -26,7 +26,7 @@ sub detect {
   my $self = shift;
   my $url_path = $self->_url_path;
 
-  return $self->raw if $self->param('raw');
+  return $self->raw if $self->param('raw') or $self->param('download');
   return $self->tree if -d $self->_root_path($url_path);
   return $self->show;
 }
@@ -49,12 +49,10 @@ sub tree {
   $self->stash(
     files => \@files,
     parent_path => $parent_path,
-    url_path => $url_path,
     template => 'files/tree',
     README => '',
   );
 
-  $url_path .= '/' if length $url_path;
   $self->_loop_files($disk_path, sub {
     my($file, $ext, $type) = @_;
     $self->stash(README => slurp "$disk_path/$file") if $file eq 'README';
@@ -64,7 +62,7 @@ sub tree {
       size => -s "$disk_path/$file",
       ext => $ext,
       type => $type,
-      url_path => "$url_path$file",
+      url_path => $self->_url_path($file),
     };
   });
 }
@@ -86,8 +84,6 @@ sub show {
   $self->stash(
     basename => basename($disk_path),
     file => Mojo::Asset::File->new(path => $disk_path),
-    parent_path => dirname($url_path),
-    url_path => $url_path,
   );
 
   return $self->render(template => 'files/include') if $type eq 'text/include';
@@ -106,12 +102,14 @@ Will serve a file in raw format.
 sub raw {
   my $self = shift;
   my $url_path = $self->_url_path;
+  my $filename = basename $url_path;
   my $static = Mojolicious::Static->new(paths => [$self->_root_path]);
+  my $headers = $self->res->headers;
   my($ext, $type) = $self->_extract_extension_and_filetype($self->_root_path, $url_path);
 
   return $self->tree unless $type =~ m!/!;
-  $self->res->headers->content_type($type);
-  $self->res->headers->content_disposition(qq(attachment; filename="@{[basename $url_path ]}")) if $self->param('download');
+  $headers->content_type($type);
+  $headers->content_disposition(qq(attachment; filename="$filename")) if $self->param('download') or $self->stash('download');
   $static->serve($self, $url_path) or return $self->render(text => 'Unable to serve file', format => 'txt');
   $self->rendered;
 }
@@ -164,14 +162,28 @@ sub _loop_files {
 }
 
 sub _url_path {
-  my $self = shift;
-  my $url_path = $self->stash('url_path');
+  my ($self, $file) = @_;
 
-  $url_path =~ s!^/!!;
-  $url_path =~ s!/$!!;
-  $url_path =~ s!//!/!g;
-  $url_path =~ s!\.\.!!g;
-  $url_path;
+  if ($file) {
+    my $url_path = $self->_url_path;
+    $url_path =~ s!^\.!!; # private
+    return length $url_path ? "$url_path/$file" : $file;
+  }
+  elsif ($self->{url_path}) {
+    return $self->{url_path};
+  }
+  else {
+    my $url_path = $self->stash('url_path');
+
+    $url_path =~ s!^/!!;
+    $url_path =~ s!/$!!;
+    $url_path =~ s!//!/!g;
+    $url_path =~ s!\.\.!!g;
+
+    $self->stash(parent_path => dirname($url_path), url_path => $url_path);
+
+    return $self->{url_path} = $self->stash('route_prefix') eq 'private' ? ".$url_path" : $url_path;
+  }
 }
 
 =head1 AUTHOR

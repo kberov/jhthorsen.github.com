@@ -20,11 +20,15 @@
   % }
   % for my $f (@$files) {
   <li class="<%= $f->{type} =~ s!/!-!r %>">
-    % if ($f->{type} eq 'text/html') {
-      %= link_to $f->{basename}, 'file.raw' => $f
+    % if ($f->{type} eq 'directory') {
+      %= link_to "$route_prefix.raw" => $f, title => 'Goto', class => 'download', sub { '&raquo;' }
+      %= link_to $f->{basename}, "$route_prefix.show" => $f
+    % } elsif ($f->{type} eq 'text/html') {
+      %= link_to "$route_prefix.raw" => $f, title => 'Show', class => 'download', sub { '&raquo;' }
+      %= link_to $f->{basename}, "$route_prefix.raw" => $f
     % } else {
-      %= link_to 'file.raw' => $f, title => 'Download', class => 'download', sub { '&nabla;' }
-      %= link_to $f->{basename}, 'file.show' => $f
+      %= link_to "$route_prefix.raw" => $f, title => 'Download', class => 'download', sub { '&nabla;' }
+      %= link_to $f->{basename}, "$route_prefix.show" => $f
     % }
     % if ($f->{size} > 1e6) {
     <small><%= sprintf '%.01f', $f->{size} / 1e6 %>MB</small>
