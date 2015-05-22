@@ -128,7 +128,7 @@ sub _extract_extension_and_filetype {
   return('', 'directory') if -d $path;
 
   $ext = lc(($path =~ m!\.(\w+)$!)[0] || '');
-  $type = $ext ~~ [qw/ ep pm pl PL sh t /] ? 'text/plain'
+  $type = +(grep { $ext eq $_ } qw( ep pm pl PL sh t )) ? 'text/plain'
         : $ext eq 'js' ? 'text/javascript'
         : $ext eq 'tt' ? 'text/include'
         : $ext eq 'css' ? 'text/css'
