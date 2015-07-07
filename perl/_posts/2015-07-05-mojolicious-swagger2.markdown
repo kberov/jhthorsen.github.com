@@ -95,7 +95,7 @@ To see all the routes generated, you can run:
     ...
 
 In addition to the manually added routes, Mojolicious::Plugin::Swagger2 has
-added five more routes, which is automatically generated from the
+added five more routes, which are automatically generated from the
 [API spec](https://github.com/jhthorsen/swagger2/blob/master/t/blog/api.json).
 
 The generated routes differ from the standard routes, since they point to a
@@ -109,7 +109,7 @@ these steps:
    [method](https://metacpan.org/pod/Mojolicious::Plugin::Swagger2#Controller)
    (operationId) in the specified `x-mojo-controller`, but with two extra
    parameters: `$args` and `$cb`. `$args` is the validated input, and `$cb`
-   is a callback used to pass the respons back to the user agent.
+   is a callback used to pass the response back to the user agent.
 3. Verify the response passed to `$cb` against the swagger spec. Render a 500
    error document if the output validation fail.
 
@@ -202,7 +202,7 @@ Example usage:
 ### mojo swagger2 edit
 
 The "edit" command starts a Mojolicious server where you can edit and read the
-swagger specification in your browser. The browser component use localStorage,
+swagger specification in your browser. The browser component uses localStorage,
 which automatically saves your changes locally even if your browser crash.
 
 Example usage:
@@ -227,8 +227,7 @@ Just to read the documentation:
 
 ### mojo swagger2 validate
 
-The last command can be used to validate that the API spec is accordingly to
-the swagger specification:
+The last command can be used to validate that the API spec against the swagger specification:
 
     $ mojo swagger2 validate t/blog/api.json
 
@@ -239,7 +238,8 @@ output validation to your application, based on a Swagger spec.
 
 Got questions or feedback? Contact me on
 [twitter](http://twitter.com/jhthorsen),
-<abbr title="batman on irc.perl.org">IRC</abbr>
+join the official IRC channel #mojo on irc.perl.org
+and look for <abbr title="batman on irc.perl.org">IRC</abbr>
 or drop me an [email](mailto:jhthorsen@cpan.org).
 
 ## See also
